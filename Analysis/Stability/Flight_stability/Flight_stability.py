@@ -13,13 +13,15 @@ import math
 from matplotlib import pyplot as plt
 import pandas as pd
 import numpy as np
+import sys
+sys.path.append('..')
 
 
-from ....Components.Plane.Aerodynamic_surfaces.Wing import Wing
-from ....Components.Plane.Aerodynamic_surfaces.EH import EH
-from ....Components.Plane.References.Static_margin import SM
-from ....Analysis.Stability.Flight_stability.Momentum_CG import wing_momentum
-from ....Analysis.Stability.Flight_stability.Momentum_CG import tail_momentum
+from Components.Plane.Aerodynamic_surfaces.Wing import Wing
+from Components.Plane.Aerodynamic_surfaces.EH import EH
+from Components.Plane.References.Static_margin import SM
+from Analysis.Stability.Flight_stability.Momentum_CG import wing_momentum
+from Analysis.Stability.Flight_stability.Momentum_CG import tail_momentum
 
 # --- Reescreve arquivos do X5 --- #
 '''
