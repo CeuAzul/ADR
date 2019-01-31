@@ -18,8 +18,8 @@ import numpy as np
 from ....Components.Plane.Aerodynamic_surfaces.Wing import Wing
 from ....Components.Plane.Aerodynamic_surfaces.EH import EH
 from ....Components.Plane.References.Static_margin import SM
-from ....Methods.Stability.Flight_stability.Momentum_CG import wing_momentum
-from ....Methods.Stability.Flight_stability.Momentum_CG import tail_momentum
+from ....Analysis.Stability.Flight_stability.Momentum_CG import wing_momentum
+from ....Analysis.Stability.Flight_stability.Momentum_CG import tail_momentum
 
 # --- Reescreve arquivos do X5 --- #
 '''
