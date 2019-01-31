@@ -14,7 +14,8 @@ from matplotlib import pyplot as plt
 import pandas as pd
 import numpy as np
 import sys
-sys.path.append('..')
+
+sys.path.append('C:\David\Ceu_Azul\Codigo\ADR')
 
 
 from Components.Plane.Aerodynamic_surfaces.Wing import Wing
@@ -148,8 +149,6 @@ def toRad(graus):
 
 # ------ #
 
-CM_tail = []
-CM_wing = []
 
 CM = []
 ME = []
@@ -167,6 +166,7 @@ alpha_plane_min = stall_min - incidence_min
 alpha_plane_max = stall_max - incidence_max
 
 alpha_plane_range = range(alpha_plane_min, alpha_plane_max + 1)
+alpha_tail_range = range(EH.stall_min, EH.stall_max + 1)
 
 # ------ Analise ------ #
 
@@ -218,7 +218,7 @@ def flight_stability(plane_type):
         ME.append([])
         dCMda.append([])
 
-        for alpha_tail in range(EH.stall_min, EH.stall_max + 1):
+        for alpha_tail in alpha_tail_range:
             index_at = alpha_tail + abs(EH.stall_min)
 
             tail_m = tail_momentum(X_CG, H_CG,
@@ -250,8 +250,6 @@ def flight_stability(plane_type):
             ME[index_ap].append(SM.get())
             CM[index_ap].append(CM_sum)
 
-            CM_tail.append(tail_m)
-        CM_wing.append(wing_m)
 
 # ------- Resultados ------- #
 # APAGUEI TEUS EIXO X DOS PLOTS
@@ -262,15 +260,16 @@ def flight_stability(plane_type):
     plt.xlabel("Ânglo alpha do avião")
     plt.ylabel("Coeficiente de momento no CG")
     plt.title("Momento da aeronave para diferentes angulos de ataque e EH")
-    for i in range(len(CM[0])):
-        plt.plot(alpha_plane_range, CM[i])
+    print(len(alpha_tail_range), len(CM[0]))
+    for i in range(0, len(CM[0])):
+        plt.plot(alpha_tail_range, CM[i])
 
     plt.figure(2)
     plt.grid()
     plt.xlabel("Ânglo alpha do avião")
     plt.ylabel("ME")
     plt.title("ME da aeronave para diferentes angulos de ataque e EH")
-    plt.plot(alpha_plane_range, ME[8])
+    plt.plot(alpha_plane_range, ME)
 
     plt.figure(1)
     a=[]
