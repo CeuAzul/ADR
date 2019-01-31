@@ -4,9 +4,8 @@ Created on Mon Oct  8 19:08:20 2018
 
 @author: david
 """
-import sys
-sys.path.append("C:\David\Ceu_Azul\Codigo\ADR")
-from Components.Plane.Points.CA import CA
+
+from ....Components.Plane.Points.CA import CA
 
 class Aerodynamic_surfaces():
     def __init__(self, data):
