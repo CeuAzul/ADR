@@ -1,3 +1,2 @@
 # ADR
-This is Aircraft Design Resources
-ALOLOLOOO amarelo aqui
+cabo com a palhafrita
