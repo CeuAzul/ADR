@@ -5,7 +5,10 @@ Created on Mon Oct  8 19:08:20 2018
 @author: david
 """
 
-from ....Components.Plane.Points.CA import CA
+import sys
+sys.path.append('..')
+
+from Components.Plane.Points.CA import CA
 
 class Aerodynamic_surfaces():
     def __init__(self, data):
