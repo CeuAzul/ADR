@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="397aff2f-05ba-4d03-862e-d14af4de6ca4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Analysis/Stability/Flight_stability/Flight_stability.py" beforeDir="false" afterPath="$PROJECT_DIR$/Analysis/Stability/Flight_stability/Flight_stability.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Analysis/Stability/Flight_stability/Momentum_CG.py" beforeDir="false" afterPath="$PROJECT_DIR$/Analysis/Stability/Flight_stability/Momentum_CG.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,11 +14,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Components/Plane/Aerodynamic_surfaces/Aerodynamic_surfaces.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Analysis/Stability/Flight_stability/Flight_stability.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="14" column="32" lean-forward="true" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
+            <state relative-caret-position="139">
+              <caret line="141" column="11" selection-start-line="141" selection-start-column="11" selection-end-line="141" selection-end-column="11" />
+              <folding>
+                <element signature="e#203#214#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -24,22 +29,15 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Analysis/Stability/Flight_stability/Momentum_CG.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="12" column="17" lean-forward="true" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
+            <state relative-caret-position="460">
+              <caret line="76" column="24" lean-forward="true" selection-start-line="76" selection-start-column="24" selection-end-line="76" selection-end-column="24" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Analysis/Stability/Flight_stability/Flight_stability.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="27" column="47" lean-forward="true" selection-start-line="27" selection-start-column="47" selection-end-line="27" selection-end-column="47" />
-              <folding>
-                <element signature="e#203#214#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Analysis/__init__.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -105,16 +103,16 @@
         <option value="$PROJECT_DIR$/Components/Plane/References/Static_margin.py" />
         <option value="$PROJECT_DIR$/Methods/Stability/Flight_stability/Flight_stability.py" />
         <option value="$PROJECT_DIR$/Methods/Stability/Flight_stability/Momentum_CG.py" />
-        <option value="$PROJECT_DIR$/Analysis/Stability/Flight_stability/Momentum_CG.py" />
         <option value="$PROJECT_DIR$/Components/Plane/Aerodynamic_surfaces/Aerodynamic_surfaces.py" />
+        <option value="$PROJECT_DIR$/Analysis/Stability/Flight_stability/Momentum_CG.py" />
         <option value="$PROJECT_DIR$/Analysis/Stability/Flight_stability/Flight_stability.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="951" />
-    <option name="width" value="978" />
-    <option name="height" value="1039" />
+    <option name="x" value="950" />
+    <option name="width" value="979" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -122,6 +120,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -150,26 +149,15 @@
             <path>
               <item name="ADR" type="b2602c69:ProjectViewProjectNode" />
               <item name="ADR" type="462c0819:PsiDirectoryNode" />
-              <item name="Components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ADR" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ADR" type="462c0819:PsiDirectoryNode" />
-              <item name="Components" type="462c0819:PsiDirectoryNode" />
-              <item name="Plane" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ADR" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ADR" type="462c0819:PsiDirectoryNode" />
-              <item name="Components" type="462c0819:PsiDirectoryNode" />
-              <item name="Plane" type="462c0819:PsiDirectoryNode" />
-              <item name="Aerodynamic_surfaces" type="462c0819:PsiDirectoryNode" />
+              <item name="Analysis" type="462c0819:PsiDirectoryNode" />
+              <item name="Stability" type="462c0819:PsiDirectoryNode" />
+              <item name="Flight_stability" type="462c0819:PsiDirectoryNode" />
+              <item name="X5_Files2" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -197,7 +185,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Flight_stability (1)">
+  <component name="RunManager" selected="Python.Flight_stability (2)">
     <configuration name="Aerodynamic_surfaces" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ADR" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -240,6 +228,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Flight_stability (2)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="ADR" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Analysis/Stability/Flight_stability" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Analysis/Stability/Flight_stability/Flight_stability.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Flight_stability" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ADR" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -263,6 +272,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Flight_stability (2)" />
         <item itemvalue="Python.Flight_stability (1)" />
         <item itemvalue="Python.Aerodynamic_surfaces" />
         <item itemvalue="Python.Flight_stability" />
@@ -286,12 +296,12 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1665565" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1665565" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3295129" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.20254958" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.28045326" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.20254958" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -317,23 +327,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Components/Plane/Propulsion/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/codecs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="308" selection-start-line="308" selection-end-line="308" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/site-packages/numpy/lib/function_base.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="983" selection-start-line="983" selection-end-line="983" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../SUAVE-1.0.0/trunk/SUAVE/Methods/Aerodynamics/AVL/purge_files.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-173" />
@@ -393,16 +386,8 @@
     <entry file="file://$PROJECT_DIR$/Methods/Stability/CG_position/X5_files/Aviao.txt" />
     <entry file="file://$PROJECT_DIR$/Estabilidade_estatica.py" />
     <entry file="file://$PROJECT_DIR$/Trimagem.py" />
-    <entry file="file://$PROJECT_DIR$/Analysis/Structures/Spar.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="8" lean-forward="true" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Analysis/Performance/Motor.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Analysis/Structures/Spar.py" />
+    <entry file="file://$PROJECT_DIR$/Analysis/Performance/Motor.py" />
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -417,67 +402,21 @@
         <state relative-caret-position="-974" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_files/Profundor.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="91" selection-start-line="8" selection-start-column="91" selection-end-line="8" selection-end-column="91" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_files/Asa.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_files/Aviao_escrito.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_files/Profundor_escrito.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_files/Profundor.txt" />
+    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_files/Asa.txt" />
+    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_files/Aviao_escrito.txt" />
+    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_files/Profundor_escrito.txt" />
     <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_files2.txt" />
-    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_Files2/Aviao.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_Files2/Asa.txt">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_files/Asa_escrita.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="11" selection-start-column="11" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_Files2/Aviao_escrito.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-51" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_Files2/Asa_escrita.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1126" />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_Files2/Aviao.txt" />
+    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_Files2/Asa.txt" />
+    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_files/Asa_escrita.txt" />
+    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_Files2/Aviao_escrito.txt" />
+    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_Files2/Asa_escrita.txt" />
     <entry file="file://$PROJECT_DIR$/Components/Components.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_Files2/Profundor_escrito.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1224">
-          <caret line="72" column="10" selection-start-line="72" selection-start-column="10" selection-end-line="72" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/Momentum_CG.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="68" column="52" selection-start-line="68" selection-start-column="52" selection-end-line="68" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/X5_Files2/Profundor_escrito.txt" />
+    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/Momentum_CG.py" />
     <entry file="file://$PROJECT_DIR$/Components/Plane/Plane.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -485,16 +424,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/Flight_stability.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="188" lean-forward="true" selection-start-line="188" selection-end-line="188" />
-          <folding>
-            <element signature="e#203#214#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Methods/Stability/Flight_stability/Flight_stability.py" />
     <entry file="file://$PROJECT_DIR$/Methods/Structures/Spar.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -545,13 +475,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Analysis/Stability/Flight_stability/Momentum_CG.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="12" column="17" lean-forward="true" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Components/Plane/Aerodynamic_surfaces/Aerodynamic_surfaces.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -559,10 +482,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Analysis/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Analysis/Stability/Flight_stability/X5_Files2/Profundor_escrito.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Analysis/Stability/Flight_stability/Momentum_CG.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="76" column="24" lean-forward="true" selection-start-line="76" selection-start-column="24" selection-end-line="76" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/site-packages/matplotlib/axes/_base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="230" selection-start-line="230" selection-end-line="230" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Analysis/Stability/Flight_stability/Flight_stability.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="27" column="47" lean-forward="true" selection-start-line="27" selection-start-column="47" selection-end-line="27" selection-end-column="47" />
+        <state relative-caret-position="139">
+          <caret line="141" column="11" selection-start-line="141" selection-start-column="11" selection-end-line="141" selection-end-column="11" />
           <folding>
             <element signature="e#203#214#0" expanded="true" />
           </folding>

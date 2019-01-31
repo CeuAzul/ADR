@@ -30,7 +30,6 @@ def wing_momentum(plane_type, X_CG, H_CG,
     print("CL = ", CL1[index_w1])
     print("alpha_graus = ", alpha_plane)
     print("alpha_rad = ", toRad(alpha_plane))
-    print("cos alpha_rad = ", math.cos(toRad(alpha_plane)))
     print("X_CG - CA1_X", X_CG - CA1_X)
     print("Itens", item1, item2, item5, item6)
     print("CM1", CM1)
@@ -41,7 +40,7 @@ def wing_momentum(plane_type, X_CG, H_CG,
         item4 = CL2[index_w2] * math.sin(toRad(alpha_plane)) * ((H_CG - CA2_H) / chord1) * area2 / area1
         item7 = CD2[index_w2] * math.sin(toRad(alpha_plane)) * ((X_CG - CA2_X) / chord1) * area2 / area1
         item8 = CD2[index_w2] * math.cos(toRad(alpha_plane)) * ((H_CG - CA2_H) / chord1) * area2 / area1
-        CM2 = (CM_CA_W2) * (area2 * chord2) / (area1 * chord1) + item3 + item4 + item7 - item8
+        CM2 = CM_CA_W2 * (area2 * chord2) / (area1 * chord1) + item3 + item4 + item7 - item8
 
         return CM1 + CM2
 
@@ -56,23 +55,23 @@ def tail_momentum(X_CG, H_CG,
                   CA_X, CA_H,
                   wing1_chord, wing1_area, wing1_downwash_angle,
                   alpha_plane):
-    #   onde tem cosseno e seno é alfa plane - donwash, onde tem CL e CD é alfa T
 
     item9 = CL[index_t] * math.cos(toRad(alpha_plane) - wing1_downwash_angle) * (
             (X_CG - CA_X) / wing1_chord) * area / wing1_area
+
     item10 = CL[index_t] * math.sin(toRad(alpha_plane) - wing1_downwash_angle) * (
             (H_CG - CA_H) / wing1_chord) * area / wing1_area
+
     item11 = CD[index_t] * math.cos(toRad(alpha_plane) - wing1_downwash_angle) * (
             (H_CG - CA_H) / wing1_chord) * area / wing1_area
+
     item12 = CD[index_t] * math.sin(toRad(alpha_plane) - wing1_downwash_angle) * (
             (X_CG - CA_X) / wing1_chord) * area / wing1_area
+
     CM = (CM_CA * chord * area / (wing1_chord * wing1_area)) + item9 + item10 - item11 + item12
 
     print("\tDados EH")
     print("\tCL = ", CL[index_t])
-    print("\talpha_graus = ", alpha_plane)
-    print("\talpha_rad = ", toRad(alpha_plane))
-    print("\tcos alpha_rad = ", math.cos(toRad(alpha_plane)))
     print("\tX_CG - CA_X = ", X_CG - CA_X)
     print("\t", "Itens = ", item9, item10, item11, item12)
     print("\tCM = ", CM)

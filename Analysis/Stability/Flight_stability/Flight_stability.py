@@ -148,6 +148,8 @@ def toRad(graus):
 
 # ------ #
 
+CM_tail = []
+CM_wing = []
 
 CM = []
 ME = []
@@ -248,6 +250,8 @@ def flight_stability(plane_type):
             ME[index_ap].append(SM.get())
             CM[index_ap].append(CM_sum)
 
+            CM_tail.append(tail_m)
+        CM_wing.append(wing_m)
 
 # ------- Resultados ------- #
 # APAGUEI TEUS EIXO X DOS PLOTS
@@ -258,14 +262,15 @@ def flight_stability(plane_type):
     plt.xlabel("Ânglo alpha do avião")
     plt.ylabel("Coeficiente de momento no CG")
     plt.title("Momento da aeronave para diferentes angulos de ataque e EH")
-    plt.plot(alpha_plane_range, CM)
+    for i in range(len(CM[0])):
+        plt.plot(alpha_plane_range, CM[i])
 
     plt.figure(2)
     plt.grid()
     plt.xlabel("Ânglo alpha do avião")
     plt.ylabel("ME")
     plt.title("ME da aeronave para diferentes angulos de ataque e EH")
-    plt.plot(alpha_plane_range, ME)
+    plt.plot(alpha_plane_range, ME[8])
 
     plt.figure(1)
     a=[]
