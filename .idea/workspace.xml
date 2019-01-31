@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="397aff2f-05ba-4d03-862e-d14af4de6ca4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Analysis/Stability/Flight_stability/Flight_stability.py" beforeDir="false" afterPath="$PROJECT_DIR$/Analysis/Stability/Flight_stability/Flight_stability.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Components/Plane/Aerodynamic_surfaces/Aerodynamic_surfaces.py" beforeDir="false" afterPath="$PROJECT_DIR$/Components/Plane/Aerodynamic_surfaces/Aerodynamic_surfaces.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -23,20 +21,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Analysis/Stability/Flight_stability/Momentum_CG.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="15" selection-start-line="15" selection-end-line="15" />
+            <state relative-caret-position="153">
+              <caret line="12" column="17" lean-forward="true" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Analysis/Stability/Flight_stability/Flight_stability.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
+            <state relative-caret-position="255">
+              <caret line="27" column="47" lean-forward="true" selection-start-line="27" selection-start-column="47" selection-end-line="27" selection-end-column="47" />
+              <folding>
+                <element signature="e#203#214#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -105,8 +106,8 @@
         <option value="$PROJECT_DIR$/Methods/Stability/Flight_stability/Flight_stability.py" />
         <option value="$PROJECT_DIR$/Methods/Stability/Flight_stability/Momentum_CG.py" />
         <option value="$PROJECT_DIR$/Analysis/Stability/Flight_stability/Momentum_CG.py" />
-        <option value="$PROJECT_DIR$/Analysis/Stability/Flight_stability/Flight_stability.py" />
         <option value="$PROJECT_DIR$/Components/Plane/Aerodynamic_surfaces/Aerodynamic_surfaces.py" />
+        <option value="$PROJECT_DIR$/Analysis/Stability/Flight_stability/Flight_stability.py" />
       </list>
     </option>
   </component>
@@ -537,17 +538,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Analysis/Stability/Flight_stability/Flight_stability.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Components/Plane/Aerodynamic_surfaces/EH.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Analysis/Stability/Flight_stability/Momentum_CG.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="12" column="17" lean-forward="true" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -558,10 +559,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Analysis/Stability/Flight_stability/Momentum_CG.py">
+    <entry file="file://$PROJECT_DIR$/Analysis/Stability/Flight_stability/Flight_stability.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="255">
+          <caret line="27" column="47" lean-forward="true" selection-start-line="27" selection-start-column="47" selection-end-line="27" selection-end-column="47" />
+          <folding>
+            <element signature="e#203#214#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
