@@ -18,3 +18,9 @@ ADR/ADR\.egg-info/requires\.txt
 ADR/ADR\.egg-info/SOURCES\.txt
 
 ADR/ADR\.egg-info/top_level\.txt
+
+# Ignore build folder
+ADR\.egg-info/
+
+# Ignore Python runtime files
+*.pyc
