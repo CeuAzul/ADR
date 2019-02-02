@@ -1,7 +1,8 @@
 class Motor():
-    def __init__(self):
-        self.maxThrust= 235
-        self.thrustByVelocity = range(1,10)
-        
-    def get_take_off_thrust(self):
-        return self.thrustByVelocity[5]
+    def __init__(self, static_thrust, linear_decay_coefficient):
+        self.static_thrust = static_thrust
+        self.linear_decay_coefficient = linear_decay_coefficient
+
+    def thrust(self, velocity):
+        thrust = self.static_thrust - self.linear_decay_coefficient*velocity
+        return thrust
