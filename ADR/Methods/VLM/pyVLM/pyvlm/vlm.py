@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import ADR
 
 from .panel import Panel
 from .mesh_generator import Mesh
@@ -260,7 +261,6 @@ class PyVLM(object):
         mm = np.zeros(N)
         centro_x = np.zeros(N)
         centro_y = np.zeros(N)
-
         cl_chord = np.zeros(self.n)
         for i in range(0, N):
             l[i] = V * rho * gamma[i] * Panels_span[i]
@@ -283,9 +283,9 @@ class PyVLM(object):
             y_novo_ponto[1] = (yj[ordem_y[2]]+yj[ordem_y[3]])/2
             cp_x_novo = (x_novo_ponto[0]+x_novo_ponto[1]+xj[ordem_x[0]]+xj[ordem_x[1]])/4
             cp_y_novo = (y_novo_ponto[0]+y_novo_ponto[1]+yj[ordem_x[0]]+yj[ordem_x[1]])/4
-            plt.plot(xj,yj,'x')
-            plt.plot(cp_x_novo,cp_y_novo,'+')
-            plt.xticks(np.arange(min(xj), max(xj)+0.01, 0.01))
+            #plt.plot(xj,yj,'x')
+            #plt.plot(cp_x_novo,cp_y_novo,'+')
+            #plt.xticks(np.arange(min(xj), max(xj)+0.01, 0.01))
             centro_x[i] = sum(xj)/4
             centro_y[i] = sum(yj)/4
             mm[i] = -l[i]*centro_x[i]
@@ -314,7 +314,10 @@ class PyVLM(object):
             ys.extend(y_chord)
             temp = self.n[k]*self.m[k]+temp
         ys, clc = zip(*sorted(zip(ys, clc)))
-        Data = np.loadtxt("T1_Re0.100_M0.00_N9.0.txt") #precisa mudar
+        package_filepath = ADR.__file__.replace('__init__.py', '')
+        airfoil_aerodynamic_data_filename = "T1_Re0.100_M0.00_N9.0.txt"
+        airfoil_aerodynamic_data_filepath = package_filepath + 'World/Profiles/AerodynamicData/' + airfoil_aerodynamic_data_filename
+        Data = np.loadtxt(airfoil_aerodynamic_data_filepath) #precisa mudar
         cl_foil = []
         cd_foil = []
         for i in range(0, len(Data)):
@@ -322,13 +325,13 @@ class PyVLM(object):
             cd_foil.append(Data[i, 2])
         cd_foil_alpha = np.interp(cl_chord,cl_foil,cd_foil)
         cd_chord_cor = np.add(cd_chord,cd_foil_alpha)
-        print(cl_chord)
-        print(cd_chord)
-        print(cl_foil)
-        print(cd_foil)
-        print(cd_foil_alpha)
-        print(cd_chord_cor)
-        print(alpha*180/3.14)
+        #print(cl_chord)
+        #print(cd_chord)
+        #print(cl_foil)
+        #print(cd_foil)
+        #print(cd_foil_alpha)
+        #print(cd_chord_cor)
+        #print(alpha*180/3.14)
 #        print(ys,clc)
         L = sum(l)
         D = sum(d)
