@@ -1,4 +1,5 @@
 class Component():
-    def __init__(self, position, CD0):
-        self.position = position
-        self.CD0 = CD0
+    def __init__(self, data):
+        self.x = data.get("x")
+        self.y = data.get("y")
+        self.z = data.get("z")

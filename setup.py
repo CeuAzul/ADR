@@ -9,8 +9,9 @@ setuptools.setup(
     author="Ceu Azul Aeronaves",
     author_email="ceuazulufsc@gmail.com",
     description="This is Aircraft Design Resources",
-    url="https://github.com/pypa/sampleproject",
+    url="https://github.com/CeuAzul/ADR",
     packages=setuptools.find_packages(),
+    include_package_data=True,
     install_requires=['numpy', 'matplotlib', 'pandas'],
     tests_requires=['pytest'],
     classifiers=[
