@@ -1,0 +1,4 @@
+include README.md
+include World/Profiles/AerodynamicData/*.txt
+include World/Profiles/AerodynamicData/*.csv
+include World/Profiles/Coordinates/*.dat
