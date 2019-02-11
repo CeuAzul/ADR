@@ -102,7 +102,7 @@ class PyVLM(object):
             temp = np.ones(len(Chordwise_panel_positions_))*section_airfoil
             self.sections_airfoil.extend(temp)
             self.n.append(n)
-            self.m.append(m) 
+            self.m.append(m)
 
     def check_mesh(self):
         """
@@ -156,20 +156,20 @@ class PyVLM(object):
         # for i in range(0, len(Points)):
         #     print('  %2s   |' % i, np.round(Points[i], 2))
 
-        print('\nPanel| Chrd% |  Span |  Points coordinates')
-        print('------------------------------------------------')
-        for i in range(0, len(Panels)):
-            print(' %3s | %5.2f | %5.3f | '
-                  % (i, 100*Panels_chordwise_pos[i], Panels_span[i]),
-                  np.round(Panels[i][0], 2), np.round(Panels[i][1], 2),
-                  np.round(Panels[i][2], 2), np.round(Panels[i][3], 2))
+        # print('\nPanel| Chrd% |  Span |  Points coordinates')
+        # print('------------------------------------------------')
+        # for i in range(0, len(Panels)):
+        #     print(' %3s | %5.2f | %5.3f | '
+        #           % (i, 100*Panels_chordwise_pos[i], Panels_span[i]),
+        #           np.round(Panels[i][0], 2), np.round(Panels[i][1], 2),
+        #           np.round(Panels[i][2], 2), np.round(Panels[i][3], 2))
 
-        plt.style.use('ggplot')
-        plt.xlim(-5, 15), plt.ylim(-10, 10)
-        for i in range(0, len(Points)):
-            P = Points[i]
-            plt.plot(P[0], P[1], 'ro')
-        plt.show()
+        # plt.style.use('ggplot')
+        # plt.xlim(-5, 15), plt.ylim(-10, 10)
+        # for i in range(0, len(Points)):
+        #     P = Points[i]
+        #     plt.plot(P[0], P[1], 'ro')
+        # plt.show()
 
     def vlm(self, V, alpha, print_output=False):
         """
@@ -332,7 +332,7 @@ class PyVLM(object):
         cd_chord_cor = np.add(cdc, cd_foil_alpha)
         d_chord_visc = []
         for k in range(0, len(self.n)):
-            print(k)
+            # print(k)
             for i in range(0, self.m[k]):
                 d_chord_visc.append(cd_chord_cor[i]*S_chord[i]*rho*V**2/(2))
         #print(cl_chord)
@@ -349,14 +349,14 @@ class PyVLM(object):
         M = sum(mm) #Pitch moment calculator MIGUÉ
         A = []
         A = sum(S)
-        if (print_output is True):
-            print('\nPanel|  V∞_n |   Wi   |  α_i  |   Γ   |    l   |   d  |')
-            print('-------------------------------------------------------')
-            for i in range(0, len(Panels)):
-                print(' %3s | %5.2f | %6.2f | %5.2f | %5.2f |%7.1f | %4.2f |'
-                      % (i, Vinf_n[i], W_induced[i],
-                         np.rad2deg(alpha_induced[i]), gamma[i], l[i], d[i]))
-            print('\n L = %6.3f     D = %6.3f \n' % (L, D))
+        # if (print_output is True):
+        #     print('\nPanel|  V∞_n |   Wi   |  α_i  |   Γ   |    l   |   d  |')
+        #     print('-------------------------------------------------------')
+        #     for i in range(0, len(Panels)):
+        #         print(' %3s | %5.2f | %6.2f | %5.2f | %5.2f |%7.1f | %4.2f |'
+        #               % (i, Vinf_n[i], W_induced[i],
+        #                  np.rad2deg(alpha_induced[i]), gamma[i], l[i], d[i]))
+        #     print('\n L = %6.3f     D = %6.3f \n' % (L, D))
 
         airfoil_aerodynamic_data_filename = 'T1-12_0 m_s-VLM2-1_0kg-x0_0m_flap.txt'
         airfoil_aerodynamic_data_filepath = package_filepath + 'World/Profiles/AerodynamicData/' + airfoil_aerodynamic_data_filename
@@ -372,7 +372,7 @@ class PyVLM(object):
         CD = 2*D/(rho*A*V**2)
         CD_visc = 2*D_visc/(rho*A*V**2)
         #plt.plot(CD,CL)
-        plt.plot(CD, CL, '+')
-        plt.plot(CD_visc, CL, 'x')
-        plt.plot(CD_plane,CL_plane)
+        # plt.plot(CD, CL, '+')
+        # plt.plot(CD_visc, CL, 'x')
+        # plt.plot(CD_plane,CL_plane)
         return L, D, M, ys, clc

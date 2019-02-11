@@ -91,7 +91,7 @@ class Airfoil:
             self.delta_perimeter_array_int[i] = delta_perimeter_i_int
         perimeter_int = np.sum(self.delta_perimeter_array_int) #perímetro do intradorso do perfil
         self.perimeter = perimeter_ext + perimeter_int #perimetro total do perfil
-        print(self.perimeter)
+        # print(self.perimeter)
 
         self.sum_perimeter_ext_pos = np.empty([self.n_ext-1])
         sum_perimeter_ext_pos_i = 0
@@ -118,4 +118,4 @@ class Airfoil:
             self.delta_area_array_int[i] = delta_area_int_i
         area_int = np.sum(self.delta_area_array_int) #área determinada pelo intradorso e a linha de corda
         self.area = area_ext - area_int #área do perfil
-        print(self.area)
+        # print(self.area)
