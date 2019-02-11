@@ -115,7 +115,7 @@ class Aerodynamic_surface(Component):
         Aerodynamic_calculator.add_geometry(leading_edges_coord_rw, chord_lengths_rw, n, m, 0)
         
         Aerodynamic_calculator.check_mesh()
- 
+
         S = self.section1.area+self.section2.area
         self.stall_min = 0
         self.stall_max = 20
@@ -142,16 +142,16 @@ class Aerodynamic_surface(Component):
             cp = -M/(L*self.chord1)
             if max(clc) > clc_max:
                 break
-            print(alpha_rad[i], L)
+            # print(alpha_rad[i],L)
             alpha.append(alpha2[i])
             cd.append(D/(q*S))
             cl.append(L/(q*S))
             cm.append(-(cp-0.25)*L/(q*S))
 
-        plt.plot(alpha, cl)
-        plt.plot(alpha, cd)
-        plt.plot(alpha, cm)
-        plt.show()
+        # plt.plot(alpha,cl)
+        # plt.plot(alpha,cd)
+        # plt.plot(alpha,cm)
+        # plt.show()
 
         self.CL_alpha = pd.DataFrame({'Cl': cl, 'alpha': alpha})
         self.CD_alpha = pd.DataFrame({'Cd': cd, 'alpha': alpha})
