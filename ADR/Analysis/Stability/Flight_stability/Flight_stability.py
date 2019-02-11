@@ -246,8 +246,6 @@ def flight_stability(plane_type):
     plt.xlabel("Alpha angle of component")
     plt.ylabel("CM on CG")
     plt.title("Momentum coeficient of component on CG")
-
-
     a = sepDictionary(CM_alpha_wing)
     plt.plot(a[0], a[1], label="CM_alpha_wing")
     a = sepDictionary(CM_alpha_tail)
@@ -257,9 +255,9 @@ def flight_stability(plane_type):
 
     plt.figure(2)
     plt.grid()
-    plt.xlabel("Ânglo alpha do avião")
-    plt.ylabel("ME")
-    plt.title("ME da aeronave para diferentes angulos de ataque e hs")
+    plt.xlabel("Alpha angle of plane")
+    plt.ylabel("SM")
+    plt.title("SM for different attack angle of plane")
     plt.plot(alpha_plane_range, _SM)
 
     plt.show()
