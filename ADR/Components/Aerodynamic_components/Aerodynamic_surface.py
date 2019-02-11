@@ -6,6 +6,8 @@ from ADR.Methods.VLM.pyVLM.pyvlm.vlm import PyVLM
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
+
+
 class Aerodynamic_surface(Component):
     def __init__(self, data):
         super().__init__(data)
@@ -42,19 +44,20 @@ class Aerodynamic_surface(Component):
         self.section1 = Aerodynamic_section(data_section1)
         self.section2 = Aerodynamic_section(data_section2)
 
-        self.airfoil1 = Airfoil({"airfoil" : self.airfoil1})
-        self.airfoil2 = Airfoil({"airfoil" : self.airfoil2})
+        self.airfoil1 = Airfoil({"airfoil": self.airfoil1})
+        self.airfoil2 = Airfoil({"airfoil": self.airfoil2})
 
         self.calc_aerodynamic_data()
-        self.calc_area()
 
     def calc_aerodynamic_data(self):
-        # This entire method is bullshit
+        # This entire method is bullshit\
 
-        self.CA = CA(0.75*(self.chord1+self.chord2+self.chord3)/3, 0)
+        #self.CA = CA(0.25*(self.chord1+self.chord2+self.chord3)/3, 0)
 
         Aerodynamic_calculator = PyVLM()
 
+        self.stall_min = -15
+        self.stall_max = 15
         # GEOMETRY DEFINITION #
         # Section 2
         c1 = self.section2.chord1
@@ -112,6 +115,7 @@ class Aerodynamic_surface(Component):
         self.stall_min = 0
         self.stall_max = 20
 
+        self.downwash_angle = 0
  
         # SIMULATION
         # Flight condition parameters
@@ -150,6 +154,14 @@ class Aerodynamic_surface(Component):
 
 
         self.downwash_angle = 6
+
+    def attack_angle_index(self):
+        return self.attack_angle + abs(self.stall_min)
+
+    def diff(self, array):
+        x = list(np.diff(array))
+        x.append(x[-1])     # doubles last term
+        return x
 
     def get_CL(self, alpha):
         CL = np.interp(alpha, self.CL_alpha.index.values, self.CL_alpha['Cl'])
