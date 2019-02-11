@@ -6,6 +6,8 @@ from ADR.Methods.VLM.pyVLM.pyvlm.vlm import PyVLM
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
+
+
 class Aerodynamic_surface(Component):
     def __init__(self, data):
         super().__init__(data)
@@ -22,6 +24,8 @@ class Aerodynamic_surface(Component):
         self.twist3 = data.get("twist3")
         self.incidence = data.get("incidence")
 
+        self.attack_angle = 0
+
         data_section1 = {
             "airfoil": self.airfoil1,
             "span": self.span1,
@@ -30,6 +34,7 @@ class Aerodynamic_surface(Component):
             "twist1": self.twist1,
             "twist2": self.twist2
             }
+
         data_section2 = {
             "airfoil": self.airfoil2,
             "span": self.span2,
@@ -42,19 +47,22 @@ class Aerodynamic_surface(Component):
         self.section1 = Aerodynamic_section(data_section1)
         self.section2 = Aerodynamic_section(data_section2)
 
-        self.airfoil1 = Airfoil({"airfoil" : self.airfoil1})
-        self.airfoil2 = Airfoil({"airfoil" : self.airfoil2})
+        self.airfoil1 = Airfoil({"airfoil": self.airfoil1})
+        self.airfoil2 = Airfoil({"airfoil": self.airfoil2})
 
         self.calc_aerodynamic_data()
-        self.calc_area()
+
+        self.CA = CA(data.get("X_CA"), data.get("H_CA"))
 
     def calc_aerodynamic_data(self):
-        # This entire method is bullshit
+        # This entire method is bullshit\
 
-        self.CA = CA(0.75*(self.chord1+self.chord2+self.chord3)/3, 0)
+        #self.CA = CA(0.25*(self.chord1+self.chord2+self.chord3)/3, 0)
 
         Aerodynamic_calculator = PyVLM()
 
+        self.stall_min = -15
+        self.stall_max = 15
         # GEOMETRY DEFINITION #
         # Section 2
         c1 = self.section2.chord1
@@ -69,7 +77,7 @@ class Aerodynamic_surface(Component):
         B = np.array([0, -b1])
         leading_edges_coord_lw = [A, B]
         chord_lengths_lw = [c2, c1]
-        Aerodynamic_calculator.add_geometry(leading_edges_coord_lw, chord_lengths_lw, n, m,0)
+        Aerodynamic_calculator.add_geometry(leading_edges_coord_lw, chord_lengths_lw, n, m, 0)
 
         # Section 1
         c1 = self.section1.chord1
@@ -83,14 +91,14 @@ class Aerodynamic_surface(Component):
         B = np.array([0, 0])
         leading_edges_coord_lw = [A, B]
         chord_lengths_lw = [c2, c1]
-        Aerodynamic_calculator.add_geometry(leading_edges_coord_lw, chord_lengths_lw, n, m,0)
+        Aerodynamic_calculator.add_geometry(leading_edges_coord_lw, chord_lengths_lw, n, m, 0)
 
         # Right wing
         C = np.array([0, 0])
         D = np.array([0, b1])
         leading_edges_coord_rw = [C, D]
         chord_lengths_rw = [c1, c2]
-        Aerodynamic_calculator.add_geometry(leading_edges_coord_rw, chord_lengths_rw, n, m,0)
+        Aerodynamic_calculator.add_geometry(leading_edges_coord_rw, chord_lengths_rw, n, m, 0)
 
         # Section 2
         c1 = self.section2.chord1
@@ -104,7 +112,7 @@ class Aerodynamic_surface(Component):
         D = np.array([0, b1+b2])
         leading_edges_coord_rw = [C, D]
         chord_lengths_rw = [c1, c2]
-        Aerodynamic_calculator.add_geometry(leading_edges_coord_rw, chord_lengths_rw, n, m,0)
+        Aerodynamic_calculator.add_geometry(leading_edges_coord_rw, chord_lengths_rw, n, m, 0)
         
         Aerodynamic_calculator.check_mesh()
  
@@ -112,13 +120,14 @@ class Aerodynamic_surface(Component):
         self.stall_min = 0
         self.stall_max = 20
 
+        self.downwash_angle = 0
  
         # SIMULATION
         # Flight condition parameters
         V = 12
         rho = 1.225 #Value applied internally in the code
         alpha_length = self.stall_max-self.stall_min+1
-        alpha2 = np.linspace(self.stall_min,self.stall_max,alpha_length)
+        alpha2 = np.linspace(self.stall_min, self.stall_max, alpha_length)
         alpha_rad = alpha2*np.pi/180
         alpha = []
         cl = []
@@ -131,25 +140,35 @@ class Aerodynamic_surface(Component):
         for i in range(alpha_length):
             L, D, M, y, clc = Aerodynamic_calculator.vlm(V, alpha_rad[i])
             cp = -M/(L*self.chord1)
-            if max(clc)>clc_max:
+            if max(clc) > clc_max:
                 break
-            print(alpha_rad[i],L)
+            print(alpha_rad[i], L)
             alpha.append(alpha2[i])
             cd.append(D/(q*S))
             cl.append(L/(q*S))
             cm.append(-(cp-0.25)*L/(q*S))
 
-        plt.plot(alpha,cl)
-        plt.plot(alpha,cd)
-        plt.plot(alpha,cm)
+        plt.plot(alpha, cl)
+        plt.plot(alpha, cd)
+        plt.plot(alpha, cm)
         plt.show()
 
-        self.CL_alpha = pd.DataFrame({'Cl': cl,'alpha': alpha})
-        self.CD_alpha = pd.DataFrame({'Cd': cd,'alpha': alpha})
-        self.CM_alpha = pd.DataFrame({'Cm': cm,'alpha': alpha})
+        self.CL_alpha = pd.DataFrame({'Cl': cl, 'alpha': alpha})
+        self.CD_alpha = pd.DataFrame({'Cd': cd, 'alpha': alpha})
+        self.CM_alpha = pd.DataFrame({'Cm': cm, 'alpha': alpha})
 
+        self.dCL_dalpha = self.diff(self.CL_alpha)
+        self.dCD_dalpha = self.diff(self.CD_alpha)
 
-        self.downwash_angle = 6
+        self.downwash_angle = 0
+
+    def attack_angle_index(self):
+        return self.attack_angle + abs(self.stall_min)
+
+    def diff(self, array):
+        x = list(np.diff(array))
+        x.append(x[-1])     # doubles last term
+        return x
 
     def get_CL(self, alpha):
         CL = np.interp(alpha, self.CL_alpha.index.values, self.CL_alpha['Cl'])
