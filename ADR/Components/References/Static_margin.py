@@ -1,31 +1,29 @@
 import math
 
+
 def toRad(graus):
     return graus * math.pi / 180
 
+
 class SM:
-    def __init__(self):
+    def __init__(self, plane_type, wing1, wing2, hs,
+                 alpha_plane,
+                 CM):
+
         self.SM = 0
 
-    def set(self, CLW1, CDW1, index_w1, areaW1,
-            CLW2, CDW2, index_w2, areaW2,
-            CLT, CDT, index_t, areaT, incidenceT,
-            W1_downwash_angle, eta, CM_alpha, alpha_p):
+        eta = 0.9
+        den = wing1.dCL_dalpha[wing1.attack_angle_index()] * math.cos(toRad(alpha_plane))\
+              + wing1.dCD_dalpha[wing1.attack_angle_index()] * math.sin(toRad(alpha_plane))\
+              + (hs.dCL_dalpha[hs.attack_angle_index()] * math.cos(toRad(alpha_plane))
+              + hs.dCD_dalpha[hs.attack_angle_index()] * math.sin(toRad(alpha_plane)))\
+              * eta * hs.area / wing1.area
 
-        den = (CLW1[index_w1] + CLW2[index_w2] * areaW2 / areaW1) * math.cos(toRad(alpha_p)) + \
-              (CDW1[index_w1] + CDW2[index_w2] * areaW2 / areaW1) * math.sin(toRad(alpha_p)) + \
-              (CLT[index_t] * math.cos(toRad(alpha_p) - W1_downwash_angle) +
-               CDT[index_t] * math.sin(toRad(alpha_p) - W1_downwash_angle)) \
-                * eta * areaT / areaW1
-
-        self.SM = -CM_alpha / den
-        # DEBUG
-
-    #        print('\t\t\t ME calc:')
-    #        print('\t\t\t index aw1 | clw1 | cdw1 | ind aw2 | clw2 | cdw2 | ind at | clt | cd t | ME' )
-    #        print('\t\t\t {}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{} \
-    #              '.format(index_w1,CLW1[index_w1],CDW1[index_w1],index_w2,CLW2[index_w2],CDW2[index_w2],\
-    #                index_t,CLT[index_w1],CDT[index_w1],self.SM))
-
-    def get(self):
-        return self.SM
+        if plane_type == "biplane":
+            den += wing2.dCL_dalpha[wing2.attack_angle_index()] * math.cos(toRad(alpha_plane)) * wing2.area / wing1.area \
+                + wing2.dCD_dalpha[wing2.attack_angle_index()] * math.sin(toRad(alpha_plane)) * wing2.area / wing1.area
+            self.SM = -CM / den
+        elif plane_type == "monoplane":
+            self.SM = -CM / den
+        else:
+            print("------ Error: Incapable of analysing Static Margin of given plane ------")
