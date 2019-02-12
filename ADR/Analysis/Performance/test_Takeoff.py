@@ -1,4 +1,4 @@
-from ADR.Analysis.Performance.Takeoff import get_MTOW
+from ADR.Analysis.Performance.Takeoff import Takeoff
 from ADR.Components.Plane import Plane
 
 plane_data = {
@@ -67,5 +67,7 @@ takeoff_parameters = {
 # Instantiate plane object using plane_data
 plane = Plane(plane_data)
 
-mtow = get_MTOW(plane, takeoff_parameters)
+takeoff_analysis = Takeoff(plane, takeoff_parameters)
+takeoff_analysis.calculate_mtow()
+mtow = takeoff_analysis.mtow
 print('Final MTOW is {}'.format(mtow))
