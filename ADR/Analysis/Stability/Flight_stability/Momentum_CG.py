@@ -10,11 +10,11 @@ def toRad(graus):
 
 def wing_momentum(plane_type, wing1, wing2, cg, alpha_plane):
 
-    item1 = wing1.CL_alpha[wing1.attack_angle_index()] * math.cos(toRad(alpha_plane)) * (cg.x - wing1.CA.x) / wing1.chord1
-    item2 = wing1.CL_alpha[wing1.attack_angle_index()] * math.sin(toRad(alpha_plane)) * (cg.h - wing1.CA.h) / wing1.chord1
-    item5 = wing1.CD_alpha[wing1.attack_angle_index()] * math.sin(toRad(alpha_plane)) * (cg.x - wing1.CA.x) / wing1.chord1
-    item6 = wing1.CD_alpha[wing1.attack_angle_index()] * math.cos(toRad(alpha_plane)) * (cg.h - wing1.CA.h) / wing1.chord1
-    CM = wing1.CM_alpha + item1 + item2 + item5 - item6
+    item1 = wing1.CL_alpha.at[wing1.attack_angle, 'CL'] * math.cos(toRad(alpha_plane)) * (cg.x - wing1.CA.x) / wing1.chord1
+    item2 = wing1.CL_alpha.at[wing1.attack_angle, 'CL'] * math.sin(toRad(alpha_plane)) * (cg.h - wing1.CA.h) / wing1.chord1
+    item5 = wing1.CD_alpha.at[wing1.attack_angle, 'CD'] * math.sin(toRad(alpha_plane)) * (cg.x - wing1.CA.x) / wing1.chord1
+    item6 = wing1.CD_alpha.at[wing1.attack_angle, 'CD'] * math.cos(toRad(alpha_plane)) * (cg.h - wing1.CA.h) / wing1.chord1
+    CM = wing1.CM_alpha.at[wing1.attack_angle, 'CM'] + item1 + item2 + item5 - item6
 
     """print("\tDados wing1")
     print("\tCL = ", wing1.CL_alpha[index_w1])
@@ -27,11 +27,11 @@ def wing_momentum(plane_type, wing1, wing2, cg, alpha_plane):
     print()"""
 
     if plane_type == "biplane":
-        item3 = wing2.CL_alpha[wing2.attack_angle_index()] * math.cos(toRad(alpha_plane)) * ((cg.x - wing2.CA.x) / wing1.chord1) * wing2.area / wing1.area
-        item4 = wing2.CL_alpha[wing2.attack_angle_index()] * math.sin(toRad(alpha_plane)) * ((cg.h - wing2.CA.h) / wing1.chord1) * wing2.area / wing1.area
-        item7 = wing2.CL_alpha[wing2.attack_angle_index()] * math.sin(toRad(alpha_plane)) * ((cg.x - wing2.CA.x) / wing1.chord1) * wing2.area / wing1.area
-        item8 = wing2.CL_alpha[wing2.attack_angle_index()] * math.cos(toRad(alpha_plane)) * ((cg.h - wing2.CA.h) / wing1.chord1) * wing2.area / wing1.area
-        CM += wing2.CM_alpha * (wing2.area * wing2.chord1) / (wing1.area * wing1.chord1) + item3 + item4 + item7 - item8
+        item3 = wing2.CL_alpha.at[wing2.attack_angle, 'CL'] * math.cos(toRad(alpha_plane)) * ((cg.x - wing2.CA.x) / wing1.chord1) * wing2.area / wing1.area
+        item4 = wing2.CL_alpha.at[wing2.attack_angle, 'CL'] * math.sin(toRad(alpha_plane)) * ((cg.h - wing2.CA.h) / wing1.chord1) * wing2.area / wing1.area
+        item7 = wing2.CL_alpha.at[wing2.attack_angle, 'CL'] * math.sin(toRad(alpha_plane)) * ((cg.x - wing2.CA.x) / wing1.chord1) * wing2.area / wing1.area
+        item8 = wing2.CL_alpha.at[wing2.attack_angle, 'CL'] * math.cos(toRad(alpha_plane)) * ((cg.h - wing2.CA.h) / wing1.chord1) * wing2.area / wing1.area
+        CM += wing2.CM_alpha.at[wing2.attack_angle, 'CM'] * (wing2.area * wing2.chord1) / (wing1.area * wing1.chord1) + item3 + item4 + item7 - item8
         return CM
     elif plane_type == "monoplane":
         return CM

@@ -16,78 +16,23 @@ from ADR.Components.References.Static_margin import SM
 from ADR.Analysis.Stability.Flight_stability.Momentum_CG import wing_momentum
 from ADR.Analysis.Stability.Flight_stability.Momentum_CG import tail_momentum
 from ADR.Components.Points.CG import CG
-
-# --- Reescreve arquivos do X5 --- #
-"""
-# processando arquivos de dados do x5
-file1 = open("X5_files/Asa.txt", "r")
-file2 = open("X5_files/Asa_escrita.txt", "wt")
-for line in file1:
-    file2.write(" ".join(line.split()) + "\n")
-file1.close()
-file2.close()
-file1 = open("X5_files/Profundor.txt", "r")
-file2 = open("X5_files/Profundor_escrito.txt", "wt")
-for line in file1:
-    file2.write(" ".join(line.split()) + "\n")
-file1.close()
-file2.close()
-file1 = open("X5_files/Aviao.txt", "r")
-file2 = open("X5_files/Aviao_escrito.txt", "wt")
-for line in file1:
-    file2.write(" ".join(line.split()) + "\n")
-file1.close()
-file2.close()
-"""
+from ADR.Core.import_functions import import_x5_aerodynamic_data
 
 ### inputs variáveis
 # wing 1
-pd_wing = pd.read_csv("X5_files/Asa_escrita.txt", skiprows=7, sep=" ")
-clw_wh = pd_wing.loc[:, "CL"].values
-cdw_wh = pd_wing.loc[:, "CD"].values
+clw_wh, cdw_wh, cmw_wh = import_x5_aerodynamic_data('World/References/X5_Stability/', 'Asa.txt')
+print(clw_wh)
 cmw = -0.32
 
 # tail
-pd_tail = pd.read_csv("X5_files/Profundor_escrito.txt", skiprows=7, sep=" ")
-clt_wh = pd_tail.loc[:, "CL"].values
-cdt_wh = pd_tail.loc[:, "CD"].values
+clt_wh, cdt_wh, cmt_wh = import_x5_aerodynamic_data('World/References/X5_Stability/', 'Profundor.txt')
 cmt = 0.092
 
 # Aviao
-pd_plane = pd.read_csv("X5_files/Aviao_escrito.txt", skiprows=7, sep=" ")
-clp_wh = pd_plane.loc[:, "CL"].values
-cdp_wh = pd_plane.loc[:, "CD"].values
+clp_wh, cdp_wh, cmp_wh = import_x5_aerodynamic_data('World/References/X5_Stability/', 'Aviao.txt')
 
 # Angulos de ataque a serem usados
-alpha_graus_wh = pd_plane.loc[:, "alpha"].values
-
-alpha_graus = []
-clw = []
-cdw = []
-clt_reversed = []
-cdt_reversed = []
-clt = []
-cdt = []
-clp = []
-cdp = []
-
-# --- Excl_alphauindo termos com casas decimais --- #
-for i in range(len(alpha_graus_wh)):
-    if i % 2 == 0:
-        alpha_graus.append(alpha_graus_wh[i])
-        clw.append(clw_wh[i])
-        cdw.append(cdw_wh[i])
-        clp.append(clp_wh[i])
-        cdp.append(cdp_wh[i])
-        clt_reversed.append(-clt_wh[i])
-        cdt_reversed.append(cdt_wh[i])
-
-# --- Invertendo o perfil do profundor --- #
-for i in reversed(clt_reversed):
-    clt.append(i)
-for i in reversed(cdt_reversed):
-    cdt.append(i)
-
+alpha_graus_wh = clp_wh.index.values
 
 # --- Inputs --- #
 
@@ -96,7 +41,7 @@ wing1 = Wing({
     "y": 0,
     "z": 0,
     "airfoil1": "s1223", "airfoil2": "s1223",
-    "CL_alpha": clw, "CD_alpha": cdw, "CM_alpha": cmw,
+    "CL_alpha": clw_wh, "CD_alpha": cdw_wh, "CM_alpha": cmw,
     "span1": 1.8, "span2": 0,
     "chord1": 0.25, "chord2": 0.25, "chord3": 0,
     "area": 0.45,
@@ -115,7 +60,7 @@ hs = HS({
     "y": 0,
     "z": 0,
     "airfoil1": "s1223", "airfoil2": "s1223",
-    "CL_alpha": clt, "CD_alpha": cdt, "CM_alpha": cmt,
+    "CL_alpha": clt_wh, "CD_alpha": cdt_wh, "CM_alpha": cmt,
     "span1": 0.47, "span2": 0,
     "chord1": 0.2, "chord2": 0.155, "chord3": 0,
     "area": 0.083,
@@ -168,9 +113,9 @@ def flight_stability(plane_type):
     print()
 
     print("wing1")
-    print("\twing1.CL_alpha = ", wing1.CL_alpha)
-    print("\twing1.CD_alpha = ", wing1.CD_alpha)
-    print("\twing1.CM_alpha = ", wing1.CM_alpha)
+    # print("\twing1.CL_alpha = ", wing1.CL_alpha)
+    # print("\twing1.CD_alpha = ", wing1.CD_alpha)
+    # print("\twing1.CM_alpha = ", wing1.CM_alpha)
     print("\twing1.area = ", wing1.area)
     print("\twing1.chord1 = ", wing1.chord1)
     print("\twing1.X_CA = ", wing1.CA.x)
@@ -178,9 +123,9 @@ def flight_stability(plane_type):
     print()
 
     print("hs")
-    print("\ths.CL_alpha = ", hs.CL_alpha)
-    print("\ths.CD_alpha = ", hs.CD_alpha)
-    print("\ths.CM_alpha = ", hs.CM_alpha)
+    # print("\ths.CL_alpha = ", hs.CL_alpha)
+    # print("\ths.CD_alpha = ", hs.CD_alpha)
+    # print("\ths.CM_alpha = ", hs.CM_alpha)
     print("\ths.area = ", hs.area)
     print("\ths.chord1 = ", hs.chord1)
     print("\ths.X_CA = ", hs.CA.x)
@@ -190,7 +135,7 @@ def flight_stability(plane_type):
     print("alpha_plane_range = ", alpha_plane_range, "\n")
 
     for alpha_plane in alpha_plane_range:
-        wing1.attack_angle = wing2.attack_angle = hs.attack_angle = alpha_plane
+        wing1.attack_angle = wing2.attack_angle = hs.attack_angle = float(alpha_plane)
 
         # Getting CM_alpha of wing1
         wing_m = wing_momentum(plane_type, wing1, wing2, cg, alpha_plane)
@@ -265,4 +210,3 @@ def flight_stability(plane_type):
 
 # Chama flight_stability
 flight_stability("monoplane")
-

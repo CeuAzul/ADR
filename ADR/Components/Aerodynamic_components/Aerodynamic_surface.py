@@ -24,7 +24,14 @@ class Aerodynamic_surface(Component):
         self.twist3 = data.get("twist3")
         self.incidence = data.get("incidence")
 
+        self.stall_min = data.get("stall_min")
+        self.stall_max = data.get("stall_max")
+
         self.attack_angle = 0
+
+        self.CL_alpha = data.get("CL_alpha")
+        self.CD_alpha = data.get("CD_alpha")
+        self.CM_alpha = data.get("CM_alpha")
 
         data_section1 = {
             "airfoil": self.airfoil1,
@@ -50,7 +57,7 @@ class Aerodynamic_surface(Component):
         self.airfoil1 = Airfoil({"airfoil": self.airfoil1})
         self.airfoil2 = Airfoil({"airfoil": self.airfoil2})
 
-        self.calc_aerodynamic_data()
+        # self.calc_aerodynamic_data()
 
         self.CA = CA(data.get("X_CA"), data.get("H_CA"))
 
@@ -113,7 +120,7 @@ class Aerodynamic_surface(Component):
         leading_edges_coord_rw = [C, D]
         chord_lengths_rw = [c1, c2]
         Aerodynamic_calculator.add_geometry(leading_edges_coord_rw, chord_lengths_rw, n, m, 0)
-        
+
         Aerodynamic_calculator.check_mesh()
 
         S = self.section1.area+self.section2.area
@@ -121,7 +128,7 @@ class Aerodynamic_surface(Component):
         self.stall_max = 20
 
         self.downwash_angle = 0
- 
+
         # SIMULATION
         # Flight condition parameters
         V = 12
