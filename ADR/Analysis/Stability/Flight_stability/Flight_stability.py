@@ -21,7 +21,6 @@ from ADR.Core.import_functions import import_x5_aerodynamic_data
 ### inputs variáveis
 # wing 1
 clw_wh, cdw_wh, cmw_wh = import_x5_aerodynamic_data('World/References/X5_Stability/', 'Asa.txt')
-print(clw_wh)
 cmw = -0.32
 
 # tail
@@ -100,9 +99,9 @@ def flight_stability(plane_type):
     plane_stall_max = min(hs.stall_max, wing1.stall_max)
     alpha_plane_range = range(plane_stall_min, plane_stall_max + 1)
 
-    CM_alpha_tail = {}
-    CM_alpha_wing = {}
-    CM_alpha_plane = {}
+    CM_alpha_CG_tail = {}
+    CM_alpha_CG_wing = {}
+    CM_alpha_CG_plane = {}
     _SM = []
     status_CM_alpha = {}
     status_ME = {}
@@ -138,37 +137,38 @@ def flight_stability(plane_type):
         wing1.attack_angle = wing2.attack_angle = hs.attack_angle = float(alpha_plane)
 
         # Getting CM_alpha of wing1
-        wing_m = wing_momentum(plane_type, wing1, wing2, cg, alpha_plane)
-        CM_alpha_wing[wing1.attack_angle] = wing_m
+        #wings_m = wing_momentum(plane_type, wing1, wing2, cg, alpha_plane)
+        CM_alpha_CG_wing[wing1.attack_angle] = wing1.moment_on_CG(wing1, wing1, cg, alpha_plane)
 
         # Getting CM_alpha of tail
-        tail_m = tail_momentum(wing1, hs, cg, alpha_plane)
-        CM_alpha_tail[hs.attack_angle] = tail_m
+        #tail_m = tail_momentum(wing1, hs, cg, alpha_plane)
+        CM_alpha_CG_tail[hs.attack_angle] = hs.moment_on_CG(hs, wing1, cg, alpha_plane)
 
         # Summing CM of tail with CM of wing per each alpha
         # Getting CM_alpha of plane
-        CM_alpha_plane[alpha_plane] = CM_alpha_wing[alpha_plane] + CM_alpha_tail[alpha_plane]
+        CM_alpha_CG_plane[alpha_plane] = CM_alpha_CG_wing[alpha_plane] + CM_alpha_CG_tail[alpha_plane]
 
         # Calculating Static Margin for each alpha
-        sm = SM(plane_type, wing1, wing2, hs,
+        """sm = SM(plane_type, wing1, wing2, hs,
                 alpha_plane,
-                CM_alpha_plane[alpha_plane])
+                CM_alpha_CG_plane[alpha_plane])"""
 
-        _SM.append(sm.SM)
+        #_SM.append(sm.SM)
 
+    #wing1.CM_alpha_CG = pd.DataFrame.from_dict(CM_alpha_CG_wing, orient="index", columns=["CM"]))
 # ------- Results ------- #
 
     """print("alpha_plane_range", alpha_plane_range)
-    print("CM_alpha_wing[i]", CM_alpha_wing)
-    print("CM_alpha_tail[i]", CM_alpha_tail)
-    print("CM_alpha_plane[i]", CM_alpha_plane)
+    print("CM_alpha_CG_wing[i]", CM_alpha_CG_wing)
+    print("CM_alpha_CG_tail[i]", CM_alpha_CG_tail)
+    print("CM_alpha_CG_plane[i]", CM_alpha_CG_plane)
     print()"""
 
-    CM_alpha_plane_interp = interpolate.interp1d(alpha_plane_range, sepDictionary(CM_alpha_plane)[1])
-    CM_alpha_plane_root = root_scalar(CM_alpha_plane_interp, bracket=[plane_stall_min, plane_stall_max], method="bisect")
-    print("Plane trims for alpha(degrees) = ", CM_alpha_plane_root.root)
+    CM_alpha_CG_plane_interp = interpolate.interp1d(alpha_plane_range, sepDictionary(CM_alpha_CG_plane)[1])
+    CM_alpha_CG_plane_root = root_scalar(CM_alpha_CG_plane_interp, bracket=[plane_stall_min, plane_stall_max], method="bisect")
+    print("Plane trims for alpha(degrees) = ", CM_alpha_CG_plane_root.root)
 
-    plt.figure(5)
+    """plt.figure(5)
     plt.grid()
     plt.title("Wing1")
     plt.plot(alpha_wing1_range, wing1.CL_alpha, label="CL")
@@ -184,26 +184,27 @@ def flight_stability(plane_type):
     plt.plot(alpha_tail_range, hs.CD_alpha, label="CD")
     plt.plot(alpha_tail_range, hs.dCL_dalpha, label="dCL")
     plt.plot(alpha_tail_range, hs.dCD_dalpha, label="dCD")
-    plt.legend()
+    plt.legend()"""
 
     plt.figure(3)
     plt.grid()
     plt.xlabel("Alpha angle of component")
     plt.ylabel("CM on CG")
     plt.title("Momentum coeficient of component on CG")
-    a = sepDictionary(CM_alpha_wing)
-    plt.plot(a[0], a[1], label="CM_alpha_wing")
-    a = sepDictionary(CM_alpha_tail)
-    plt.plot(a[0], a[1], label="CM_alpha_tail")
-    a = sepDictionary(CM_alpha_plane)
-    plt.plot(a[0], a[1], label="CM_alpha_plane")
+    a = sepDictionary(CM_alpha_CG_wing)
+    plt.plot(a[0], a[1], label="CM_alpha_CG_wing")
+    a = sepDictionary(CM_alpha_CG_tail)
+    plt.plot(a[0], a[1], label="CM_alpha_CG_tail")
+    a = sepDictionary(CM_alpha_CG_plane)
+    plt.plot(a[0], a[1], label="CM_alpha_CG_plane")
+    plt.legend()
 
-    plt.figure(2)
+    """plt.figure(2)
     plt.grid()
     plt.xlabel("Alpha angle of plane")
     plt.ylabel("SM")
     plt.title("SM for different attack angle of plane")
-    plt.plot(alpha_plane_range, _SM)
+    plt.plot(alpha_plane_range, _SM)"""
 
     plt.show()
 
