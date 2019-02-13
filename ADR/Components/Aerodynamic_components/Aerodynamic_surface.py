@@ -183,22 +183,26 @@ class Aerodynamic_surface(Component):
 
         self.downwash_angle = 0
 
-    def moment_on_CG(self, surface, reference_surface, cg, alpha_plane):
+    def moment_on_CG(self, surface_type, surface, reference_surface, cg, alpha_plane):
+
         surface_CL = surface.CL_alpha.at[surface.attack_angle, 'CL']
         surface_CD = surface.CD_alpha.at[surface.attack_angle, 'CD']
 
         sin_component = math.sin(radians(alpha_plane))
         cos_component = math.cos(radians(alpha_plane))
 
-        horizontal_distance = cg.x - surface.CA.x
-        vertical_distance = cg.h - surface.CA.h
+        horizontal_distance = surface.CA.x - cg.x
+        vertical_distance = surface.CA.h - cg.h
 
         item1 = surface_CL * cos_component * horizontal_distance / reference_surface.chord1
         item2 = surface_CL * sin_component * vertical_distance / reference_surface.chord1
         item3 = surface_CD * sin_component * horizontal_distance / reference_surface.chord1
         item4 = surface_CD * cos_component * vertical_distance / reference_surface.chord1
 
-        resultant = item1 + item2 + item3 - item4
+        if surface_type == "wing":
+            resultant = + item1 - item2 + item3 + item4
+        if surface_type == "hs":
+            resultant = - item1 + item2 + item3 + item4
 
         CM = (surface.CM_alpha * surface.chord1 / reference_surface.chord1 + resultant) * surface.area / reference_surface.area
         return CM
