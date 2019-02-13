@@ -6,6 +6,8 @@ from ADR.Methods.VLM.pyVLM.pyvlm.vlm import PyVLM
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
+import math
+from math import radians
 
 
 class Aerodynamic_surface(Component):
@@ -24,7 +26,15 @@ class Aerodynamic_surface(Component):
         self.twist3 = data.get("twist3")
         self.incidence = data.get("incidence")
 
-        self.attack_angle = 0
+        self.stall_min = data.get("stall_min")
+        self.stall_max = data.get("stall_max")
+
+        self.CL_alpha = data.get("CL_alpha")
+        self.CD_alpha = data.get("CD_alpha")
+        self.CM_alpha = data.get("CM_alpha")
+
+        self.attack_angle = None
+        self.CM_alpha_CG = None
 
         data_section1 = {
             "airfoil": self.airfoil1,
@@ -50,9 +60,20 @@ class Aerodynamic_surface(Component):
         self.airfoil1 = Airfoil({"airfoil": self.airfoil1})
         self.airfoil2 = Airfoil({"airfoil": self.airfoil2})
 
-        self.calc_aerodynamic_data()
+        # self.calc_aerodynamic_data()
 
         self.CA = CA(data.get("X_CA"), data.get("H_CA"))
+
+        self.CL_alpha = data.get("CL_alpha")
+        self.CD_alpha = data.get("CD_alpha")
+        self.CM_alpha = data.get("CM_alpha")
+        self.stall_min = data.get("stall_min")
+        self.stall_max = data.get("stall_max")
+
+        self.dCL_dalpha = self.diff(self.CL_alpha)
+        self.dCD_dalpha = self.diff(self.CD_alpha)
+
+        self.downwash_angle = 0
 
     def calc_aerodynamic_data(self):
         # This entire method is bullshit\
@@ -113,7 +134,7 @@ class Aerodynamic_surface(Component):
         leading_edges_coord_rw = [C, D]
         chord_lengths_rw = [c1, c2]
         Aerodynamic_calculator.add_geometry(leading_edges_coord_rw, chord_lengths_rw, n, m, 0)
-        
+
         Aerodynamic_calculator.check_mesh()
 
         S = self.section1.area+self.section2.area
@@ -121,7 +142,7 @@ class Aerodynamic_surface(Component):
         self.stall_max = 20
 
         self.downwash_angle = 0
- 
+
         # SIMULATION
         # Flight condition parameters
         V = 12
@@ -162,8 +183,29 @@ class Aerodynamic_surface(Component):
 
         self.downwash_angle = 0
 
-    def attack_angle_index(self):
-        return self.attack_angle + abs(self.stall_min)
+    def moment_on_CG(self, surface_type, surface, reference_surface, cg, alpha_plane):
+
+        surface_CL = surface.CL_alpha.at[surface.attack_angle, 'CL']
+        surface_CD = surface.CD_alpha.at[surface.attack_angle, 'CD']
+
+        sin_component = math.sin(radians(alpha_plane))
+        cos_component = math.cos(radians(alpha_plane))
+
+        horizontal_distance = surface.CA.x - cg.x
+        vertical_distance = surface.CA.h - cg.h
+
+        item1 = surface_CL * cos_component * horizontal_distance / reference_surface.chord1
+        item2 = surface_CL * sin_component * vertical_distance / reference_surface.chord1
+        item3 = surface_CD * sin_component * horizontal_distance / reference_surface.chord1
+        item4 = surface_CD * cos_component * vertical_distance / reference_surface.chord1
+
+        if surface_type == "wing":
+            resultant = + item1 - item2 + item3 + item4
+        if surface_type == "hs":
+            resultant = - item1 + item2 + item3 + item4
+
+        CM = (surface.CM_alpha * surface.chord1 / reference_surface.chord1 + resultant) * surface.area / reference_surface.area
+        return CM
 
     def diff(self, array):
         x = list(np.diff(array))
