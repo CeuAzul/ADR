@@ -52,6 +52,7 @@ class Aerodynamic_surface(Component):
         self.airfoil1 = Airfoil({"airfoil": self.airfoil1})
         self.airfoil2 = Airfoil({"airfoil": self.airfoil2})
 
+        self.area = self.section1.area + self.section2.area
         # self.calc_aerodynamic_data()
 
         self.ca = CA({"x": data.get("X_CA"), "y": data.get("Y_CA")})
