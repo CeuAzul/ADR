@@ -1,4 +1,4 @@
-class CA():
-    def __init__(self, x, h):
-        self.x = x
-        self.h = h
+class CA:
+    def __init__(self, data):
+        self.x = data.get("x")
+        self.y = data.get("y")
