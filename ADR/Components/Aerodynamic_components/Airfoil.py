@@ -6,6 +6,7 @@ import ADR
 
 from ADR.Core.import_functions import import_airfoil_aerodynamic_data, import_airfoil_coordinates
 
+
 class Airfoil:
     def __init__(self, data):
         self.name = data.get("airfoil")
@@ -17,6 +18,9 @@ class Airfoil:
         self.generate_inner_surface_coordinates()
         self.calc_perimeter()
         self.calc_area()
+
+    def __str__(self):
+        return self.name
 
     def get_Cl(self, alpha):
         Cl = np.interp(alpha, self.Cl_alpha.index.values, self.Cl_alpha['Cl'])
