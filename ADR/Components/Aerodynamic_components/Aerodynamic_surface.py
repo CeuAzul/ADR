@@ -53,6 +53,7 @@ class Aerodynamic_surface(Component):
         self.airfoil2 = Airfoil({"airfoil": self.airfoil2})
 
         self.area = self.section1.area + self.section2.area
+
         # self.calc_aerodynamic_data()
 
         self.ca = CA({"x": data.get("X_CA"), "y": data.get("Y_CA")})
@@ -62,7 +63,6 @@ class Aerodynamic_surface(Component):
         self.CM_ca = data.get("CM_ca")
         self.stall_min = data.get("stall_min")
         self.stall_max = data.get("stall_max")
-
         self.dCL_dalpha = self.CL_alpha.diff()
         self.dCD_dalpha = self.CD_alpha.diff()
         self.dCL_dalpha.fillna(method="bfill", inplace=True)
@@ -183,15 +183,15 @@ class Aerodynamic_surface(Component):
 
         self.downwash_angle = 0
 
-    def moment_on_CG(self, surface_type, reference_surface, cg, alpha_plane):
+    def moment_on_CG(self, reference_surface, cg, alpha_plane):
 
         resultant = 0
 
         surface_CL = self.CL_alpha.at[self.attack_angle, 'CL']
         surface_CD = self.CD_alpha.at[self.attack_angle, 'CD']
 
-        sin_component = sin(radians(alpha_plane))
-        cos_component = cos(radians(alpha_plane))
+        sin_component = sin(radians(alpha_plane + self.incidence))
+        cos_component = cos(radians(alpha_plane + self.incidence))
 
         horizontal_distance = self.ca.x - cg.x
         vertical_distance = self.ca.y - cg.y
@@ -200,10 +200,9 @@ class Aerodynamic_surface(Component):
         item2 = surface_CL * sin_component * vertical_distance / reference_surface.chord1
         item3 = surface_CD * sin_component * horizontal_distance / reference_surface.chord1
         item4 = surface_CD * cos_component * vertical_distance / reference_surface.chord1
-
-        if surface_type == "wing":
+        if self.__str__() == "Wing":
             resultant = + item1 - item2 + item3 + item4
-        if surface_type == "hs":
+        elif self.__str__() == "HS":
             resultant = - item1 + item2 + item3 + item4
 
         CM = (self.CM_ca * self.chord1 / reference_surface.chord1 + resultant) * self.area / reference_surface.area
