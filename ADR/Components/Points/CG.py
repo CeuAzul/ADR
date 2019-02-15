@@ -1,7 +1,7 @@
-class CG:
-    def __init__(self, data):
-        self.x = data.get("x")
-        self.y = data.get("y")
+from ADR.Components.Component import Component
 
-    def __str__(self):
-        return self.__class__.__name__
+
+class CG(Component):
+    def __init__(self, data):
+        super().__init__(data)
+
