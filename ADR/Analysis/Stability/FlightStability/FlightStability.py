@@ -32,9 +32,17 @@ class FlightStability:
         alpha_wing2_range = range(self.wing2.stall_min, self.wing2.stall_max + 1)
         alpha_tail_range = range(self.hs.stall_min, self.hs.stall_max + 1)
 
-        self.plane_stall_min = max(self.hs.stall_min, self.wing1.stall_min)
-        self.plane_stall_max = min(self.hs.stall_max, self.wing1.stall_max)
+        self.surfaces_stall_min = min(self.wing1.stall_min, self.wing2.stall_min, key=abs)
+        self.surfaces_stall_max = min(self.wing1.stall_max, self.wing2.stall_max, key=abs)
+
+        incidence_min = min(self.wing1.incidence, self.wing2.incidence)
+        incidence_max = max(self.wing1.incidence, self.wing2.incidence)
+
+        self.plane_stall_min = self.surfaces_stall_min - incidence_min
+        self.plane_stall_max = self.surfaces_stall_max - incidence_max
+
         self.alpha_plane_range = range(self.plane_stall_min, self.plane_stall_max + 1)
+        print(self.alpha_plane_range)
 
         CM_alpha_CG_tail = {}
         CM_alpha_CG_wing1 = {}
@@ -48,21 +56,19 @@ class FlightStability:
             self.hs.attack_angle = -float(alpha_plane)
 
             # Getting CM_alpha of wing1
-            CM_alpha_CG_wing1[alpha_plane] = self.wing1.moment_on_CG("wing", self.wing1, self.cg,
+            CM_alpha_CG_wing1[alpha_plane] = self.wing1.moment_on_CG(self.wing1, self.cg,
                                                                      alpha_plane)
 
             # For biplane, add moment of wing2
             CM_alpha_CG_wing2[alpha_plane] = 0
             if self.plane_type == "biplane":
-                CM_alpha_CG_wing2[alpha_plane] = self.wing2.moment_on_CG("wing", self.wing1, self.cg,
-                                                                         alpha_plane)
+                CM_alpha_CG_wing2[alpha_plane] = self.wing2.moment_on_CG(self.wing1, self.cg, alpha_plane)
 
             CM_alpha_CG_wings[alpha_plane] = CM_alpha_CG_wing1[alpha_plane] + CM_alpha_CG_wing2[alpha_plane]
 
             # Getting CM_alpha of tail
-            CM_alpha_CG_tail[alpha_plane] = self.hs.moment_on_CG("hs", self.wing1, self.cg, alpha_plane)
+            CM_alpha_CG_tail[alpha_plane] = self.hs.moment_on_CG(self.wing1, self.cg, alpha_plane)
 
-        for alpha_plane in self.alpha_plane_range:
             # Summing CM of tail with CM of wing per each alpha
             # Getting CM_alpha of plane
             CM_alpha_CG_plane[alpha_plane] = CM_alpha_CG_wings[alpha_plane] + CM_alpha_CG_tail[alpha_plane]

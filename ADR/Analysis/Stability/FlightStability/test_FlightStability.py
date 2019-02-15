@@ -42,7 +42,7 @@ plane_data = {
     "wing1_twist1": 0,
     "wing1_twist2": 0,
     "wing1_twist3": 0,
-    "wing1_incidence": 0,
+    "wing1_incidence": 5,
 
     # For FlightStability - momentary
     "wing1_area": 0.45,
@@ -95,7 +95,7 @@ plane_data = {
     "hs_twist1": 0,
     "hs_twist2": 0,
     "hs_twist3": 0,
-    "hs_incidence": 0,
+    "hs_incidence": 5,
 
     # For FlightStability - momentary
     "hs_area": 0.083,
@@ -122,17 +122,14 @@ flight_stability = FlightStability("monoplane", plane)
 CM_plane_on_CG = flight_stability.CM_plane_CG()
 static_margin = flight_stability.static_margin()
 
-flight_stability.plane.show_plane()
+#flight_stability.plane.show_plane()
 
-# CM_plane_root = find_root(flight_stability.alpha_plane_range,
-#                           CM_plane_on_CG,
-#                           [flight_stability.plane_stall_min,
-#                            flight_stability.plane_stall_max])
+CM_plane_root = find_root(flight_stability.alpha_plane_range,
+                            CM_plane_on_CG,
+                          [flight_stability.plane_stall_min,
+                          flight_stability.plane_stall_max])
 
-# print("Plane trims for alpha = {} degrees".format(round(CM_plane_root, 2)))
-
-#print("wing1.Cl_alpha", flight_stability.wing1.CL_alpha)
-#print("wing1.dCl_dalpha", flight_stability.wing1.dCL_dalpha)
+print("Plane trims for alpha = {} degrees".format(round(CM_plane_root, 2)))
 
 plt.figure(1)
 plt.grid()
