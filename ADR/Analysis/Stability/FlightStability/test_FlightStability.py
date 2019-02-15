@@ -126,14 +126,13 @@ static_margin = flight_stability.static_margin()
 
 #flight_stability.plane.show_plane()
 
-hs_incidence = 0
-print(CM_plane_on_CG[hs_incidence])
-CM_plane_root = find_root(flight_stability.alpha_plane_range,
-                            CM_plane_on_CG[hs_incidence],
-                        [flight_stability.plane_stall_min,
-                        flight_stability.plane_stall_max])
+# hs_incidence = 0
+# CM_plane_root = find_root(flight_stability.alpha_plane_range,
+#                         CM_plane_on_CG[hs_incidence],
+#                         [flight_stability.plane_stall_min,
+#                         flight_stability.plane_stall_max])
 
-print("With hs.incidence = {}, plane trims for alpha_plane = {} degrees".format(hs_incidence, round(CM_plane_root, 2)))
+# print("With hs.incidence = {}, plane trims for alpha_plane = {} degrees".format(hs_incidence, round(CM_plane_root, 2)))
 
 plt.figure(1)
 plt.grid()
@@ -146,7 +145,7 @@ plt.title("Momentum coeficients on CG")
 # plt.plot(flight_stability.hs.CM_alpha_CG, label="Tail")
 
 for hs_incidence in flight_stability.hs.get_alpha_range():
-    plt.plot(CM_plane_on_CG[hs_incidence], label='{}'.format(hs_incidence))
+    plt.plot(CM_plane_on_CG[hs_incidence])
 plt.legend()
 
 plt.figure(2)
