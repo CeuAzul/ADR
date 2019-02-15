@@ -50,8 +50,6 @@ plane_data = {
     "wing1_CL_alpha": clw_wh,
     "wing1_CD_alpha": cdw_wh,
     "wing1_CM_ca": cmw,
-    "wing1_X_CA": -0.0625,
-    "wing1_Z_CA": 0,
     "wing1_stall_min": -20,
     "wing1_stall_max": 20,
 
@@ -59,7 +57,7 @@ plane_data = {
     # wing2
     "wing2_x": 0,
     "wing2_y": 0,
-    "wing2_z": 0,
+    "wing2_z": 0.3,
     "wing2_airfoil1": "s1223",
     "wing2_airfoil2": "s1223",
     "wing2_span1": 1.8,
@@ -77,13 +75,11 @@ plane_data = {
     "wing2_CL_alpha": clw_wh,
     "wing2_CD_alpha": cdw_wh,
     "wing2_CM_ca": cmw,
-    "wing2_X_CA": -0.0625,
-    "wing2_Z_CA": 0.3,
     "wing2_stall_min": -20,
     "wing2_stall_max": 20,
 
     # hs
-    "hs_x": 0,
+    "hs_x": -0.7625 - 0.0725 + 0.167/4,
     "hs_y": 0,
     "hs_z": 0,
     "hs_airfoil1": "s1223",
@@ -103,8 +99,6 @@ plane_data = {
     "hs_CL_alpha": clt_wh,
     "hs_CD_alpha": cdt_wh,
     "hs_CM_ca": cmt,
-    "hs_X_CA": -0.7625 - 0.0725,
-    "hs_Z_CA": 0,
     "hs_stall_min": -20,
     "hs_stall_max": 20,
 

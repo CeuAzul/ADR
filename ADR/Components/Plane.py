@@ -28,8 +28,6 @@ class Plane:
             "CL_alpha": data.get("wing1_CL_alpha"),
             "CD_alpha": data.get("wing1_CD_alpha"),
             "CM_ca": data.get("wing1_CM_ca"),
-            "X_CA": data.get("wing1_X_CA"),
-            "Z_CA": data.get("wing1_Z_CA"),
             "stall_min": data.get("wing1_stall_min"),
             "stall_max": data.get("wing1_stall_max")
         }
@@ -55,8 +53,6 @@ class Plane:
             "CL_alpha": data.get("wing2_CL_alpha"),
             "CD_alpha": data.get("wing2_CD_alpha"),
             "CM_ca": data.get("wing2_CM_ca"),
-            "X_CA": data.get("wing2_X_CA"),
-            "Z_CA": data.get("wing2_Z_CA"),
             "stall_min": data.get("wing2_stall_min"),
             "stall_max": data.get("wing2_stall_max")
         }
@@ -82,8 +78,6 @@ class Plane:
             "CL_alpha": data.get("hs_CL_alpha"),
             "CD_alpha": data.get("hs_CD_alpha"),
             "CM_ca": data.get("hs_CM_ca"),
-            "X_CA": data.get("hs_X_CA"),
-            "Z_CA": data.get("hs_Z_CA"),
             "stall_min": data.get("hs_stall_min"),
             "stall_max": data.get("hs_stall_max")
         }
