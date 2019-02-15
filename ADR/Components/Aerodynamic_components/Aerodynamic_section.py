@@ -19,6 +19,13 @@ class Aerodynamic_section():
         return (self.chord1 + self.chord2) * self.span
 
     def calc_MAC(self):
-        return self.chord1 - (2 * (self.chord1 - self.chord2) *
-                              (0.5 * self.chord1 + self.chord2) /
-                              (3 * (self.chord1 + self.chord2)))
+        if self.chord1 and self.chord2 != 0:
+            return self.chord1 - (2 * (self.chord1 - self.chord2) *
+                                  (0.5 * self.chord1 + self.chord2) /
+                                  (3 * (self.chord1 + self.chord2)))
+        elif self.chord1 == 0:
+            return self.chord2
+        elif self.chord2 == 0:
+            return self.chord1
+        else:
+            pass
