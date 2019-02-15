@@ -42,7 +42,7 @@ plane_data = {
     "wing1_twist1": 0,
     "wing1_twist2": 0,
     "wing1_twist3": 0,
-    "wing1_incidence": 5,
+    "wing1_incidence": 0,
 
     # For FlightStability - momentary
     "wing1_area": 0.45,
@@ -95,7 +95,7 @@ plane_data = {
     "hs_twist1": 0,
     "hs_twist2": 0,
     "hs_twist3": 0,
-    "hs_incidence": 5,
+    "hs_incidence": 0,
 
     # For FlightStability - momentary
     "hs_area": 0.083,
@@ -120,16 +120,19 @@ plane = Plane(plane_data)
 
 flight_stability = FlightStability("monoplane", plane)
 CM_plane_on_CG = flight_stability.CM_plane_CG()
+print("Analysis for alpha_plane in", flight_stability.alpha_plane_range)
+
 static_margin = flight_stability.static_margin()
+
 
 #flight_stability.plane.show_plane()
 
 CM_plane_root = find_root(flight_stability.alpha_plane_range,
-                            CM_plane_on_CG,
+                            CM_plane_on_CG[0],
                           [flight_stability.plane_stall_min,
                           flight_stability.plane_stall_max])
 
-print("Plane trims for alpha = {} degrees".format(round(CM_plane_root, 2)))
+print("With hs.incidence = 0, plane trims for alpha_plane = {} degrees".format(round(CM_plane_root, 2)))
 
 plt.figure(1)
 plt.grid()
@@ -140,7 +143,9 @@ plt.plot(flight_stability.wing1.CM_alpha_CG, label="Wing1")
 if plane_type == 'biplane':
     plt.plot(flight_stability.wing2.CM_alpha_CG, label="Wing2")
 plt.plot(flight_stability.hs.CM_alpha_CG, label="Tail")
-plt.plot(CM_plane_on_CG, label="Plane")
+
+for flight_stability.hs.incidence in flight_stability.hs.get_alpha_range():
+    plt.plot(CM_plane_on_CG[flight_stability.hs.incidence])
 plt.legend()
 
 plt.figure(2)

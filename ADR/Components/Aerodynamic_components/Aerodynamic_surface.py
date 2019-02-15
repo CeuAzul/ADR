@@ -208,6 +208,9 @@ class Aerodynamic_surface(Component):
         CM = (self.CM_ca * self.chord1 / reference_surface.chord1 + resultant) * self.area / reference_surface.area
         return CM
 
+    def get_alpha_range(self):
+        return range(self.stall_min, self.stall_max + 1)
+
     def get_CL(self, alpha):
         CL = np.interp(alpha, self.CL_alpha.index.values, self.CL_alpha['Cl'])
         return CL
