@@ -25,7 +25,7 @@ cmt = 0.092
 # Aviao
 clp_wh, cdp_wh, cmp_wh = import_x5_aerodynamic_data('World/References/X5_Stability/', 'Aviao.txt')
 
-plane_type = 'biplane'
+plane_type = 'monoplane'
 
 plane_data = {
     # wing1
@@ -77,7 +77,7 @@ plane_data = {
     "wing2_CD_alpha": cdw_wh,
     "wing2_CM_ca": cmw,
     "wing2_X_CA": -0.0625,
-    "wing2_Y_CA": 0,
+    "wing2_Y_CA": 0.3,
     "wing2_stall_min": -20,
     "wing2_stall_max": 20,
 
@@ -118,32 +118,34 @@ plane_data = {
 
 plane = Plane(plane_data)
 
-flight_stability = FlightStability("monoplane", plane)
+flight_stability = FlightStability(plane_type, plane)
 CM_plane_on_CG = flight_stability.CM_plane_CG()
+print("Analysis for alpha_plane in", flight_stability.alpha_plane_range)
+
 static_margin = flight_stability.static_margin()
 
-flight_stability.plane.show_plane()
+#flight_stability.plane.show_plane()
 
+# hs_incidence = 0
 # CM_plane_root = find_root(flight_stability.alpha_plane_range,
-#                           CM_plane_on_CG,
-#                           [flight_stability.plane_stall_min,
-#                            flight_stability.plane_stall_max])
+#                         CM_plane_on_CG[hs_incidence],
+#                         [flight_stability.plane_stall_min,
+#                         flight_stability.plane_stall_max])
 
-# print("Plane trims for alpha = {} degrees".format(round(CM_plane_root, 2)))
-
-#print("wing1.Cl_alpha", flight_stability.wing1.CL_alpha)
-#print("wing1.dCl_dalpha", flight_stability.wing1.dCL_dalpha)
+# print("With hs.incidence = {}, plane trims for alpha_plane = {} degrees".format(hs_incidence, round(CM_plane_root, 2)))
 
 plt.figure(1)
 plt.grid()
 plt.xlabel("Alpha")
 plt.ylabel("CM on CG")
 plt.title("Momentum coeficients on CG")
-plt.plot(flight_stability.wing1.CM_alpha_CG, label="Wing1")
-if plane_type == 'biplane':
-    plt.plot(flight_stability.wing2.CM_alpha_CG, label="Wing2")
-plt.plot(flight_stability.hs.CM_alpha_CG, label="Tail")
-plt.plot(CM_plane_on_CG, label="Plane")
+# plt.plot(flight_stability.wing1.CM_alpha_CG, label="Wing1")
+# if plane_type == 'biplane':
+#     plt.plot(flight_stability.wing2.CM_alpha_CG, label="Wing2")
+# plt.plot(flight_stability.hs.CM_alpha_CG, label="Tail")
+
+for hs_incidence in flight_stability.hs.get_alpha_range():
+    plt.plot(CM_plane_on_CG[hs_incidence])
 plt.legend()
 
 plt.figure(2)
