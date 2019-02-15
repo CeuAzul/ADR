@@ -224,16 +224,16 @@ class Aerodynamic_surface(Component):
         horizontal_distance = self.ca.x - cg.x
         vertical_distance = self.ca.y - cg.y
 
-        item1 = surface_CL * cos_component * horizontal_distance / reference_surface.chord1
-        item2 = surface_CL * sin_component * vertical_distance / reference_surface.chord1
-        item3 = surface_CD * sin_component * horizontal_distance / reference_surface.chord1
-        item4 = surface_CD * cos_component * vertical_distance / reference_surface.chord1
+        item1 = surface_CL * cos_component * horizontal_distance / reference_surface.MAC
+        item2 = surface_CL * sin_component * vertical_distance / reference_surface.MAC
+        item3 = surface_CD * sin_component * horizontal_distance / reference_surface.MAC
+        item4 = surface_CD * cos_component * vertical_distance / reference_surface.MAC
         if self.__str__() == "Wing":
             resultant = + item1 - item2 + item3 + item4
         elif self.__str__() == "HS":
             resultant = - item1 + item2 + item3 + item4
 
-        CM = (self.CM_ca * self.chord1 / reference_surface.chord1 + resultant) * self.area / reference_surface.area
+        CM = (self.CM_ca * self.MAC / reference_surface.MAC + resultant) * self.area / reference_surface.area
         return CM
 
     def get_alpha_range(self):
