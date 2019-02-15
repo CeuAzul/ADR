@@ -29,7 +29,7 @@ class Plane:
             "CD_alpha": data.get("wing1_CD_alpha"),
             "CM_ca": data.get("wing1_CM_ca"),
             "X_CA": data.get("wing1_X_CA"),
-            "Y_CA": data.get("wing1_Y_CA"),
+            "Z_CA": data.get("wing1_Z_CA"),
             "stall_min": data.get("wing1_stall_min"),
             "stall_max": data.get("wing1_stall_max")
         }
@@ -56,7 +56,7 @@ class Plane:
             "CD_alpha": data.get("wing2_CD_alpha"),
             "CM_ca": data.get("wing2_CM_ca"),
             "X_CA": data.get("wing2_X_CA"),
-            "Y_CA": data.get("wing2_Y_CA"),
+            "Z_CA": data.get("wing2_Z_CA"),
             "stall_min": data.get("wing2_stall_min"),
             "stall_max": data.get("wing2_stall_max")
         }
@@ -83,7 +83,7 @@ class Plane:
             "CD_alpha": data.get("hs_CD_alpha"),
             "CM_ca": data.get("hs_CM_ca"),
             "X_CA": data.get("hs_X_CA"),
-            "Y_CA": data.get("hs_Y_CA"),
+            "Z_CA": data.get("hs_Z_CA"),
             "stall_min": data.get("hs_stall_min"),
             "stall_max": data.get("hs_stall_max")
         }
@@ -112,7 +112,7 @@ class Plane:
 
         cg_data = {
             "x": data.get("cg_x"),
-            "y": data.get("cg_y")
+            "z": data.get("cg_z")
         }
 
         self.wing1 = Wing(wing1_data)
@@ -143,7 +143,7 @@ class Plane:
         print("\ttwist3 = ", self.wing1.twist3)
         print("\tincidence = ", self.wing1.incidence)
         print("\tca.x = ", self.wing1.ca.x)
-        print("\tca.y = ", self.wing1.ca.y)
+        print("\tca.z = ", self.wing1.ca.z)
         print("\tstall_min = ", self.wing1.stall_min)
         print("\tstall_max = ", self.wing1.stall_max)
         print("\tdownwash_angle = ", self.wing1.downwash_angle)
@@ -162,7 +162,7 @@ class Plane:
         print("\ttwist3 = ", self.hs.twist3)
         print("\tincidence = ", self.hs.incidence)
         print("\tca.x = ", self.hs.ca.x)
-        print("\tca.y = ", self.hs.ca.y)
+        print("\tca.z = ", self.hs.ca.z)
         print("\tstall_min = ", self.hs.stall_min)
         print("\tstall_max = ", self.hs.stall_max)
         print("\tdownwash_angle = ", self.hs.downwash_angle)
@@ -170,6 +170,6 @@ class Plane:
 
         print("\t--- ", self.cg, " ---")
         print("\tcg.x = ", self.cg.x)
-        print("\tcg.y = ", self.cg.y)
+        print("\tcg.z = ", self.cg.z)
 
         print()

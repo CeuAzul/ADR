@@ -51,7 +51,7 @@ plane_data = {
     "wing1_CD_alpha": cdw_wh,
     "wing1_CM_ca": cmw,
     "wing1_X_CA": -0.0625,
-    "wing1_Y_CA": 0,
+    "wing1_Z_CA": 0,
     "wing1_stall_min": -20,
     "wing1_stall_max": 20,
 
@@ -78,7 +78,7 @@ plane_data = {
     "wing2_CD_alpha": cdw_wh,
     "wing2_CM_ca": cmw,
     "wing2_X_CA": -0.0625,
-    "wing2_Y_CA": 0.3,
+    "wing2_Z_CA": 0.3,
     "wing2_stall_min": -20,
     "wing2_stall_max": 20,
 
@@ -104,7 +104,7 @@ plane_data = {
     "hs_CD_alpha": cdt_wh,
     "hs_CM_ca": cmt,
     "hs_X_CA": -0.7625 - 0.0725,
-    "hs_Y_CA": 0,
+    "hs_Z_CA": 0,
     "hs_stall_min": -20,
     "hs_stall_max": 20,
 
@@ -118,8 +118,8 @@ plane = Plane(plane_data)
 flight_stability = FlightStability(plane_type, plane)
 
 cg_x_range = [round(i, 3) for i in np.linspace(-0.05, -0.1, 10)]
-cg_y_range = [round(i, 3) for i in np.linspace(-0.1, 0.1, 10)]
-CM_plane_on_CG, SM_plane_on_CG = flight_stability.vary_CG(cg_x_range, cg_y_range)
+cg_z_range = [round(i, 3) for i in np.linspace(-0.1, 0.1, 10)]
+CM_plane_on_CG, SM_plane_on_CG = flight_stability.vary_CG(cg_x_range, cg_z_range)
 
 #flight_stability.plane.show_plane()
 

@@ -53,7 +53,7 @@ class Aerodynamic_surface(Component):
 
         self.calc_aerodynamic_data()
 
-        self.ca = CA({"x": data.get("X_CA"), "y": data.get("Y_CA")})
+        self.ca = CA({"x": data.get("X_CA"), "z": data.get("Z_CA")})
 
         # self.CL_alpha = data.get("CL_alpha")
         # self.CD_alpha = data.get("CD_alpha")
@@ -222,7 +222,7 @@ class Aerodynamic_surface(Component):
         cos_component = cos(radians(alpha_plane + self.incidence))
 
         horizontal_distance = self.ca.x - cg.x
-        vertical_distance = self.ca.y - cg.y
+        vertical_distance = self.ca.z - cg.z
 
         item1 = surface_CL * cos_component * horizontal_distance / reference_surface.MAC
         item2 = surface_CL * sin_component * vertical_distance / reference_surface.MAC
