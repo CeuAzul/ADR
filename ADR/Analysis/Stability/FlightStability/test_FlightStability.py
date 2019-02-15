@@ -117,15 +117,9 @@ plane = Plane(plane_data)
 
 flight_stability = FlightStability(plane_type, plane)
 
-#cg_x_range = [round(i, 3) for i in np.linspace(-0.05, -0.1, 4)]
-#cg_y_range = [round(i, 3) for i in np.linspace(-0.1, 0.1, 4)]
-cg_x_range = [round(i, 3) for i in np.linspace(-0.0725, -0.0725, 1)]
-cg_y_range = [round(i, 3) for i in np.linspace(-0.01, -0.01, 1)]
-CM_plane_on_CG = flight_stability.vary_CG(cg_x_range, cg_y_range)
-#print(CM_plane_on_CG)
-print("Analysis for alpha_plane in", flight_stability.alpha_plane_range)
-
-static_margin = flight_stability.static_margin()
+cg_x_range = [round(i, 3) for i in np.linspace(-0.05, -0.1, 10)]
+cg_y_range = [round(i, 3) for i in np.linspace(-0.1, 0.1, 10)]
+CM_plane_on_CG, SM_plane_on_CG = flight_stability.vary_CG(cg_x_range, cg_y_range)
 
 #flight_stability.plane.show_plane()
 
@@ -148,13 +142,13 @@ plt.title("Momentum coeficients on CG")
 # plt.plot(flight_stability.hs.CM_alpha_CG, label="Tail")
 
 for hs_incidence in flight_stability.hs.get_alpha_range():
-    plt.plot(CM_plane_on_CG["cg1"][hs_incidence])
+    plt.plot(CM_plane_on_CG["cg1"][hs_incidence])   # Ploting for cg in first position(cg1)
 
 plt.figure(2)
 plt.grid()
 plt.xlabel("Alpha")
 plt.ylabel("SM")
 plt.title("Static Margin")
-plt.plot(static_margin)
+plt.plot(SM_plane_on_CG["cg1"])     # Ploting for cg in first position(cg1)
 
 plt.show()

@@ -27,15 +27,17 @@ class FlightStability:
         self.CM_alpha_CG_plane_root = None
 
     def vary_CG(self, cg_x_range, cg_y_range):
-        output = {}
+        CM_plane_changing_CG = {}
+        SM_plane_changing_CG = {}
         name = 1
         for cg_x in cg_x_range:
             for cg_y in cg_y_range:
                 cg = CG({"x": cg_x, "y": cg_y})
                 cg.tag = "cg" + str(name)
-                output[cg.tag] = self.CM_plane_CG(cg)
-        return output
-
+                CM_plane_changing_CG[cg.tag] = self.CM_plane_CG(cg)
+                SM_plane_changing_CG[cg.tag] = self.static_margin()
+                name += 1
+        return CM_plane_changing_CG, SM_plane_changing_CG
 
     def CM_plane_CG(self, cg):
         self.surfaces_stall_min = min(self.wing1.stall_min, self.wing2.stall_min, key=abs)
@@ -81,6 +83,9 @@ class FlightStability:
                     # Summing CM of tail with CM of wing per each alpha
                     # Getting CM_alpha of plane
                     CM_alpha_CG_plane[alpha_plane] = CM_alpha_CG_wings[alpha_plane] + CM_alpha_CG_tail[alpha_plane]
+                else:
+                    break
+
 
             CM_alpha_CG_plane_df = self.dict_to_data_frame(CM_alpha_CG_plane)
             CM_alpha_CG_plane_each_hs_incidence[hs_incidence] = CM_alpha_CG_plane_df
@@ -97,6 +102,7 @@ class FlightStability:
 
     def static_margin(self):
         SM_alpha = {}
+        self.hs.incidence = 0
         for alpha_plane in self.alpha_plane_range:
             self.wing1.attack_angle = self.wing2.attack_angle = float(alpha_plane)
             self.hs.attack_angle = -float(alpha_plane)
