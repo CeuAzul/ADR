@@ -54,16 +54,7 @@ class Aerodynamic_surface(Component):
         self.calc_aerodynamic_data()
 
         self.ca = CA({"x": - self.MAC / 4, "z": 0})
-
-        # self.CL_alpha = data.get("CL_alpha")
-        # self.CD_alpha = data.get("CD_alpha")
         self.CM_ca = data.get("CM_ca")
-        # self.stall_min = data.get("stall_min")
-        # self.stall_max = data.get("stall_max")
-        # self.dCL_dalpha = self.CL_alpha.diff()
-        # self.dCD_dalpha = self.CD_alpha.diff()
-        # self.dCL_dalpha.fillna(method="bfill", inplace=True)
-        # self.dCD_dalpha.fillna(method="bfill", inplace=True)
 
         self.downwash_angle = 0
 

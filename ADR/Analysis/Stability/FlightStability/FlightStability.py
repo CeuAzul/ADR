@@ -26,6 +26,9 @@ class FlightStability:
         self.CM_alpha_CG_plane_obj = None
         self.CM_alpha_CG_plane_root = None
 
+        if self.plane_type != ("monoplane" or "biplane"):
+            print("Incapable of analysing FlightStability of this plane type")
+
     def vary_CG(self, cg_x_range, cg_z_range):
         CM_plane_changing_CG = {}
         SM_plane_changing_CG = {}
@@ -83,8 +86,6 @@ class FlightStability:
                     # Summing CM of tail with CM of wing per each alpha
                     # Getting CM_alpha of plane
                     CM_alpha_CG_plane[alpha_plane] = CM_alpha_CG_wings[alpha_plane] + CM_alpha_CG_tail[alpha_plane]
-                else:
-                    break
 
 
             CM_alpha_CG_plane_df = self.dict_to_data_frame(CM_alpha_CG_plane)

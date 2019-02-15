@@ -50,8 +50,6 @@ plane_data = {
     "wing1_CL_alpha": clw_wh,
     "wing1_CD_alpha": cdw_wh,
     "wing1_CM_ca": cmw,
-    "wing1_stall_min": -20,
-    "wing1_stall_max": 20,
 
 
     # wing2
@@ -75,8 +73,6 @@ plane_data = {
     "wing2_CL_alpha": clw_wh,
     "wing2_CD_alpha": cdw_wh,
     "wing2_CM_ca": cmw,
-    "wing2_stall_min": -20,
-    "wing2_stall_max": 20,
 
     # hs
     "hs_x": -0.7625 - 0.0725 + 0.167/4,
@@ -99,8 +95,6 @@ plane_data = {
     "hs_CL_alpha": clt_wh,
     "hs_CD_alpha": cdt_wh,
     "hs_CM_ca": cmt,
-    "hs_stall_min": -20,
-    "hs_stall_max": 20,
 
     # motor
     "static_thrust": 45,
