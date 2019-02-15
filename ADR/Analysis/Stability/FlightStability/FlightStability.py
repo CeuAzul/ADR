@@ -50,36 +50,36 @@ class FlightStability:
             self.wing1.attack_angle = self.wing2.attack_angle = float(alpha_plane)
 
             # Getting CM_alpha of wing1
-            CM_alpha_CG_wing1[alpha_plane] = self.wing1.moment_on_CG(self.wing1, self.cg,
-                                                                     alpha_plane)
+            CM_alpha_CG_wing1[alpha_plane] = self.wing1.moment_on_CG(self.wing1, self.cg, alpha_plane)
 
-            # For biplane, add moment of wing2
-            CM_alpha_CG_wing2[alpha_plane] = 0
+            CM_alpha_CG_wings[alpha_plane] = CM_alpha_CG_wing1[alpha_plane]
+
             if self.plane_type == "biplane":
                 CM_alpha_CG_wing2[alpha_plane] = self.wing2.moment_on_CG(self.wing1, self.cg, alpha_plane)
+                CM_alpha_CG_wings[alpha_plane] += CM_alpha_CG_wing2[alpha_plane]
 
-            CM_alpha_CG_wings[alpha_plane] = CM_alpha_CG_wing1[alpha_plane] + CM_alpha_CG_wing2[alpha_plane]
-
-        for self.hs.incidence in self.hs.get_alpha_range():
+        for hs_incidence in self.hs.get_alpha_range():
+            self.hs.incidence = hs_incidence
             for alpha_plane in self.alpha_plane_range:
-                self.hs.attack_angle = -float(alpha_plane)
+                self.hs.attack_angle = -float(alpha_plane) + self.hs.incidence
 
-                # Getting CM_alpha of tail
-                CM_alpha_CG_tail[alpha_plane] = self.hs.moment_on_CG(self.wing1, self.cg, alpha_plane)
+                if self.hs.attack_angle in range(-20,21):
+                    # Getting CM_alpha of tail
+                    CM_alpha_CG_tail[alpha_plane] = self.hs.moment_on_CG(self.wing1, self.cg, alpha_plane)
 
-                # Summing CM of tail with CM of wing per each alpha
-                # Getting CM_alpha of plane
-                CM_alpha_CG_plane[alpha_plane] = CM_alpha_CG_wings[alpha_plane] + CM_alpha_CG_tail[alpha_plane]
-                CM_alpha_CG_plane_df = pd.DataFrame.from_dict(CM_alpha_CG_plane, orient="index", columns=["CM"])
-                CM_alpha_CG_plane_df.index.name = 'alpha'
+                    # Summing CM of tail with CM of wing per each alpha
+                    # Getting CM_alpha of plane
+                    CM_alpha_CG_plane[alpha_plane] = CM_alpha_CG_wings[alpha_plane] + CM_alpha_CG_tail[alpha_plane]
 
-            CM_alpha_CG_plane_each_hs_incidence[self.hs.incidence] = CM_alpha_CG_plane_df
+            CM_alpha_CG_plane_df = pd.DataFrame.from_dict(CM_alpha_CG_plane, orient="index", columns=["CM"])
+            CM_alpha_CG_plane_df.index.name = 'alpha'
+            CM_alpha_CG_plane_each_hs_incidence[hs_incidence] = CM_alpha_CG_plane_df
 
         dCM_dalpha_plane_df = CM_alpha_CG_plane_df.diff()
         dCM_dalpha_plane_df.fillna(method="bfill", inplace=True)
         self.plane.dCM_dalpha = dCM_dalpha_plane_df
 
-        self.wing1.CM_alpha_CG = pd.DataFrame.from_dict(CM_alpha_CG_wings, orient="index", columns=["CM"])
+        self.wing1.CM_alpha_CG = pd.DataFrame.from_dict(CM_alpha_CG_wing1, orient="index", columns=["CM"])
         self.wing1.CM_alpha_CG.index.name = 'alpha'
 
         self.wing2.CM_alpha_CG = pd.DataFrame.from_dict(CM_alpha_CG_wing2, orient="index", columns=["CM"])
