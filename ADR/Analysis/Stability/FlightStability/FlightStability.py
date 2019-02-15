@@ -82,25 +82,16 @@ class FlightStability:
                     # Getting CM_alpha of plane
                     CM_alpha_CG_plane[alpha_plane] = CM_alpha_CG_wings[alpha_plane] + CM_alpha_CG_tail[alpha_plane]
 
-            CM_alpha_CG_plane_df = pd.DataFrame.from_dict(CM_alpha_CG_plane, orient="index", columns=["CM"])
-            CM_alpha_CG_plane_df.index.name = 'alpha'
+            CM_alpha_CG_plane_df = self.dict_to_data_frame(CM_alpha_CG_plane)
             CM_alpha_CG_plane_each_hs_incidence[hs_incidence] = CM_alpha_CG_plane_df
 
         dCM_dalpha_plane_df = CM_alpha_CG_plane_df.diff()
         dCM_dalpha_plane_df.fillna(method="bfill", inplace=True)
         self.plane.dCM_dalpha = dCM_dalpha_plane_df
 
-        self.wing1.CM_alpha_CG = pd.DataFrame.from_dict(CM_alpha_CG_wing1, orient="index", columns=["CM"])
-        self.wing1.CM_alpha_CG.index.name = 'alpha'
-
-        self.wing2.CM_alpha_CG = pd.DataFrame.from_dict(CM_alpha_CG_wing2, orient="index", columns=["CM"])
-        self.wing2.CM_alpha_CG.index.name = 'alpha'
-
-        self.hs.CM_alpha_CG = pd.DataFrame.from_dict(CM_alpha_CG_tail, orient="index", columns=["CM"])
-        self.hs.CM_alpha_CG.index.name = 'alpha'
-
-        self.CM_alpha_CG_plane_df = pd.DataFrame.from_dict(CM_alpha_CG_plane, orient="index", columns=["CM"])
-        self.CM_alpha_CG_plane_df.index.name = 'alpha'
+        self.wing1.CM_alpha_CG = self.dict_to_data_frame(CM_alpha_CG_wing1)
+        self.wing2.CM_alpha_CG = self.dict_to_data_frame(CM_alpha_CG_wing2)
+        self.hs.CM_alpha_CG = self.dict_to_data_frame(CM_alpha_CG_tail)
 
         return CM_alpha_CG_plane_each_hs_incidence
 
@@ -117,8 +108,7 @@ class FlightStability:
                          self.plane.dCM_dalpha.at[alpha_plane, 'CM'])
             SM_alpha[alpha_plane] = self.sm.SM
 
-        self.SM_alpha_df = pd.DataFrame.from_dict(SM_alpha, orient="index", columns=["SM"])
-        self.SM_alpha_df.index.name = 'alpha'
+        self.SM_alpha_df = self.dict_to_data_frame(SM_alpha)
         return self.SM_alpha_df
 
     def dict_to_data_frame(self, dict):
