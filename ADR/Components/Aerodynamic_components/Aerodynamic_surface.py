@@ -34,7 +34,7 @@ class Aerodynamic_surface(Component):
             "chord2": self.chord2,
             "twist1": self.twist1,
             "twist2": self.twist2
-            }
+        }
 
         data_section2 = {
             "airfoil_name": self.airfoil2_name,
@@ -43,12 +43,13 @@ class Aerodynamic_surface(Component):
             "chord2": self.chord3,
             "twist1": self.twist2,
             "twist2": self.twist3
-            }
+        }
 
         self.section1 = Aerodynamic_section(data_section1)
         self.section2 = Aerodynamic_section(data_section2)
 
         self.area = self.section1.area + self.section2.area
+        self.MAC = self.calc_MAC()
 
         self.calc_aerodynamic_data()
 
@@ -72,7 +73,7 @@ class Aerodynamic_surface(Component):
     def calc_aerodynamic_data(self):
         # This entire method is NOT bullshit\
 
-        #self.CA = CA(0.25*(self.chord1+self.chord2+self.chord3)/3, 0)
+        # self.CA = CA(0.25*(self.chord1+self.chord2+self.chord3)/3, 0)
 
         Aerodynamic_calculator = PyVLM()
 
@@ -86,9 +87,10 @@ class Aerodynamic_surface(Component):
         b2 = self.section2.span
         camber = self.section2.airfoil.Camber_line
         n = 4  # number of panels (chordwise)
-        m = 5   # number of panels (spanwise) (For each wing)
+        m = 5  # number of panels (spanwise) (For each wing)
+
         # Left wing
-        A = np.array([0, -b1-b2])
+        A = np.array([0, -b1 - b2])
         B = np.array([0, -b1])
         leading_edges_coord_lw = [A, B]
         chord_lengths_lw = [c2, c1]
@@ -99,9 +101,6 @@ class Aerodynamic_surface(Component):
         c2 = self.section1.chord2
         b1 = self.section1.span
         camber = self.section1.airfoil.Camber_line
-
-#        n = 4  # number of panels (chordwise)
-#        m = 5   # number of panels (spanwise) (For each wing)
 
         # Left wing
         A = np.array([0, -b1])
@@ -123,12 +122,9 @@ class Aerodynamic_surface(Component):
         b2 = self.section2.span
         camber = self.section2.airfoil.Camber_line
 
- #       n = 4  # number of panels (chordwise)
-  #      m = 5   # number of panels (spanwise) (For each wing)
-
         # Right wing
         C = np.array([0, b1])
-        D = np.array([0, b1+b2])
+        D = np.array([0, b1 + b2])
         leading_edges_coord_rw = [C, D]
         chord_lengths_rw = [c1, c2]
         Aerodynamic_calculator.add_geometry(leading_edges_coord_rw, chord_lengths_rw, n, m, 1, camber)
@@ -143,10 +139,10 @@ class Aerodynamic_surface(Component):
         # SIMULATION
         # Flight condition parameters
         V = 12
-        rho = 1.225 #Value applied internally in the code
+        rho = 1.225  # Value applied internally in the code
         alpha_length = self.stall_max - self.stall_min + 1
         alpha2 = np.linspace(self.stall_min, self.stall_max, alpha_length)
-        alpha_rad = alpha2*np.pi/180
+        alpha_rad = alpha2 * np.pi / 180
         alpha = []
         cl = []
         cd = []
@@ -243,6 +239,11 @@ class Aerodynamic_surface(Component):
     def get_alpha_range(self):
         return range(self.stall_min, self.stall_max + 1)
 
+    def calc_MAC(self):
+        return self.section1.MAC - (2 * (self.section1.MAC - self.section2.MAC) *
+                                    (0.5 * self.section1.MAC + self.section2.MAC) /
+                                    (3 * (self.section1.MAC + self.section2.MAC)))
+
     def get_CL(self, alpha):
         CL = np.interp(alpha, self.CL_alpha.index.values, self.CL_alpha['Cl'])
         return CL
@@ -256,13 +257,13 @@ class Aerodynamic_surface(Component):
         return CM
 
     def lift(self, air_density, velocity, alpha):
-        lift = 0.5*air_density*velocity**2*self.area*self.get_CL(alpha)
+        lift = 0.5 * air_density * velocity ** 2 * self.area * self.get_CL(alpha)
         return lift
 
     def drag(self, air_density, velocity, alpha):
-        drag = 0.5*air_density*velocity**2*self.area*self.get_CD(alpha)
+        drag = 0.5 * air_density * velocity ** 2 * self.area * self.get_CD(alpha)
         return drag
 
     def moment(self, air_density, velocity, alpha):
-        moment = 0.5*air_density*velocity**2*self.area*self.get_CM(alpha)
+        moment = 0.5 * air_density * velocity ** 2 * self.area * self.get_CM(alpha)
         return moment
