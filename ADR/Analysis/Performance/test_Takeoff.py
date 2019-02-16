@@ -73,20 +73,23 @@ plane_data = {
     "vs_twist3": 0,
     "vs_incidence": 0,
 
-    "static_thrust": 45,
-    "linear_decay_coefficient": 1.28
+    "static_thrust": 27,
+    "linear_decay_coefficient": 0.875,
+
+    "cg_x": -0.0725,
+    "cg_z": -0.1,
+
+    "tpr_x": -0.1225,
+    "tpr_z": -0.2
 }
 
 takeoff_parameters = {
-    "rho_air": 1.225, # Densidade do ar [kg/m^3]
-    "I_airp": 2.0, # Momento de Inercia da aeronave []
+    "rho_air": 1.15, # Densidade do ar [kg/m^3]
+    "I_airplane": 0.114, # Momento de Inercia da aeronave [kg.m²]
     "C_D_tp": 0.02, # Coeficiente de arrasto do trem de pouso
     "C_D_fus": 0.02, # Coeficiente de arrasto da fuselagem
-    "f_f": 0.01, # Coeficiente de atrito dinamico da roda frontal
-    "f_r": 0.01, # Coeficiente de atrito dinamico da roda traseira
-    "d_L_w_cg": 0.1, # Distancia do CA da Asa ao CG
-    "d_L_hs_cg": 0.9, # Distancia do CA do profundor ao CG
-    "dist_max": 50, # Distancia maxima de decolagem pelo regulamento [m]
+    "f_f": 0.05, # Coeficiente de atrito dinamico das rodas
+    "dist_max": 60, # Distancia maxima de decolagem pelo regulamento [m]
     "offset_pilot": 5 # Distancia antes do fim da pista em que o piloto aciona o profundor [m]
 }
 

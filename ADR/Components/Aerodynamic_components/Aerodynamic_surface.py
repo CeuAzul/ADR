@@ -53,7 +53,12 @@ class Aerodynamic_surface(Component):
 
         self.calc_aerodynamic_data()
 
-        self.ca = CA({"x": - self.MAC / 4, "z": 0})
+        self.ca = CA({
+            "x": - self.MAC / 4,
+            "z": 0,
+            "surface_x": self.x,
+            "surface_z": self.z,
+            })
         self.CM_ca = data.get("CM_ca")
 
         self.downwash_angle = 0

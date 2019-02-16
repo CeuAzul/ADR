@@ -3,6 +3,7 @@ from ADR.Components.Aerodynamic_components.HS import HS
 from ADR.Components.Aerodynamic_components.VS import VS
 from ADR.Components.Propulsion.Motor import Motor
 from ADR.Components.Points.CG import CG
+from ADR.Components.Points.TPR import TPR
 
 
 class Plane:
@@ -22,14 +23,7 @@ class Plane:
             "twist2": data.get("wing1_twist2"),
             "twist3": data.get("wing1_twist3"),
             "incidence": data.get("wing1_incidence"),
-
-            # For FlightStability - momentary
-            "area": data.get("wing1_area"),
-            "CL_alpha": data.get("wing1_CL_alpha"),
-            "CD_alpha": data.get("wing1_CD_alpha"),
             "CM_ca": data.get("wing1_CM_ca"),
-            "stall_min": data.get("wing1_stall_min"),
-            "stall_max": data.get("wing1_stall_max")
         }
 
         wing2_data = {
@@ -47,14 +41,7 @@ class Plane:
             "twist2": data.get("wing2_twist2"),
             "twist3": data.get("wing2_twist3"),
             "incidence": data.get("wing2_incidence"),
-
-            # For FlightStability - momentary
-            "area": data.get("wing2_area"),
-            "CL_alpha": data.get("wing2_CL_alpha"),
-            "CD_alpha": data.get("wing2_CD_alpha"),
             "CM_ca": data.get("wing2_CM_ca"),
-            "stall_min": data.get("wing2_stall_min"),
-            "stall_max": data.get("wing2_stall_max")
         }
 
         hs_data = {
@@ -72,14 +59,7 @@ class Plane:
             "twist2": data.get("hs_twist2"),
             "twist3": data.get("hs_twist3"),
             "incidence": data.get("hs_incidence"),
-
-            # For FlightStability - momentary
-            "area": data.get("hs_area"),
-            "CL_alpha": data.get("hs_CL_alpha"),
-            "CD_alpha": data.get("hs_CD_alpha"),
             "CM_ca": data.get("hs_CM_ca"),
-            "stall_min": data.get("hs_stall_min"),
-            "stall_max": data.get("hs_stall_max")
         }
 
         vs_data = {
@@ -109,12 +89,18 @@ class Plane:
             "z": data.get("cg_z")
         }
 
+        tpr_data = {
+            "x": data.get("tpr_x"),
+            "z": data.get("tpr_z")
+        }
+
         self.wing1 = Wing(wing1_data)
         self.wing2 = Wing(wing2_data)
         self.hs = HS(hs_data)
         #self.vs = VS(vs_data)
         self.motor = Motor(motor_data)
         self.cg = CG(cg_data)
+        self.tpr = CG(tpr_data)
 
         self.dCM_dalpha = 0
 
