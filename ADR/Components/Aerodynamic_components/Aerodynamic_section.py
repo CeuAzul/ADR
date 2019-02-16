@@ -11,9 +11,21 @@ class Aerodynamic_section():
         self.twist2 = data.get("twist2")
 
         self.airfoil = Airfoil(data={'airfoil_name': self.airfoil_name})
-
-        self.calc_area()
+        self.area = self.calc_area()
+        self.MAC = self.calc_MAC()
 
     def calc_area(self):
         # TODO: Jonny is going to put his area code here
-        self.area = (self.chord1 + self.chord2) * self.span
+        return (self.chord1 + self.chord2) * self.span
+
+    def calc_MAC(self):
+        if self.chord1 and self.chord2 != 0:
+            return self.chord1 - (2 * (self.chord1 - self.chord2) *
+                                  (0.5 * self.chord1 + self.chord2) /
+                                  (3 * (self.chord1 + self.chord2)))
+        elif self.chord1 == 0:
+            return self.chord2
+        elif self.chord2 == 0:
+            return self.chord1
+        else:
+            pass

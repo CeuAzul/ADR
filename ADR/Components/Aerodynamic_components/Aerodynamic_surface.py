@@ -34,7 +34,7 @@ class Aerodynamic_surface(Component):
             "chord2": self.chord2,
             "twist1": self.twist1,
             "twist2": self.twist2
-            }
+        }
 
         data_section2 = {
             "airfoil_name": self.airfoil2_name,
@@ -43,26 +43,18 @@ class Aerodynamic_surface(Component):
             "chord2": self.chord3,
             "twist1": self.twist2,
             "twist2": self.twist3
-            }
+        }
 
         self.section1 = Aerodynamic_section(data_section1)
         self.section2 = Aerodynamic_section(data_section2)
 
         self.area = self.section1.area + self.section2.area
+        self.MAC = self.calc_MAC()
 
         self.calc_aerodynamic_data()
 
-        self.ca = CA({"x": data.get("X_CA"), "y": data.get("Y_CA")})
-
-        # self.CL_alpha = data.get("CL_alpha")
-        # self.CD_alpha = data.get("CD_alpha")
+        self.ca = CA({"x": - self.MAC / 4, "z": 0})
         self.CM_ca = data.get("CM_ca")
-        # self.stall_min = data.get("stall_min")
-        # self.stall_max = data.get("stall_max")
-        # self.dCL_dalpha = self.CL_alpha.diff()
-        # self.dCD_dalpha = self.CD_alpha.diff()
-        # self.dCL_dalpha.fillna(method="bfill", inplace=True)
-        # self.dCD_dalpha.fillna(method="bfill", inplace=True)
 
         self.downwash_angle = 0
 
@@ -72,12 +64,15 @@ class Aerodynamic_surface(Component):
     def calc_aerodynamic_data(self):
         # This entire method is NOT bullshit\
 
-        #self.CA = CA(0.25*(self.chord1+self.chord2+self.chord3)/3, 0)
+        # self.CA = CA(0.25*(self.chord1+self.chord2+self.chord3)/3, 0)
 
         Aerodynamic_calculator = PyVLM()
 
-        self.stall_min = -15
-        self.stall_max = 15
+        self.stall_min = -20
+        self.stall_max = 20
+
+        self.downwash_angle = 0
+
         # GEOMETRY DEFINITION #
         # Section 2
         c1 = self.section2.chord1
@@ -86,9 +81,10 @@ class Aerodynamic_surface(Component):
         b2 = self.section2.span
         camber = self.section2.airfoil.Camber_line
         n = 4  # number of panels (chordwise)
-        m = 5   # number of panels (spanwise) (For each wing)
+        m = 5  # number of panels (spanwise) (For each wing)
+
         # Left wing
-        A = np.array([0, -b1-b2])
+        A = np.array([0, -b1 - b2])
         B = np.array([0, -b1])
         leading_edges_coord_lw = [A, B]
         chord_lengths_lw = [c2, c1]
@@ -99,9 +95,6 @@ class Aerodynamic_surface(Component):
         c2 = self.section1.chord2
         b1 = self.section1.span
         camber = self.section1.airfoil.Camber_line
-
-#        n = 4  # number of panels (chordwise)
-#        m = 5   # number of panels (spanwise) (For each wing)
 
         # Left wing
         A = np.array([0, -b1])
@@ -123,30 +116,22 @@ class Aerodynamic_surface(Component):
         b2 = self.section2.span
         camber = self.section2.airfoil.Camber_line
 
- #       n = 4  # number of panels (chordwise)
-  #      m = 5   # number of panels (spanwise) (For each wing)
-
         # Right wing
         C = np.array([0, b1])
-        D = np.array([0, b1+b2])
+        D = np.array([0, b1 + b2])
         leading_edges_coord_rw = [C, D]
         chord_lengths_rw = [c1, c2]
         Aerodynamic_calculator.add_geometry(leading_edges_coord_rw, chord_lengths_rw, n, m, 1, camber)
 
         # Aerodynamic_calculator.check_mesh()
 
-        self.stall_min = -10
-        self.stall_max = 20
-
-        self.downwash_angle = 0
-
         # SIMULATION
         # Flight condition parameters
         V = 12
-        rho = 1.225 #Value applied internally in the code
+        rho = 1.225  # Value applied internally in the code
         alpha_length = self.stall_max - self.stall_min + 1
         alpha2 = np.linspace(self.stall_min, self.stall_max, alpha_length)
-        alpha_rad = alpha2*np.pi/180
+        alpha_rad = alpha2 * np.pi / 180
         alpha = []
         cl = []
         cd = []
@@ -178,11 +163,11 @@ class Aerodynamic_surface(Component):
         # plt.grid()
         # plt.show()
 
-        self.CL_alpha = pd.DataFrame({'Cl': cl, 'alpha': alpha})
+        self.CL_alpha = pd.DataFrame({'CL': cl, 'alpha': alpha})
         self.CL_alpha.set_index('alpha', inplace=True)
 
-        CL_alpha0 = self.CL_alpha.at[0.0, 'Cl']
-        CL_alpha_ang_coeff = self.CL_alpha.at[1.0, 'Cl']-self.CL_alpha.at[0.0, 'Cl']
+        CL_alpha0 = self.CL_alpha.at[0.0, 'CL']
+        CL_alpha_ang_coeff = self.CL_alpha.at[1.0, 'CL']-self.CL_alpha.at[0.0, 'CL']
         alpha_CL0 = -CL_alpha0/CL_alpha_ang_coeff
 
         alpha_transpose = -11.5-alpha_CL0
@@ -195,17 +180,17 @@ class Aerodynamic_surface(Component):
             transposed_CL[i] = correct_CL_alpha0 + CL_alpha_ang_coeff*i
 
 
-        self.CL_alpha_transposed = pd.DataFrame.from_dict(transposed_CL, orient='index', columns=['Cl'])
+        self.CL_alpha_transposed = pd.DataFrame.from_dict(transposed_CL, orient='index', columns=['CL'])
         self.CL_alpha_transposed.index.name = 'alpha'
         # plt.plot(self.CL_alpha_transposed)
         # plt.show()
 
         self.CL_alpha = self.CL_alpha_transposed
 
-        self.CD_alpha = pd.DataFrame({'Cd': cd, 'alpha': alpha})
+        self.CD_alpha = pd.DataFrame({'CD': cd, 'alpha': alpha})
         self.CD_alpha.set_index('alpha', inplace=True)
 
-        self.CM_alpha = pd.DataFrame({'Cm': cm, 'alpha': alpha})
+        self.CM_alpha = pd.DataFrame({'CM': cm, 'alpha': alpha})
         self.CM_alpha.set_index('alpha', inplace=True)
 
         self.dCL_dalpha = self.CL_alpha.diff()
@@ -225,44 +210,49 @@ class Aerodynamic_surface(Component):
         sin_component = sin(radians(alpha_plane + self.incidence))
         cos_component = cos(radians(alpha_plane + self.incidence))
 
-        horizontal_distance = self.ca.x - cg.x
-        vertical_distance = self.ca.y - cg.y
+        horizontal_distance = self.x + self.ca.x - cg.x
+        vertical_distance = self.z + self.ca.z - cg.z
 
-        item1 = surface_CL * cos_component * horizontal_distance / reference_surface.chord1
-        item2 = surface_CL * sin_component * vertical_distance / reference_surface.chord1
-        item3 = surface_CD * sin_component * horizontal_distance / reference_surface.chord1
-        item4 = surface_CD * cos_component * vertical_distance / reference_surface.chord1
+        item1 = surface_CL * cos_component * horizontal_distance / reference_surface.MAC
+        item2 = surface_CL * sin_component * vertical_distance / reference_surface.MAC
+        item3 = surface_CD * sin_component * horizontal_distance / reference_surface.MAC
+        item4 = surface_CD * cos_component * vertical_distance / reference_surface.MAC
         if self.__str__() == "Wing":
             resultant = + item1 - item2 + item3 + item4
         elif self.__str__() == "HS":
             resultant = - item1 + item2 + item3 + item4
 
-        CM = (self.CM_ca * self.chord1 / reference_surface.chord1 + resultant) * self.area / reference_surface.area
+        CM = (self.CM_ca * self.MAC / reference_surface.MAC + resultant) * self.area / reference_surface.area
         return CM
 
     def get_alpha_range(self):
         return range(self.stall_min, self.stall_max + 1)
 
+    def calc_MAC(self):
+        return self.section1.MAC - (2 * (self.section1.MAC - self.section2.MAC) *
+                                    (0.5 * self.section1.MAC + self.section2.MAC) /
+                                    (3 * (self.section1.MAC + self.section2.MAC)))
+
     def get_CL(self, alpha):
-        CL = np.interp(alpha, self.CL_alpha.index.values, self.CL_alpha['Cl'])
+        CL = np.interp(alpha, self.CL_alpha.index.values, self.CL_alpha['CL'])
         return CL
 
     def get_CD(self, alpha):
-        CD = np.interp(alpha, self.CD_alpha.index.values, self.CD_alpha['Cd'])
+        CD = np.interp(alpha, self.CD_alpha.index.values, self.CD_alpha['CD'])
         return CD
 
     def get_CM(self, alpha):
-        CM = np.interp(alpha, self.CM_alpha.index.values, self.CM_alpha['Cm'])
+        CM = np.interp(alpha, self.CM_alpha.index.values, self.CM_alpha['CM'])
         return CM
 
     def lift(self, air_density, velocity, alpha):
-        lift = 0.5*air_density*velocity**2*self.area*self.get_CL(alpha)
+        lift = 0.5 * air_density * velocity ** 2 * self.area * self.get_CL(alpha)
         return lift
 
     def drag(self, air_density, velocity, alpha):
-        drag = 0.5*air_density*velocity**2*self.area*self.get_CD(alpha)
+        drag = 0.5 * air_density * velocity ** 2 * self.area * self.get_CD(alpha)
         return drag
 
     def moment(self, air_density, velocity, alpha):
-        moment = 0.5*air_density*velocity**2*self.area*self.get_CM(alpha)
+        moment = 0.5 * air_density * velocity ** 2 * self.area * self.get_CM(alpha)
         return moment

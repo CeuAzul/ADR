@@ -5,7 +5,7 @@ from scipy.optimize import root_scalar
 from ADR.Analysis.Stability.FlightStability import FlightStability
 from ADR.Analysis.Stability.FlightStability.FlightStability import FlightStability
 from ADR.Components.Plane import Plane
-from ADR.Core.import_functions import import_x5_aerodynamic_data
+from ADR.Components.Points.CG import CG
 import numpy as np
 
 
@@ -15,102 +15,79 @@ def find_root(x_axis, y_axis, extremes):
     return data.root
 
 
-# wing 1
-clw_wh, cdw_wh, cmw_wh = import_x5_aerodynamic_data('World/References/X5_Stability/', 'Asa.txt')
-cmw = -0.32
-
-# tail
-clt_wh, cdt_wh, cmt_wh = import_x5_aerodynamic_data('World/References/X5_Stability/', 'Profundor.txt')
-cmt = 0.092
-
-# Aviao
-clp_wh, cdp_wh, cmp_wh = import_x5_aerodynamic_data('World/References/X5_Stability/', 'Aviao.txt')
+wing1_CM_ca = -0.32
+wing2_CM_ca = -0.32
+hs_CM_ca = 0.092
 
 plane_type = 'monoplane'
 
 plane_data = {
-    # wing1
     "wing1_x": 0,
     "wing1_y": 0,
     "wing1_z": 0,
-    "wing1_airfoil1": "s1223",
-    "wing1_airfoil2": "s1223",
-    "wing1_span1": 1.8,
-    "wing1_span2": 0,
+    "wing1_airfoil1_name": "s1223",
+    "wing1_airfoil2_name": "s1223",
+    "wing1_span1": 0.45,
+    "wing1_span2": 0.45,
     "wing1_chord1": 0.25,
     "wing1_chord2": 0.25,
-    "wing1_chord3": 0,
+    "wing1_chord3": 0.25,
     "wing1_twist1": 0,
     "wing1_twist2": 0,
     "wing1_twist3": 0,
     "wing1_incidence": 0,
+    "wing1_CM_ca": wing1_CM_ca,
 
-    # For FlightStability - momentary
-    "wing1_area": 0.45,
-    "wing1_CL_alpha": clw_wh,
-    "wing1_CD_alpha": cdw_wh,
-    "wing1_CM_ca": cmw,
-    "wing1_X_CA": -0.0625,
-    "wing1_Y_CA": 0,
-    "wing1_stall_min": -20,
-    "wing1_stall_max": 20,
-
-
-    # wing2
     "wing2_x": 0,
     "wing2_y": 0,
-    "wing2_z": 0,
-    "wing2_airfoil1": "s1223",
-    "wing2_airfoil2": "s1223",
-    "wing2_span1": 1.8,
-    "wing2_span2": 0,
+    "wing2_z": 0.3,
+    "wing2_airfoil1_name": "s1223",
+    "wing2_airfoil2_name": "s1223",
+    "wing2_span1": 0.45,
+    "wing2_span2": 0.45,
     "wing2_chord1": 0.25,
     "wing2_chord2": 0.25,
-    "wing2_chord3": 0,
+    "wing2_chord3": 0.25,
     "wing2_twist1": 0,
     "wing2_twist2": 0,
     "wing2_twist3": 0,
     "wing2_incidence": 0,
+    "wing2_CM_ca": wing2_CM_ca,
 
-    # For FlightStability - momentary
-    "wing2_area": 0.45,
-    "wing2_CL_alpha": clw_wh,
-    "wing2_CD_alpha": cdw_wh,
-    "wing2_CM_ca": cmw,
-    "wing2_X_CA": -0.0625,
-    "wing2_Y_CA": 0.3,
-    "wing2_stall_min": -20,
-    "wing2_stall_max": 20,
-
-    # hs
-    "hs_x": 0,
+    "hs_x": -0.7,
     "hs_y": 0,
     "hs_z": 0,
-    "hs_airfoil1": "s1223",
-    "hs_airfoil2": "s1223",
-    "hs_span1": 0.47,
-    "hs_span2": 0,
+    "hs_airfoil1_name": "s1223",
+    "hs_airfoil2_name": "s1223",
+    "hs_span1": 0.12,
+    "hs_span2": 0.12,
     "hs_chord1": 0.2,
-    "hs_chord2": 0.155,
-    "hs_chord3": 0,
+    "hs_chord2": 0.15,
+    "hs_chord3": 0.10,
     "hs_twist1": 0,
     "hs_twist2": 0,
     "hs_twist3": 0,
     "hs_incidence": 0,
+    "hs_CM_ca": hs_CM_ca,
 
-    # For FlightStability - momentary
-    "hs_area": 0.083,
-    "hs_CL_alpha": clt_wh,
-    "hs_CD_alpha": cdt_wh,
-    "hs_CM_ca": cmt,
-    "hs_X_CA": -0.7625 - 0.0725,
-    "hs_Y_CA": 0,
-    "hs_stall_min": -20,
-    "hs_stall_max": 20,
 
-    # motor
+    "vs_x": -0.7,
+    "vs_y": 0,
+    "vs_z": 0,
+    "vs_airfoil1_name": "s1223",
+    "vs_airfoil2_name": "s1223",
+    "vs_span1": 0.1,
+    "vs_span2": 0.1,
+    "vs_chord1": 0.2,
+    "vs_chord2": 0.2,
+    "vs_chord3": 0.1,
+    "vs_twist1": 0,
+    "vs_twist2": 0,
+    "vs_twist3": 0,
+    "vs_incidence": 0,
+
     "static_thrust": 45,
-    "linear_decay_coefficient": 1.28,
+    "linear_decay_coefficient": 1.28
 }
 
 plane = Plane(plane_data)
@@ -118,8 +95,8 @@ plane = Plane(plane_data)
 flight_stability = FlightStability(plane_type, plane)
 
 cg_x_range = [round(i, 3) for i in np.linspace(-0.05, -0.1, 10)]
-cg_y_range = [round(i, 3) for i in np.linspace(-0.1, 0.1, 10)]
-CM_plane_on_CG, SM_plane_on_CG = flight_stability.vary_CG(cg_x_range, cg_y_range)
+cg_z_range = [round(i, 3) for i in np.linspace(-0.01, 0.01, 10)]
+CM_plane_on_CG, SM_plane_on_CG = flight_stability.vary_CG(cg_x_range, cg_z_range)
 
 #flight_stability.plane.show_plane()
 
@@ -131,18 +108,23 @@ CM_plane_on_CG, SM_plane_on_CG = flight_stability.vary_CG(cg_x_range, cg_y_range
 
 # print("With hs.incidence = {}, plane trims for alpha_plane = {} degrees".format(hs_incidence, round(CM_plane_root, 2)))
 
+cg = CG({"x": -0.0725, "z": -0.1})
+CM_plane_on_CG_fixed = flight_stability.CM_plane_CG(cg)
+
 plt.figure(1)
 plt.grid()
 plt.xlabel("Alpha")
 plt.ylabel("CM on CG")
 plt.title("Momentum coeficients on CG")
+plt.legend()
+
 # plt.plot(flight_stability.wing1.CM_alpha_CG, label="Wing1")
 # if plane_type == 'biplane':
 #     plt.plot(flight_stability.wing2.CM_alpha_CG, label="Wing2")
 # plt.plot(flight_stability.hs.CM_alpha_CG, label="Tail")
 
 for hs_incidence in flight_stability.hs.get_alpha_range():
-    plt.plot(CM_plane_on_CG["cg1"][hs_incidence])   # Ploting for cg in first position(cg1)
+    plt.plot(CM_plane_on_CG_fixed[hs_incidence])   # Ploting for cg in first position(cg1)
 
 plt.figure(2)
 plt.grid()
