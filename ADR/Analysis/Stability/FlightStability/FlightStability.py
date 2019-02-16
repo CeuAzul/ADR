@@ -23,9 +23,6 @@ class FlightStability:
         self.hs = self.plane.hs
         #self.cg = None      # CG({"x": -0.0725, "y": -0.01})
 
-        self.CM_alpha_CG_plane_obj = None
-        self.CM_alpha_CG_plane_root = None
-
         if self.plane_type != ("monoplane" or "biplane"):
             print("Incapable of analysing FlightStability of this plane type")
 

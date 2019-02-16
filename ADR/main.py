@@ -8,6 +8,13 @@ from ADR.Components.Aerodynamic_components.Airfoil import Airfoil
 # Ideally you should give all data (like on
 # this example). If you don't use some of it, just give
 # dummy data (zeros or anything).
+
+wing1_CM_ca = -0.32
+wing2_CM_ca = -0.32
+hs_CM_ca = 0.092
+
+plane_type = 'monoplane'
+
 plane_data = {
     "wing1_x": 1,
     "wing1_y": 2,
@@ -23,6 +30,7 @@ plane_data = {
     "wing1_twist2": 0,
     "wing1_twist3": 0,
     "wing1_incidence": 0,
+    "wing1_CM_ca": wing1_CM_ca,
 
     "wing2_x": 1,
     "wing2_y": 2,
@@ -38,6 +46,7 @@ plane_data = {
     "wing2_twist2": 0,
     "wing2_twist3": 0,
     "wing2_incidence": 0,
+    "wing2_CM_ca": wing2_CM_ca,
 
     "hs_x": 1,
     "hs_y": 2,
@@ -53,6 +62,8 @@ plane_data = {
     "hs_twist2": 0,
     "hs_twist3": 0,
     "hs_incidence": 0,
+    "hs_CM_ca": hs_CM_ca,
+
 
     "vs_x": 1,
     "vs_y": 2,

@@ -68,8 +68,11 @@ class Aerodynamic_surface(Component):
 
         Aerodynamic_calculator = PyVLM()
 
-        self.stall_min = -15
-        self.stall_max = 15
+        self.stall_min = -20
+        self.stall_max = 20
+
+        self.downwash_angle = 0
+
         # GEOMETRY DEFINITION #
         # Section 2
         c1 = self.section2.chord1
@@ -122,11 +125,6 @@ class Aerodynamic_surface(Component):
 
         # Aerodynamic_calculator.check_mesh()
 
-        self.stall_min = -10
-        self.stall_max = 20
-
-        self.downwash_angle = 0
-
         # SIMULATION
         # Flight condition parameters
         V = 12
@@ -165,11 +163,11 @@ class Aerodynamic_surface(Component):
         # plt.grid()
         # plt.show()
 
-        self.CL_alpha = pd.DataFrame({'Cl': cl, 'alpha': alpha})
+        self.CL_alpha = pd.DataFrame({'CL': cl, 'alpha': alpha})
         self.CL_alpha.set_index('alpha', inplace=True)
 
-        CL_alpha0 = self.CL_alpha.at[0.0, 'Cl']
-        CL_alpha_ang_coeff = self.CL_alpha.at[1.0, 'Cl']-self.CL_alpha.at[0.0, 'Cl']
+        CL_alpha0 = self.CL_alpha.at[0.0, 'CL']
+        CL_alpha_ang_coeff = self.CL_alpha.at[1.0, 'CL']-self.CL_alpha.at[0.0, 'CL']
         alpha_CL0 = -CL_alpha0/CL_alpha_ang_coeff
 
         alpha_transpose = -11.5-alpha_CL0
@@ -182,17 +180,17 @@ class Aerodynamic_surface(Component):
             transposed_CL[i] = correct_CL_alpha0 + CL_alpha_ang_coeff*i
 
 
-        self.CL_alpha_transposed = pd.DataFrame.from_dict(transposed_CL, orient='index', columns=['Cl'])
+        self.CL_alpha_transposed = pd.DataFrame.from_dict(transposed_CL, orient='index', columns=['CL'])
         self.CL_alpha_transposed.index.name = 'alpha'
         # plt.plot(self.CL_alpha_transposed)
         # plt.show()
 
         self.CL_alpha = self.CL_alpha_transposed
 
-        self.CD_alpha = pd.DataFrame({'Cd': cd, 'alpha': alpha})
+        self.CD_alpha = pd.DataFrame({'CD': cd, 'alpha': alpha})
         self.CD_alpha.set_index('alpha', inplace=True)
 
-        self.CM_alpha = pd.DataFrame({'Cm': cm, 'alpha': alpha})
+        self.CM_alpha = pd.DataFrame({'CM': cm, 'alpha': alpha})
         self.CM_alpha.set_index('alpha', inplace=True)
 
         self.dCL_dalpha = self.CL_alpha.diff()
