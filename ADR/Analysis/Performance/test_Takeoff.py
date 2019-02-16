@@ -1,27 +1,43 @@
 from ADR.Analysis.Performance.Takeoff import Takeoff
 from ADR.Components.Plane import Plane
+from ADR.Components.Aerodynamic_components.Airfoil import Airfoil
 
 plane_data = {
-    "wing_x": 1,
-    "wing_y": 2,
-    "wing_z": 3,
-    "wing_airfoil1": "s1223",
-    "wing_airfoil2": "s1223",
-    "wing_span1": 0.8,
-    "wing_span2": 0.4,
-    "wing_chord1": 0.45,
-    "wing_chord2": 0.35,
-    "wing_chord3": 0.20,
-    "wing_twist1": 0,
-    "wing_twist2": 0,
-    "wing_twist3": -5,
-    "wing_incidence": 3,
+    "wing1_x": 1,
+    "wing1_y": 2,
+    "wing1_z": 3,
+    "wing1_airfoil1_name": "s1223",
+    "wing1_airfoil2_name": "s1223",
+    "wing1_span1": 0.7,
+    "wing1_span2": 0.7,
+    "wing1_chord1": 0.40,
+    "wing1_chord2": 0.40,
+    "wing1_chord3": 0.40,
+    "wing1_twist1": 0,
+    "wing1_twist2": 0,
+    "wing1_twist3": 0,
+    "wing1_incidence": 0,
+
+    "wing2_x": 1,
+    "wing2_y": 2,
+    "wing2_z": 3,
+    "wing2_airfoil1_name": "s1223",
+    "wing2_airfoil2_name": "s1223",
+    "wing2_span1": 0.7,
+    "wing2_span2": 0.7,
+    "wing2_chord1": 0.40,
+    "wing2_chord2": 0.40,
+    "wing2_chord3": 0.40,
+    "wing2_twist1": 0,
+    "wing2_twist2": 0,
+    "wing2_twist3": 0,
+    "wing2_incidence": 0,
 
     "hs_x": 1,
     "hs_y": 2,
     "hs_z": 3,
-    "hs_airfoil1": "s1223",
-    "hs_airfoil2": "s1223",
+    "hs_airfoil1_name": "s1223",
+    "hs_airfoil2_name": "s1223",
     "hs_span1": 0.2,
     "hs_span2": 0.1,
     "hs_chord1": 0.15,
@@ -29,14 +45,14 @@ plane_data = {
     "hs_chord3": 0.10,
     "hs_twist1": 0,
     "hs_twist2": 0,
-    "hs_twist3": -5,
+    "hs_twist3": 0,
     "hs_incidence": 0,
 
     "vs_x": 1,
     "vs_y": 2,
     "vs_z": 3,
-    "vs_airfoil1": "s1223",
-    "vs_airfoil2": "s1223",
+    "vs_airfoil1_name": "s1223",
+    "vs_airfoil2_name": "s1223",
     "vs_span1": 0.1,
     "vs_span2": 0.1,
     "vs_chord1": 0.2,
@@ -53,7 +69,7 @@ plane_data = {
 
 takeoff_parameters = {
     "rho_air": 1.225, # Densidade do ar [kg/m^3]
-    "I_airp": 0.02, # Momento de Inercia da aeronave []
+    "I_airp": 2.0, # Momento de Inercia da aeronave []
     "C_D_tp": 0.02, # Coeficiente de arrasto do trem de pouso
     "C_D_fus": 0.02, # Coeficiente de arrasto da fuselagem
     "f_f": 0.01, # Coeficiente de atrito dinamico da roda frontal

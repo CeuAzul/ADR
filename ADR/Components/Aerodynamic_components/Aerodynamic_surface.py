@@ -12,9 +12,8 @@ from math import radians, cos, sin
 class Aerodynamic_surface(Component):
     def __init__(self, data):
         super().__init__(data)
-
-        self.airfoil1 = data.get("airfoil1")
-        self.airfoil2 = data.get("airfoil2")
+        self.airfoil1_name = data.get("airfoil1_name")
+        self.airfoil2_name = data.get("airfoil2_name")
         self.span1 = data.get("span1")
         self.span2 = data.get("span2")
         self.chord1 = data.get("chord1")
@@ -29,7 +28,7 @@ class Aerodynamic_surface(Component):
         self.CM_alpha_CG = None
 
         data_section1 = {
-            "airfoil": self.airfoil1,
+            "airfoil_name": self.airfoil1_name,
             "span": self.span1,
             "chord1": self.chord1,
             "chord2": self.chord2,
@@ -38,7 +37,7 @@ class Aerodynamic_surface(Component):
             }
 
         data_section2 = {
-            "airfoil": self.airfoil2,
+            "airfoil_name": self.airfoil2_name,
             "span": self.span2,
             "chord1": self.chord2,
             "chord2": self.chord3,
@@ -49,24 +48,21 @@ class Aerodynamic_surface(Component):
         self.section1 = Aerodynamic_section(data_section1)
         self.section2 = Aerodynamic_section(data_section2)
 
-        self.airfoil1 = Airfoil({"airfoil": self.airfoil1})
-        self.airfoil2 = Airfoil({"airfoil": self.airfoil2})
-
         self.area = self.section1.area + self.section2.area
 
-        # self.calc_aerodynamic_data()
+        self.calc_aerodynamic_data()
 
         self.ca = CA({"x": data.get("X_CA"), "y": data.get("Y_CA")})
 
-        self.CL_alpha = data.get("CL_alpha")
-        self.CD_alpha = data.get("CD_alpha")
+        # self.CL_alpha = data.get("CL_alpha")
+        # self.CD_alpha = data.get("CD_alpha")
         self.CM_ca = data.get("CM_ca")
-        self.stall_min = data.get("stall_min")
-        self.stall_max = data.get("stall_max")
-        self.dCL_dalpha = self.CL_alpha.diff()
-        self.dCD_dalpha = self.CD_alpha.diff()
-        self.dCL_dalpha.fillna(method="bfill", inplace=True)
-        self.dCD_dalpha.fillna(method="bfill", inplace=True)
+        # self.stall_min = data.get("stall_min")
+        # self.stall_max = data.get("stall_max")
+        # self.dCL_dalpha = self.CL_alpha.diff()
+        # self.dCD_dalpha = self.CD_alpha.diff()
+        # self.dCL_dalpha.fillna(method="bfill", inplace=True)
+        # self.dCD_dalpha.fillna(method="bfill", inplace=True)
 
         self.downwash_angle = 0
 
@@ -88,55 +84,58 @@ class Aerodynamic_surface(Component):
         c2 = self.section2.chord2
         b1 = self.section1.span
         b2 = self.section2.span
+        camber = self.section2.airfoil.Camber_line
         n = 4  # number of panels (chordwise)
         m = 5   # number of panels (spanwise) (For each wing)
-
         # Left wing
         A = np.array([0, -b1-b2])
         B = np.array([0, -b1])
         leading_edges_coord_lw = [A, B]
         chord_lengths_lw = [c2, c1]
-        Aerodynamic_calculator.add_geometry(leading_edges_coord_lw, chord_lengths_lw, n, m, 0)
+        Aerodynamic_calculator.add_geometry(leading_edges_coord_lw, chord_lengths_lw, n, m, 1, camber)
 
         # Section 1
         c1 = self.section1.chord1
         c2 = self.section1.chord2
         b1 = self.section1.span
-        n = 4  # number of panels (chordwise)
-        m = 5   # number of panels (spanwise) (For each wing)
+        camber = self.section1.airfoil.Camber_line
+
+#        n = 4  # number of panels (chordwise)
+#        m = 5   # number of panels (spanwise) (For each wing)
 
         # Left wing
         A = np.array([0, -b1])
         B = np.array([0, 0])
         leading_edges_coord_lw = [A, B]
         chord_lengths_lw = [c2, c1]
-        Aerodynamic_calculator.add_geometry(leading_edges_coord_lw, chord_lengths_lw, n, m, 0)
+        Aerodynamic_calculator.add_geometry(leading_edges_coord_lw, chord_lengths_lw, n, m, 1, camber)
 
         # Right wing
         C = np.array([0, 0])
         D = np.array([0, b1])
         leading_edges_coord_rw = [C, D]
         chord_lengths_rw = [c1, c2]
-        Aerodynamic_calculator.add_geometry(leading_edges_coord_rw, chord_lengths_rw, n, m, 0)
+        Aerodynamic_calculator.add_geometry(leading_edges_coord_rw, chord_lengths_rw, n, m, 1, camber)
 
         # Section 2
         c1 = self.section2.chord1
         c2 = self.section2.chord2
         b2 = self.section2.span
-        n = 4  # number of panels (chordwise)
-        m = 5   # number of panels (spanwise) (For each wing)
+        camber = self.section2.airfoil.Camber_line
+
+ #       n = 4  # number of panels (chordwise)
+  #      m = 5   # number of panels (spanwise) (For each wing)
 
         # Right wing
         C = np.array([0, b1])
         D = np.array([0, b1+b2])
         leading_edges_coord_rw = [C, D]
         chord_lengths_rw = [c1, c2]
-        Aerodynamic_calculator.add_geometry(leading_edges_coord_rw, chord_lengths_rw, n, m, 0)
+        Aerodynamic_calculator.add_geometry(leading_edges_coord_rw, chord_lengths_rw, n, m, 1, camber)
 
-        Aerodynamic_calculator.check_mesh()
+        # Aerodynamic_calculator.check_mesh()
 
-        S = self.section1.area+self.section2.area
-        self.stall_min = 0
+        self.stall_min = -10
         self.stall_max = 20
 
         self.downwash_angle = 0
@@ -145,7 +144,7 @@ class Aerodynamic_surface(Component):
         # Flight condition parameters
         V = 12
         rho = 1.225 #Value applied internally in the code
-        alpha_length = self.stall_max-self.stall_min+1
+        alpha_length = self.stall_max - self.stall_min + 1
         alpha2 = np.linspace(self.stall_min, self.stall_max, alpha_length)
         alpha_rad = alpha2*np.pi/180
         alpha = []
@@ -154,27 +153,60 @@ class Aerodynamic_surface(Component):
         cm = []
         cm2 = []
         Xcp = []
-        clc_max = 1.5
+        clc_max = 2.2 #TODO: pegar do perfil
         q = rho*(V**2)/2
         for i in range(alpha_length):
-            L, D, M, y, clc = Aerodynamic_calculator.vlm(V, alpha_rad[i])
-            cp = -M/(L*self.chord1)
+            L, D, M, y, clc = Aerodynamic_calculator.vlm(V, alpha_rad[i], self.airfoil1_name) #TODO: COLOCAR AIRFOIL CERTO
+            cp = -M/(L*self.chord1) #TODO: Corda 1 apenas?
             if max(clc) > clc_max:
                 break
             # print(alpha_rad[i],L)
             alpha.append(alpha2[i])
-            cd.append(D/(q*S))
-            cl.append(L/(q*S))
-            cm.append(-(cp-0.25)*L/(q*S))
+            cd.append(D/(q*self.area))
+            cl.append(L/(q*self.area))
+            cm.append(-(cp-0.25*0)*L/(q*self.area)) #TODO: Multiplica por 0?
+
+        # print(alpha)
+        # print(cl)
+        # CL0 = min(cl, key=abs)
+        # print(CL0)
+        # print(np.diff(cl))
 
         # plt.plot(alpha,cl)
         # plt.plot(alpha,cd)
         # plt.plot(alpha,cm)
+        # plt.grid()
         # plt.show()
 
         self.CL_alpha = pd.DataFrame({'Cl': cl, 'alpha': alpha})
+        self.CL_alpha.set_index('alpha', inplace=True)
+
+        CL_alpha0 = self.CL_alpha.at[0.0, 'Cl']
+        CL_alpha_ang_coeff = self.CL_alpha.at[1.0, 'Cl']-self.CL_alpha.at[0.0, 'Cl']
+        alpha_CL0 = -CL_alpha0/CL_alpha_ang_coeff
+
+        alpha_transpose = -11.5-alpha_CL0
+
+        correct_alpha_CL0 = -11.5
+        correct_CL_alpha0 = -correct_alpha_CL0*CL_alpha_ang_coeff
+
+        transposed_CL = {}
+        for i, row in self.CL_alpha.iterrows():
+            transposed_CL[i] = correct_CL_alpha0 + CL_alpha_ang_coeff*i
+
+
+        self.CL_alpha_transposed = pd.DataFrame.from_dict(transposed_CL, orient='index', columns=['Cl'])
+        self.CL_alpha_transposed.index.name = 'alpha'
+        # plt.plot(self.CL_alpha_transposed)
+        # plt.show()
+
+        self.CL_alpha = self.CL_alpha_transposed
+
         self.CD_alpha = pd.DataFrame({'Cd': cd, 'alpha': alpha})
-        self.CM_ca = pd.DataFrame({'Cm': cm, 'alpha': alpha})
+        self.CD_alpha.set_index('alpha', inplace=True)
+
+        self.CM_alpha = pd.DataFrame({'Cm': cm, 'alpha': alpha})
+        self.CM_alpha.set_index('alpha', inplace=True)
 
         self.dCL_dalpha = self.CL_alpha.diff()
         self.dCD_dalpha = self.CD_alpha.diff()

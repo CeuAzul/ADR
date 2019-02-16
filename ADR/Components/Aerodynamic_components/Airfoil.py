@@ -9,10 +9,12 @@ from ADR.Core.import_functions import import_airfoil_aerodynamic_data, import_ai
 
 class Airfoil:
     def __init__(self, data):
-        self.name = data.get("airfoil")
+        self.name = data.get("airfoil_name")
 
         self.Cl_alpha, self.Cd_alpha, self.Cm_alpha = import_airfoil_aerodynamic_data(self.name)
         self.airfoil_x_coords, self.airfoil_y_coords = import_airfoil_coordinates(self.name)
+
+        self.import_camber_line()
 
         self.generate_upper_surface_coordinates()
         self.generate_inner_surface_coordinates()
@@ -87,3 +89,31 @@ class Airfoil:
             self.delta_area_array_int[i] = delta_area_int_i
         area_int = np.sum(self.delta_area_array_int) #área determinada pelo intradorso e a linha de corda
         self.area = area_ext - area_int #área do perfil
+
+    def import_camber_line(self):
+
+        np_array_x, np_array_y = import_airfoil_coordinates(self.name)
+        x_interp = np.arange(0,1,0.02)
+        minpos = np.argmin(np_array_x) #posição do menor valor no vetor de coordenadas horizontais, determina a posição do bordo de ataque
+        n = np_array_x.size #número de elementos do vetor de coordenadas horizontais
+        np_array_x_ext = np_array_x[0:minpos] #coordenadas horizontais do extradorso
+        np_array_x_ext = np.flip(np_array_x_ext)
+        n_ext = np_array_x_ext.size #número de elementos do vetor de coordenadas horizontais do extradorso
+        np_array_x_int = np_array_x[minpos:n-1] #coordenadas horizontais do intradorso
+        np_array_y_int = np_array_y[minpos:n-1] #coordenadas verticais do intradorso
+        np_array_y_ext = np_array_y[0:minpos] #coordenadas verticais do extradorso
+        np_array_y_ext = np.flip(np_array_y_ext)
+        y_interp_ext = np.interp(x_interp,np_array_x_ext,np_array_y_ext)
+        y_interp_int = np.interp(x_interp,np_array_x_int,np_array_y_int)
+        y_camber = (y_interp_int + y_interp_ext)/2
+        camber_line = pd.DataFrame({'x': x_interp,'y': y_camber})
+        self.Camber_line = camber_line
+        n_int = np_array_x_int.size #número de elementos do vetor de coordenadas horizontais do intradorso
+
+#        airfoil_coordinates = pd.read_csv(airfoil_aerodynamic_data_filepath, skiprows=0)
+
+        #----- Divisão dos vetores de coordenadas horizontal e vertical em pontos do extra e intradorso
+
+        #horizontais e verticais e em seguida transformados em vetores (listas).
+        #-----Criação do dataframe e transformação de dataframe em vetores (listas)-----
+        # A partir do arquivo de texto é criado o dataframe com as coordenadas dos pontos do perfil. Esse dataframe é separado em coordendas
