@@ -234,15 +234,15 @@ class Aerodynamic_surface(Component):
                                     (3 * (self.section1.MAC + self.section2.MAC)))
 
     def get_CL(self, alpha):
-        CL = np.interp(alpha, self.CL_alpha.index.values, self.CL_alpha['Cl'])
+        CL = np.interp(alpha, self.CL_alpha.index.values, self.CL_alpha['CL'])
         return CL
 
     def get_CD(self, alpha):
-        CD = np.interp(alpha, self.CD_alpha.index.values, self.CD_alpha['Cd'])
+        CD = np.interp(alpha, self.CD_alpha.index.values, self.CD_alpha['CD'])
         return CD
 
     def get_CM(self, alpha):
-        CM = np.interp(alpha, self.CM_alpha.index.values, self.CM_alpha['Cm'])
+        CM = np.interp(alpha, self.CM_alpha.index.values, self.CM_alpha['CM'])
         return CM
 
     def lift(self, air_density, velocity, alpha):
