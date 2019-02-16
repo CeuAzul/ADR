@@ -5,6 +5,7 @@ import ADR
 from .panel import Panel
 from .mesh_generator import Mesh
 from .airfoils import NACA4
+from ADR.Core.import_functions import import_airfoil_aerodynamic_data
 
 
 class PyVLM(object):
@@ -38,6 +39,7 @@ class PyVLM(object):
         self.sections_airfoil = []
         self.n = []
         self.m = []
+        self.camber = []
 
         self.rho = 1.225
 
@@ -54,8 +56,9 @@ class PyVLM(object):
         self.sections_airfoil = []
         self.n = []
         self.m = []
+        self.camber = []
 
-    def add_geometry(self, lead_edge_coord, chord_lengths, n, m,section_airfoil):
+    def add_geometry(self, lead_edge_coord, chord_lengths, n, m, section_airfoil, camber_line):
         """
         Allows to add wings, stabilizers, canard wings or any other
         lifting surface to the mesh. These are defined by their chords'
@@ -103,6 +106,7 @@ class PyVLM(object):
             self.sections_airfoil.extend(temp)
             self.n.append(n)
             self.m.append(m)
+            self.camber.append(camber_line)
 
     def check_mesh(self):
         """
@@ -171,7 +175,7 @@ class PyVLM(object):
         #     plt.plot(P[0], P[1], 'ro')
         # plt.show()
 
-    def vlm(self, V, alpha, print_output=False):
+    def vlm(self, V, alpha, airfoil_name, print_output=False):
         """
         For a given set of panels (defined by its 4 points) and their
         chordwise position (referred to the local chord), both presented
@@ -238,15 +242,33 @@ class PyVLM(object):
 
         Vinf_n = np.zeros(shape=N)
 
-        airfoil = NACA4()
+        airfoil = NACA4(2, 4, 15)
         #print(Panels_chordwise_position)
-        #print(sections_airfoil)
+        # camber_test = self.camber[int(sections_airfoil[0])][0]
+        # plt.plot(camber_test['x'].values, camber_test['y'].values)
+        # plt.show()
+
         for i in range(0, N):
             position = Panels_chordwise_position[i]
-            if sections_airfoil[i] == 0:
-                Vinf_n[i] = alpha - airfoil.camber_gradient(position)
-            else:
-                Vinf_n[i] = alpha - airfoil.camber_gradient(position,1,0.8,10)
+            # print(position)
+            # camber_line = self.camber[int(sections_airfoil[i])][0]
+            # df_array_x = camber_line.loc[:, 'x']
+            # df_array_y = camber_line.loc[:, 'y']
+            # np_array_x2 = df_array_x.values #vetor de coordenadas horizontais
+            # np_array_y = df_array_y.values #vetor de coordenadas verticais
+            # camber_gradient = np.diff(np_array_y)/np.diff(np_array_x2)
+            # np_array_x = np_array_x2[:-1]
+            # camber_gradient = np.interp(position,np_array_x,camber_gradient)
+            # camber_gradient2 = np.polyfit(np_array_x2,np_array_y,3)
+            # camber_gradient2 = 3*camber_gradient2[0]*(position**2)+2*camber_gradient2[1]*position+camber_gradient2[2]
+            # print('Position: {} // CamberGradient: {}'.format(position, airfoil.camber_gradient(position)))
+
+            # Vinf_n[i] = alpha - camber_gradient2
+
+#            if sections_airfoil[i] == 0:
+            Vinf_n[i] = alpha - airfoil.camber_gradient(position)
+#            else:
+#                Vinf_n[i] = alpha - airfoil.camber_gradient(position,1,0.8,10)
             Vinf_n[i] *= -V
 
         # 2. CIRCULATION (Γ or gamma)
@@ -273,8 +295,6 @@ class PyVLM(object):
                 yj[j] = i_Panel[j][1]
             ordem_y=np.argsort(yj)
             ordem_x=np.argsort(-xj)
-            #print(ordem_y,yj)
-            #print(ordem_x,xj)
             x_novo_ponto = np.zeros(2)
             y_novo_ponto = np.zeros(2)
             x_novo_ponto[0] = (xj[ordem_y[0]]+xj[ordem_y[1]])/2
@@ -283,16 +303,15 @@ class PyVLM(object):
             y_novo_ponto[1] = (yj[ordem_y[2]]+yj[ordem_y[3]])/2
             cp_x_novo = (x_novo_ponto[0]+x_novo_ponto[1]+xj[ordem_x[0]]+xj[ordem_x[1]])/4
             cp_y_novo = (y_novo_ponto[0]+y_novo_ponto[1]+yj[ordem_x[0]]+yj[ordem_x[1]])/4
-            #plt.plot(xj,yj,'x')
-            #plt.plot(cp_x_novo,cp_y_novo,'+')
-            #plt.xticks(np.arange(min(xj), max(xj)+0.01, 0.01))
             centro_x[i] = sum(xj)/4
             centro_y[i] = sum(yj)/4
             mm[i] = -l[i]*centro_x[i]
+
         clc = []
         cdc = []
         ys = []
         temp = 0
+
         for k in range(0,len(self.n)):
             l_chord = np.zeros(self.m[k])
             d_chord = np.zeros(self.m[k])
@@ -305,7 +324,6 @@ class PyVLM(object):
             for i in range(0, self.m[k]):
                 for j in range(0, self.n[k]):
                     a = temp+i+j*self.m[k]
-#                    print(a,l[a],len(l),self.m,self.n)
                     l_chord[i] = l_chord[i] + l[a]
                     d_chord[i] = d_chord[i] + d[a]
                     S_chord[i] = S_chord[i] + S[a]
@@ -316,39 +334,27 @@ class PyVLM(object):
             cdc.extend(cd_chord)
             ys.extend(y_chord)
             temp = self.n[k]*self.m[k]+temp
+
         ys, clc = zip(*sorted(zip(ys, clc)))
-        package_filepath = ADR.__file__.replace('__init__.py', '')
-        airfoil_aerodynamic_data_filename = "T1_Re0.100_M0.00_N9.0.txt"
-        airfoil_aerodynamic_data_filepath = package_filepath + 'World/Profiles/AerodynamicData/' + airfoil_aerodynamic_data_filename
-        Data = np.loadtxt(airfoil_aerodynamic_data_filepath) #precisa mudar
-        cl_foil = []
-        cd_foil = []
-        alpha_foil = []
-        for i in range(0, len(Data)):
-            alpha_foil.append(Data[i, 0])
-            cl_foil.append(Data[i, 1])
-            cd_foil.append(Data[i, 2])
+        Cl_alpha, Cd_alpha, Cm_alpha, = import_airfoil_aerodynamic_data(airfoil_name)
+        cl_foil = Cl_alpha['Cl'].values
+        cd_foil = Cd_alpha['Cd'].values
+        alpha_foil = Cl_alpha.index.values
+
         cd_foil_alpha = np.interp(clc, cl_foil, cd_foil)
         cd_chord_cor = np.add(cdc, cd_foil_alpha)
         d_chord_visc = []
         for k in range(0, len(self.n)):
-            # print(k)
             for i in range(0, self.m[k]):
                 d_chord_visc.append(cd_chord_cor[i]*S_chord[i]*rho*V**2/(2))
-        #print(cl_chord)
-        #print(cd_chord)
-        #print(cl_foil)
-        #print(cd_foil)
-        #print(cd_foil_alpha)
-        #print(cd_chord_cor)
-        #print(alpha*180/3.14)
-#        print(ys,clc)
+
         L = sum(l)
         D = sum(d)
         D_visc = sum(d_chord_visc)
         M = sum(mm) #Pitch moment calculator MIGUÉ
         A = []
         A = sum(S)
+
         # if (print_output is True):
         #     print('\nPanel|  V∞_n |   Wi   |  α_i  |   Γ   |    l   |   d  |')
         #     print('-------------------------------------------------------')
@@ -358,21 +364,8 @@ class PyVLM(object):
         #                  np.rad2deg(alpha_induced[i]), gamma[i], l[i], d[i]))
         #     print('\n L = %6.3f     D = %6.3f \n' % (L, D))
 
-        airfoil_aerodynamic_data_filename = 'T1-12_0 m_s-VLM2-1_0kg-x0_0m_flap.txt'
-        airfoil_aerodynamic_data_filepath = package_filepath + 'World/Profiles/AerodynamicData/' + airfoil_aerodynamic_data_filename
-        Data = np.loadtxt(airfoil_aerodynamic_data_filepath)  # precisa mudar
-        CL_plane = []
-        CD_plane = []
-        for i in range(0, len(Data)):
-            CL_plane.append(Data[i, 2])
-            CD_plane.append(Data[i, 5])
-
-
         CL = 2*L/(rho*A*V**2)
         CD = 2*D/(rho*A*V**2)
         CD_visc = 2*D_visc/(rho*A*V**2)
-        #plt.plot(CD,CL)
-        # plt.plot(CD, CL, '+')
-        # plt.plot(CD_visc, CL, 'x')
-        # plt.plot(CD_plane,CL_plane)
+
         return L, D, M, ys, clc

@@ -24,7 +24,7 @@ class Takeoff:
         g = 9.81 # Constante gravitacional [m/s^2]
         V_x = 0 # Velocidade inicial do aviao no eixo X [m/s]
         V_y = 0 # Velocidade inicial do aviao no eixo Y [m/s]
-        S_w = self.plane.wing.area
+        S_w1 = self.plane.wing1.area
         pilot_triggered = False # O piloto acionou o profundor?
 
         dist_x = 0 # Distancia percorrida em X [m]
@@ -53,7 +53,7 @@ class Takeoff:
 
                 t = t + dt
 
-                L_w = self.plane.wing.lift(self.rho_air, V_x, alpha_w)
+                L_w = self.plane.wing1.lift(self.rho_air, V_x, alpha_w)
                 L_hs = self.plane.hs.lift(self.rho_air, V_x, alpha_hs)
                 L = L_w - L_hs
 
@@ -64,10 +64,10 @@ class Takeoff:
 
                 E_x = E*math.cos(math.radians(theta_airplane_deg))
 
-                D_w = self.plane.wing.drag(self.rho_air, V_x, alpha_w)
+                D_w = self.plane.wing1.drag(self.rho_air, V_x, alpha_w)
                 D_hs = self.plane.hs.drag(self.rho_air, V_x, alpha_hs)
-                D_tp = drag(self.rho_air, V_x, S_w, self.C_D_tp)
-                D_fus = drag(self.rho_air, V_x, S_w, self.C_D_fus)
+                D_tp = drag(self.rho_air, V_x, S_w1, self.C_D_tp)
+                D_fus = drag(self.rho_air, V_x, S_w1, self.C_D_fus)
                 D = D_w + D_hs + D_tp + D_fus
 
                 F_at_f = self.f_f*N
@@ -78,7 +78,7 @@ class Takeoff:
                 V_x = V_x + dV_x
                 dist_x = dist_x + V_x * dt
 
-                M_w = self.plane.wing.moment(self.rho_air, V_x, alpha_w)
+                M_w = self.plane.wing1.moment(self.rho_air, V_x, alpha_w)
                 M_hs = self.plane.hs.moment(self.rho_air, V_x, alpha_hs)
                 dTheta = (((M_hs - M_w + L_w*self.d_L_w_cg + L_hs*self.d_L_hs_cg)/self.I_airp)*dt)*dt
 
