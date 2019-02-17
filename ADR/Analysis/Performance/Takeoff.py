@@ -12,9 +12,16 @@ class Takeoff:
         self.offset_pilot = takeoff_parameters.get("offset_pilot")
 
         self.distx_wing1_tpr = abs(plane.wing1.ca.abs_x - plane.tpr.x)
+        self.distz_wing1_tpr = abs(plane.wing1.ca.abs_z - plane.tpr.z)
+
         self.distx_wing2_tpr = abs(plane.wing2.ca.abs_x - plane.tpr.x)
+        self.distz_wing2_tpr = abs(plane.wing2.ca.abs_z - plane.tpr.z)
+
         self.distx_hs_tpr = abs(plane.hs.ca.abs_x - plane.tpr.x)
+        self.distz_hs_tpr = abs(plane.hs.ca.abs_z - plane.tpr.z)
+
         self.distx_cg_tpr = abs(plane.cg.x - plane.tpr.x)
+        self.distz_cg_tpr = abs(plane.cg.z - plane.tpr.z)
 
     def calculate_mtow(self):
 
@@ -102,7 +109,9 @@ class Takeoff:
                     M_w2 = self.plane.wing2.moment(self.rho_air, V_x, alpha_w2)
                 M_hs = self.plane.hs.moment(self.rho_air, V_x, alpha_hs)
 
-                M = - W*self.distx_cg_tpr - M_hs + M_w1 + M_w2 + L_w1*self.distx_wing1_tpr + L_w2*self.distx_wing2_tpr + L_hs*self.distx_hs_tpr
+                M_x = - W*self.distx_cg_tpr + L_w1*self.distx_wing1_tpr + L_w2*self.distx_wing2_tpr + L_hs*self.distx_hs_tpr
+                M_z = + D_w1*self.distz_wing1_tpr + D_w2*self.distz_wing2_tpr + D_hs*self.distz_hs_tpr
+                M = M_x + M_z - M_hs + M_w1 + M_w2
                 dOmega = (M/self.plane.Iyy_TPR)*dt
                 dTheta = dOmega*dt
 
