@@ -1,14 +1,15 @@
 from ADR.Analysis.Performance.Takeoff import Takeoff
 from ADR.Components.Plane import Plane
 from ADR.Components.Aerodynamic_components.Airfoil import Airfoil
+from matplotlib import pyplot as plt
 
 wing1_CM_ca = -0.32
 wing2_CM_ca = -0.32
 hs_CM_ca = 0.092
 
-plane_type = 'monoplane'
-
 plane_data = {
+    "plane_type": 'monoplane',
+
     "wing1_x": 0,
     "wing1_y": 0,
     "wing1_z": 0,
@@ -73,20 +74,26 @@ plane_data = {
     "vs_twist3": 0,
     "vs_incidence": 0,
 
-    "static_thrust": 45,
-    "linear_decay_coefficient": 1.28
+    "motor_x": 0.25,
+    "motor_z": -0.05,
+    "static_thrust": 27,
+    "linear_decay_coefficient": 0.875,
+
+    "cg_x": -0.0725,
+    "cg_z": -0.1,
+
+    "tpr_x": -0.1225,
+    "tpr_z": -0.2,
+
+    "Iyy_TPR": 0.114,
+    "CD_tp": 0.02,
+    "CD_fus": 0.02,
+    "u_k": 0.05
 }
 
 takeoff_parameters = {
-    "rho_air": 1.225, # Densidade do ar [kg/m^3]
-    "I_airp": 2.0, # Momento de Inercia da aeronave []
-    "C_D_tp": 0.02, # Coeficiente de arrasto do trem de pouso
-    "C_D_fus": 0.02, # Coeficiente de arrasto da fuselagem
-    "f_f": 0.01, # Coeficiente de atrito dinamico da roda frontal
-    "f_r": 0.01, # Coeficiente de atrito dinamico da roda traseira
-    "d_L_w_cg": 0.1, # Distancia do CA da Asa ao CG
-    "d_L_hs_cg": 0.9, # Distancia do CA do profundor ao CG
-    "dist_max": 50, # Distancia maxima de decolagem pelo regulamento [m]
+    "rho_air": 1.15, # Densidade do ar [kg/m^3]
+    "dist_max": 60, # Distancia maxima de decolagem pelo regulamento [m]
     "offset_pilot": 5 # Distancia antes do fim da pista em que o piloto aciona o profundor [m]
 }
 
@@ -97,3 +104,43 @@ takeoff_analysis = Takeoff(plane, takeoff_parameters)
 takeoff_analysis.calculate_mtow()
 mtow = takeoff_analysis.mtow
 print('Final MTOW is {}'.format(mtow))
+
+fig1, ((ax1, ax2, ax3), (ax4, ax5, ax6)) = plt.subplots(2, 3)
+
+ax1.plot(takeoff_analysis.mass_dict[mtow]['N'], label='Normal')
+ax1.plot(takeoff_analysis.mass_dict[mtow]['L'], label='Lift')
+ax1.plot(takeoff_analysis.mass_dict[mtow]['L_w1'], label='Lift Wing1')
+ax1.plot(takeoff_analysis.mass_dict[mtow]['L_w2'], label='Lift Wing2')
+ax1.plot(takeoff_analysis.mass_dict[mtow]['L_hs'], label='Lift HS')
+ax1.grid()
+ax1.legend()
+
+ax2.plot(takeoff_analysis.mass_dict[mtow]['D'], label='Drag')
+ax2.plot(takeoff_analysis.mass_dict[mtow]['D_w1'], label='Drag Wing1')
+ax2.plot(takeoff_analysis.mass_dict[mtow]['D_w2'], label='Drag Wing2')
+ax2.plot(takeoff_analysis.mass_dict[mtow]['D_hs'], label='Drag HS')
+ax2.grid()
+ax2.legend()
+
+ax3.plot(takeoff_analysis.mass_dict[mtow]['M'], label='Moment')
+ax3.plot(takeoff_analysis.mass_dict[mtow]['M_w1'], label='Moment Wing1')
+ax3.plot(takeoff_analysis.mass_dict[mtow]['M_w2'], label='Moment Wing2')
+ax3.plot(takeoff_analysis.mass_dict[mtow]['M_hs'], label='Moment HS')
+ax3.grid()
+ax3.legend()
+
+ax4.plot(takeoff_analysis.mass_dict[mtow]['dTheta'], label='dTheta')
+ax4.grid()
+ax4.legend()
+
+ax5.plot(takeoff_analysis.mass_dict[mtow]['incidence_hs'], label='HS incidence')
+ax5.plot(takeoff_analysis.mass_dict[mtow]['theta'], label='Theta')
+ax5.grid()
+ax5.legend()
+
+ax6.plot(takeoff_analysis.mass_dict[mtow]['dist_x'], label='Distance')
+ax6.plot(takeoff_analysis.mass_dict[mtow]['V_x'], label='Velocity')
+ax6.grid()
+ax6.legend()
+
+plt.show()

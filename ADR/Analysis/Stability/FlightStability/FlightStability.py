@@ -15,15 +15,14 @@ from ADR.Components.Points.CG import CG
 
 
 class FlightStability:
-    def __init__(self, plane_type, plane):
-        self.plane_type = plane_type
+    def __init__(self, plane):
         self.plane = plane
         self.wing1 = self.plane.wing1
         self.wing2 = self.plane.wing2  # wing2 equals wing 1 for now (monoplane)
         self.hs = self.plane.hs
         #self.cg = None      # CG({"x": -0.0725, "y": -0.01})
 
-        if self.plane_type != ("monoplane" or "biplane"):
+        if self.plane.plane_type != "monoplane" and self.plane.plane_type != "biplane":
             print("Incapable of analysing FlightStability of this plane type")
 
     def vary_CG(self, cg_x_range, cg_z_range):
@@ -67,7 +66,7 @@ class FlightStability:
 
             CM_alpha_CG_wings[alpha_plane] = CM_alpha_CG_wing1[alpha_plane]
 
-            if self.plane_type == "biplane":
+            if self.plane.plane_type == "biplane":
                 CM_alpha_CG_wing2[alpha_plane] = self.wing2.moment_on_CG(self.wing1, cg, alpha_plane)
                 CM_alpha_CG_wings[alpha_plane] += CM_alpha_CG_wing2[alpha_plane]
 
@@ -106,10 +105,10 @@ class FlightStability:
             self.hs.attack_angle = -float(alpha_plane)
 
             # Calculating Static Margin for each alpha
-            self.sm = SM(self.plane_type,
+            self.sm = SM(self.plane.plane_type,
                          self.wing1, self.wing2, self.hs,
                          alpha_plane,
-                         self.plane.dCM_dalpha.at[alpha_plane, 'CM'])
+                         self.plane.dCM_dalpha.at[alpha_plane, 'CM']) #TODO: We should pass the entire plane into SM analysys
             SM_alpha[alpha_plane] = self.sm.SM
 
         self.SM_alpha_df = self.dict_to_data_frame(SM_alpha)

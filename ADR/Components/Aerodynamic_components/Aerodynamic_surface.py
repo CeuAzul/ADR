@@ -53,7 +53,12 @@ class Aerodynamic_surface(Component):
 
         self.calc_aerodynamic_data()
 
-        self.ca = CA({"x": - self.MAC / 4, "z": 0})
+        self.ca = CA({
+            "x": - self.MAC / 4,
+            "z": 0,
+            "surface_x": self.x,
+            "surface_z": self.z,
+            })
         self.CM_ca = data.get("CM_ca")
 
         self.downwash_angle = 0
@@ -80,8 +85,8 @@ class Aerodynamic_surface(Component):
         b1 = self.section1.span
         b2 = self.section2.span
         camber = self.section2.airfoil.Camber_line
-        n = 4  # number of panels (chordwise)
-        m = 5  # number of panels (spanwise) (For each wing)
+        n = 2  # number of panels (chordwise)
+        m = 2  # number of panels (spanwise) (For each wing)
 
         # Left wing
         A = np.array([0, -b1 - b2])

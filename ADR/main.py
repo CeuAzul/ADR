@@ -13,9 +13,9 @@ wing1_CM_ca = -0.32
 wing2_CM_ca = -0.32
 hs_CM_ca = 0.092
 
-plane_type = 'monoplane'
-
 plane_data = {
+    "plane_type": 'monoplane',
+
     "wing1_x": 0,
     "wing1_y": 0,
     "wing1_z": 0,
@@ -80,8 +80,15 @@ plane_data = {
     "vs_twist3": 0,
     "vs_incidence": 0,
 
+    "motor_x": 0.25,
+    "motor_z": -0.05,
     "static_thrust": 45,
-    "linear_decay_coefficient": 1.28
+    "linear_decay_coefficient": 1.28,
+
+    "Iyy_TPR": 0.114,
+    "CD_tp": 0.02,
+    "CD_fus": 0.02,
+    "u_k": 0.05
 }
 
 plane = Plane(plane_data)
