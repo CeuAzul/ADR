@@ -86,13 +86,13 @@ class Takeoff:
                 dOmega = (M/self.plane.Iyy_TPR)*dt
                 dTheta = dOmega*dt
 
+                if theta_airplane_deg + degrees(dTheta) >= 0:
+                    theta_airplane_deg = theta_airplane_deg + degrees(dTheta)
+
                 if (self.dist_max-dist_x) <= self.offset_pilot and pilot_triggered == False:
                     incidence_hs += incidence_active_hs
                     pilot_triggered = True
                     alpha_hs = theta_airplane_deg + incidence_hs
-
-                if theta_airplane_deg >= -0.01:
-                    theta_airplane_deg = theta_airplane_deg + degrees(dTheta)
 
                 if dist_x > self.dist_max:
                     takeoff_failed = True
