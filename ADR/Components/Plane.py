@@ -8,6 +8,9 @@ from ADR.Components.Points.TPR import TPR
 
 class Plane:
     def __init__(self, data):
+
+        self.plane_type = data.get("plane_type")
+
         wing1_data = {
             "x": data.get("wing1_x"),
             "y": data.get("wing1_y"),
@@ -93,6 +96,11 @@ class Plane:
             "x": data.get("tpr_x"),
             "z": data.get("tpr_z")
         }
+
+        self.Iyy_TPR = data.get("Iyy_TPR")
+        self.CD_tp = data.get("CD_tp")
+        self.CD_fus = data.get("CD_fus")
+        self.u_k = data.get("u_k")
 
         self.wing1 = Wing(wing1_data)
         self.wing2 = Wing(wing2_data)

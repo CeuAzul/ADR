@@ -6,9 +6,9 @@ wing1_CM_ca = -0.32
 wing2_CM_ca = -0.32
 hs_CM_ca = 0.092
 
-plane_type = 'monoplane'
-
 plane_data = {
+    "plane_type": 'monoplane',
+
     "wing1_x": 0,
     "wing1_y": 0,
     "wing1_z": 0,
@@ -80,15 +80,16 @@ plane_data = {
     "cg_z": -0.1,
 
     "tpr_x": -0.1225,
-    "tpr_z": -0.2
+    "tpr_z": -0.2,
+
+    "Iyy_TPR": 0.114,
+    "CD_tp": 0.02,
+    "CD_fus": 0.02,
+    "u_k": 0.05
 }
 
 takeoff_parameters = {
     "rho_air": 1.15, # Densidade do ar [kg/m^3]
-    "I_airplane": 0.114, # Momento de Inercia da aeronave [kg.m²]
-    "C_D_tp": 0.02, # Coeficiente de arrasto do trem de pouso
-    "C_D_fus": 0.02, # Coeficiente de arrasto da fuselagem
-    "f_f": 0.05, # Coeficiente de atrito dinamico das rodas
     "dist_max": 60, # Distancia maxima de decolagem pelo regulamento [m]
     "offset_pilot": 5 # Distancia antes do fim da pista em que o piloto aciona o profundor [m]
 }

@@ -7,10 +7,6 @@ class Takeoff:
 
         self.plane = plane
         self.rho_air = takeoff_parameters.get("rho_air")
-        self.I_airplane = takeoff_parameters.get("I_airplane")
-        self.C_D_tp = takeoff_parameters.get("C_D_tp")
-        self.C_D_fus = takeoff_parameters.get("C_D_fus")
-        self.f_f = takeoff_parameters.get("f_f")
         self.dist_max = takeoff_parameters.get("dist_max")
         self.offset_pilot = takeoff_parameters.get("offset_pilot")
 
@@ -18,15 +14,13 @@ class Takeoff:
         self.distx_hs_tpr = abs(plane.hs.ca.abs_x - plane.tpr.x)
         self.distx_cg_tpr = abs(plane.cg.x - plane.tpr.x)
 
-        print(self.distx_cg_tpr)
-
     def calculate_mtow(self):
 
         m = 1 # Massa total inicial do aviao [kg]
         g = 9.81 # Constante gravitacional [m/s^2]
         S_w1 = self.plane.wing1.area
 
-        dt = 0.001 # Incremento discreto de tempo [s]
+        dt = 0.01 # Incremento discreto de tempo [s]
         dm = 0.1 #Incremento de massa [kg]
 
         incidence_active_hs = 10 # Angulo de incidencia adicionado no profundor ao ser acionado [deg]
@@ -74,11 +68,11 @@ class Takeoff:
 
                 D_w = self.plane.wing1.drag(self.rho_air, V_x, alpha_w)
                 D_hs = self.plane.hs.drag(self.rho_air, V_x, alpha_hs)
-                D_tp = drag(self.rho_air, V_x, S_w1, self.C_D_tp)
-                D_fus = drag(self.rho_air, V_x, S_w1, self.C_D_fus)
+                D_tp = drag(self.rho_air, V_x, S_w1, self.plane.CD_tp)
+                D_fus = drag(self.rho_air, V_x, S_w1, self.plane.CD_fus)
                 D = D_w + D_hs + D_tp + D_fus
 
-                F_at = self.f_f*N
+                F_at = self.plane.u_k*N
 
                 F_x = E_x - D - F_at
                 dV_x = ((F_x)/m) * dt
@@ -89,7 +83,7 @@ class Takeoff:
                 M_hs = self.plane.hs.moment(self.rho_air, V_x, alpha_hs)
 
                 M = - W*self.distx_cg_tpr - M_hs + M_w + L_w*self.distx_wing_tpr + L_hs*self.distx_hs_tpr
-                dOmega = (M/self.I_airplane)*dt
+                dOmega = (M/self.plane.Iyy_TPR)*dt
                 dTheta = dOmega*dt
 
                 if (self.dist_max-dist_x) <= self.offset_pilot and pilot_triggered == False:
