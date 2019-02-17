@@ -18,27 +18,26 @@ def plot_stability_data():
     cg = CG({"x": -0.0725, "z": -0.1})
     CM_plane_on_CG_fixed = flight_stability.CM_plane_CG(cg)
 
-    plt.figure(1)
-    plt.grid()
-    plt.xlabel("Alpha")
-    plt.ylabel("CM on CG")
-    plt.title("Momentum coeficients on CG")
-    plt.legend()
+    fig1, ((ax1, ax2)) = plt.subplots(1, 2)
 
-    # plt.plot(flight_stability.wing1.CM_alpha_CG, label="Wing1")
-    # if plane_type == 'biplane':
-    #     plt.plot(flight_stability.wing2.CM_alpha_CG, label="Wing2")
-    # plt.plot(flight_stability.hs.CM_alpha_CG, label="Tail")
+    ax1.set_xlabel("Alpha")
+    ax1.set_ylabel("CM on CG")
+    ax1.set_title("Momentum coeficients on CG")
 
+    ax1.plot(flight_stability.wing1.CM_alpha_CG, label="Wing1")
+    if flight_stability.plane.plane_type == 'biplane':
+        ax1.plot(flight_stability.wing2.CM_alpha_CG, label="Wing2")
     for hs_incidence in flight_stability.hs.get_alpha_range():
-        plt.plot(CM_plane_on_CG_fixed[hs_incidence])   # Ploting for cg in first position(cg1)
+        ax1.plot(CM_plane_on_CG_fixed[hs_incidence])   # Ploting for cg in first position(cg1)
+    ax1.grid()
+    ax1.legend()
 
-    plt.figure(2)
-    plt.grid()
-    plt.xlabel("Alpha")
-    plt.ylabel("SM")
-    plt.title("Static Margin")
-    plt.plot(SM_plane_on_CG["cg1"])     # Ploting for cg in first position(cg1)
+    ax2.set_xlabel("Alpha")
+    ax2.set_ylabel("SM")
+    ax2.set_title("Static Margin")
+    ax2.plot(SM_plane_on_CG["cg50"])     # Ploting for cg in first position(cg1)
+    ax2.grid()
+    ax2.legend()
 
     plt.show()
 
