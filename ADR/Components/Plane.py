@@ -83,6 +83,9 @@ class Plane:
         }
 
         motor_data = {
+            "x": data.get("motor_x"),
+            "y": data.get("motor_y"),
+            "z": data.get("motor_z"),
             "static_thrust": data.get("static_thrust"),
             "linear_decay_coefficient": data.get("linear_decay_coefficient")
         }

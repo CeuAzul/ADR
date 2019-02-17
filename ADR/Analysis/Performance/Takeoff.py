@@ -23,6 +23,9 @@ class Takeoff:
         self.distx_cg_tpr = abs(plane.cg.x - plane.tpr.x)
         self.distz_cg_tpr = abs(plane.cg.z - plane.tpr.z)
 
+        self.distx_motor_tpr = abs(plane.motor.x - plane.tpr.x)
+        self.distz_motor_tpr = abs(plane.motor.z - plane.tpr.z)
+
     def calculate_mtow(self):
 
         m = 1 # Massa total inicial do aviao [kg]
@@ -80,10 +83,10 @@ class Takeoff:
                 L_hs = self.plane.hs.lift(self.rho_air, V_x, alpha_hs)
                 L = L_w1 + L_w2 - L_hs
 
-                E_y = E*sin(radians(theta_airplane_deg))
+                E_z = E*sin(radians(theta_airplane_deg))
                 W = m*g
 
-                N = W - L - E_y
+                N = W - L - E_z
 
                 E_x = E*cos(radians(theta_airplane_deg))
 
@@ -109,8 +112,8 @@ class Takeoff:
                     M_w2 = self.plane.wing2.moment(self.rho_air, V_x, alpha_w2)
                 M_hs = self.plane.hs.moment(self.rho_air, V_x, alpha_hs)
 
-                M_x = - W*self.distx_cg_tpr + L_w1*self.distx_wing1_tpr + L_w2*self.distx_wing2_tpr + L_hs*self.distx_hs_tpr
-                M_z = + D_w1*self.distz_wing1_tpr + D_w2*self.distz_wing2_tpr + D_hs*self.distz_hs_tpr
+                M_x = E_z*self.distx_motor_tpr - W*self.distx_cg_tpr + L_w1*self.distx_wing1_tpr + L_w2*self.distx_wing2_tpr + L_hs*self.distx_hs_tpr
+                M_z = - E_x*self.distz_motor_tpr + D_w1*self.distz_wing1_tpr + D_w2*self.distz_wing2_tpr + D_hs*self.distz_hs_tpr
                 M = M_x + M_z - M_hs + M_w1 + M_w2
                 dOmega = (M/self.plane.Iyy_TPR)*dt
                 dTheta = dOmega*dt

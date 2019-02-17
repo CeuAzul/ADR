@@ -86,6 +86,8 @@ plane_data = {
     "vs_twist3": 0,
     "vs_incidence": 0,
 
+    "motor_x": 0.25,
+    "motor_z": -0.05,
     "static_thrust": 45,
     "linear_decay_coefficient": 1.28,
 
