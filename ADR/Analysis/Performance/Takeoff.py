@@ -1,4 +1,5 @@
 from math import sin, cos, radians, degrees
+import pandas as pd
 
 from ADR.Methods.FundamentalEquations import lift, drag, moment
 
@@ -29,6 +30,8 @@ class Takeoff:
 
         self.mtow = 0
 
+        self.mass_dict = {}
+
         while(not takeoff_failed):
             m = m+dm
 
@@ -47,7 +50,10 @@ class Takeoff:
             on_ground = True
             takeoff_failed = False
 
+            time_dict = {}
+
             while(on_ground and not takeoff_failed):
+
                 alpha_w = theta_airplane_deg + incidence_w
                 alpha_hs = theta_airplane_deg + incidence_hs
 
@@ -104,3 +110,10 @@ class Takeoff:
                     on_ground = True
                 else:
                     on_ground = False
+
+                time_data = [theta_airplane_deg, E, L, L_w, L_hs, D, D_w, D_hs, N, F_at, V_x, dist_x, M, M_w, M_hs, dTheta, incidence_hs]
+                time_dict[t] = time_data
+
+            time_df = pd.DataFrame.from_dict(time_dict, orient="index", columns=["theta", "E", "L", "L_w", "L_hs", "D", "D_w", "D_hs", "N", "F_at", "V_x", "dist_x", "M", "M_w", "M_hs", "dTheta", "incidence_hs"])
+            time_df.index.name = 't'
+            self.mass_dict[m] = time_df
