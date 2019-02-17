@@ -1,6 +1,7 @@
 from ADR.Analysis.Performance.Takeoff import Takeoff
 from ADR.Components.Plane import Plane
 from ADR.Components.Aerodynamic_components.Airfoil import Airfoil
+from matplotlib import pyplot as plt
 
 wing1_CM_ca = -0.32
 wing2_CM_ca = -0.32
@@ -101,3 +102,40 @@ takeoff_analysis = Takeoff(plane, takeoff_parameters)
 takeoff_analysis.calculate_mtow()
 mtow = takeoff_analysis.mtow
 print('Final MTOW is {}'.format(mtow))
+
+fig1, ((ax1, ax2, ax3), (ax4, ax5, ax6)) = plt.subplots(2, 3)
+
+ax1.plot(takeoff_analysis.mass_dict[mtow]['N'], label='Normal')
+ax1.plot(takeoff_analysis.mass_dict[mtow]['L'], label='Lift')
+ax1.plot(takeoff_analysis.mass_dict[mtow]['L_w'], label='Lift Wing')
+ax1.plot(takeoff_analysis.mass_dict[mtow]['L_hs'], label='Lift HS')
+ax1.grid()
+ax1.legend()
+
+ax2.plot(takeoff_analysis.mass_dict[mtow]['D'], label='Drag')
+ax2.plot(takeoff_analysis.mass_dict[mtow]['D_w'], label='Drag Wing')
+ax2.plot(takeoff_analysis.mass_dict[mtow]['D_hs'], label='Drag HS')
+ax2.grid()
+ax2.legend()
+
+ax3.plot(takeoff_analysis.mass_dict[mtow]['M'], label='Moment')
+ax3.plot(takeoff_analysis.mass_dict[mtow]['M_w'], label='Moment Wing')
+ax3.plot(takeoff_analysis.mass_dict[mtow]['M_hs'], label='Moment HS')
+ax3.grid()
+ax3.legend()
+
+ax4.plot(takeoff_analysis.mass_dict[mtow]['dTheta'], label='dTheta')
+ax4.grid()
+ax4.legend()
+
+ax5.plot(takeoff_analysis.mass_dict[mtow]['incidence_hs'], label='HS incidence')
+ax5.plot(takeoff_analysis.mass_dict[mtow]['theta'], label='Theta')
+ax5.grid()
+ax5.legend()
+
+ax6.plot(takeoff_analysis.mass_dict[mtow]['dist_x'], label='Distance')
+ax6.plot(takeoff_analysis.mass_dict[mtow]['V_x'], label='Velocity')
+ax6.grid()
+ax6.legend()
+
+plt.show()
