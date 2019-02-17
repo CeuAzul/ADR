@@ -26,7 +26,7 @@ class Takeoff:
         self.distx_motor_tpr = abs(plane.motor.x - plane.tpr.x)
         self.distz_motor_tpr = abs(plane.motor.z - plane.tpr.z)
 
-    def calculate_mtow(self):
+    def get_mtow(self):
 
         m = 1 # Massa total inicial do aviao [kg]
         g = 9.81 # Constante gravitacional [m/s^2]
@@ -143,3 +143,5 @@ class Takeoff:
             time_df = pd.DataFrame.from_dict(time_dict, orient="index", columns=["theta", "E", "L", "L_w1", "L_w2", "L_hs", "D", "D_w1", "D_w2", "D_hs", "N", "F_at", "V_x", "dist_x", "M", "M_w1", "M_w2", "M_hs", "dTheta", "incidence_hs"])
             time_df.index.name = 't'
             self.mass_dict[m] = time_df
+
+        return self.mtow
