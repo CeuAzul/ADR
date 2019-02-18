@@ -48,7 +48,7 @@ class Aerodynamic_surface(Component):
         self.section1 = Aerodynamic_section(data_section1)
         self.section2 = Aerodynamic_section(data_section2)
 
-        self.area = self.section1.area + self.section2.area
+        self.area = 2 * (self.section1.area + self.section2.area)
         self.MAC = self.calc_MAC()
 
         self.calc_aerodynamic_data()
@@ -147,14 +147,14 @@ class Aerodynamic_surface(Component):
         q = rho*(V**2)/2
         for i in range(alpha_length):
             L, D, M, y, clc = Aerodynamic_calculator.vlm(V, alpha_rad[i], self.airfoil1_name) #TODO: COLOCAR AIRFOIL CERTO
-            cp = -M/(L*self.chord1) #TODO: Corda 1 apenas?
+            cp = -M/(L*self.MAC) #TODO: Corda 1 apenas?
             if max(clc) > clc_max:
                 break
             # print(alpha_rad[i],L)
             alpha.append(alpha2[i])
             cd.append(D/(q*self.area))
             cl.append(L/(q*self.area))
-            cm.append(-(cp-0.25*0)*L/(q*self.area)) #TODO: Multiplica por 0?
+            cm.append(-(cp-0.25)*L/(q*self.area)) #TODO: Multiplica por 0?
 
         # print(alpha)
         # print(cl)
@@ -234,9 +234,9 @@ class Aerodynamic_surface(Component):
         return range(self.stall_min, self.stall_max + 1)
 
     def calc_MAC(self):
-        return self.section1.MAC - (2 * (self.section1.MAC - self.section2.MAC) *
-                                    (0.5 * self.section1.MAC + self.section2.MAC) /
-                                    (3 * (self.section1.MAC + self.section2.MAC)))
+        MAC = self.section1.MAC * (self.section1.area/(self.section1.area + self.section2.area)) \
+            + self.section2.MAC * (self.section2.area/(self.section1.area + self.section2.area))
+        return MAC
 
     def get_CL(self, alpha):
         CL = np.interp(alpha, self.CL_alpha.index.values, self.CL_alpha['CL'])
