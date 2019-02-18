@@ -200,8 +200,8 @@ class Aerodynamic_surface(Component):
 
         self.dCL_dalpha = self.CL_alpha.diff()
         self.dCD_dalpha = self.CD_alpha.diff()
-        self.dCL_dalpha.fillna(0, inplace=True)
-        self.dCD_dalpha.fillna(0, inplace=True)
+        self.dCL_dalpha.fillna(method="bfill", inplace=True)
+        self.dCD_dalpha.fillna(method="bfill", inplace=True)
 
         self.downwash_angle = 0
 

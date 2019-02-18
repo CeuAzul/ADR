@@ -82,7 +82,9 @@ class FlightStability:
                     # Summing CM of tail with CM of wing per each alpha
                     # Getting CM_alpha of plane
                     CM_alpha_CG_plane[alpha_plane] = CM_alpha_CG_wings[alpha_plane] + CM_alpha_CG_tail[alpha_plane]
-
+                else:
+                    CM_alpha_CG_tail[alpha_plane] = None
+                    CM_alpha_CG_plane[alpha_plane] = None
 
             CM_alpha_CG_plane_df = self.dict_to_data_frame(CM_alpha_CG_plane)
             CM_alpha_CG_plane_each_hs_incidence[hs_incidence] = CM_alpha_CG_plane_df
