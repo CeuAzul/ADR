@@ -111,7 +111,7 @@ class Plane:
         #self.vs = VS(vs_data)
         self.motor = Motor(motor_data)
         self.cg = CG(cg_data)
-        self.tpr = CG(tpr_data)
+        self.tpr = TPR(tpr_data)
 
         self.dCM_dalpha = 0
 
