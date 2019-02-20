@@ -229,7 +229,8 @@ class Aerodynamic_surface(Component):
         return CM
 
     def get_alpha_range(self):
-        return range(self.stall_min, self.stall_max + 1)
+        alpha_range = range(self.stall_min, self.stall_max + 1)
+        return alpha_range
 
     def calc_MAC(self):
         MAC = self.section1.MAC * (self.section1.area/(self.section1.area + self.section2.area)) \

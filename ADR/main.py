@@ -13,3 +13,4 @@ mtow = takeoff_analysis.get_mtow()
 print('Final MTOW is {}'.format(mtow))
 
 flight_stability = FlightStability(plane)
+CM_plane_on_CG_fixed = flight_stability.CM_plane_CG(plane.cg)

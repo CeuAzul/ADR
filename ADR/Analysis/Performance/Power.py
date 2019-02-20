@@ -17,8 +17,8 @@ class Power:
         self.power_available()
 
     def power_required(self):
-        thrust_dict = {}
-        power_dict = {}
+        thrust_required_dict = {}
+        power_required_dict = {}
         alpha_dict = {}
         for velocity in np.arange(0,26,0.1):
             total_lift = 0
@@ -40,29 +40,36 @@ class Power:
                               self.hs.drag(self.rho, velocity, alpha_nivel)
 
             alpha_dict[velocity] = alpha_nivel
-            thrust_dict[velocity] = thrust_required
+            thrust_required_dict[velocity] = thrust_required
 
-        for velocity in thrust_dict:
-            power_dict[velocity] = thrust_dict[velocity] * velocity
+        for velocity in thrust_required_dict:
+            power_required_dict[velocity] = thrust_required_dict[velocity] * velocity
 
+
+        self.thrust_required_dict = thrust_required_dict
+        self.power_required_dict = power_required_dict
+        self.alpha_dict = alpha_dict
         self.alpha_df = pd.DataFrame.from_dict(alpha_dict, orient = 'index', columns = ['alpha'])
-        self.thrust_required_df = pd.DataFrame.from_dict(thrust_dict, orient = 'index', columns = ['thrust'])
-        self.power_required_df = pd.DataFrame.from_dict(power_dict, orient = 'index', columns = ['power'])
+        self.thrust_required_df = pd.DataFrame.from_dict(thrust_required_dict, orient = 'index', columns = ['thrust'])
+        self.power_required_df = pd.DataFrame.from_dict(power_required_dict, orient = 'index', columns = ['power'])
 
         return self.alpha_df, self.thrust_required_df, self.power_required_df
 
     def power_available(self):
-        thrust_dict = {}
-        power_dict = {}
+        thrust_available_dict = {}
+        power_available_dict = {}
 
         for velocity in np.arange(0,26,0.1):
             thrust_available = self.plane.motor.thrust(velocity)
-            thrust_dict[velocity] = thrust_available
+            thrust_available_dict[velocity] = thrust_available
 
-        for velocity in thrust_dict:
-            power_dict[velocity] = thrust_dict[velocity] * velocity
+        for velocity in thrust_available_dict:
+            power_available_dict[velocity] = thrust_available_dict[velocity] * velocity
 
-        self.thrust_available_df = pd.DataFrame.from_dict(thrust_dict, orient = 'index', columns = ['thrust'])
-        self.power_available_df = pd.DataFrame.from_dict(power_dict, orient = 'index', columns = ['power'])
 
-        return self.thrust_available_df, self.power_available_df
+        self.thrust_available_dict = thrust_available_dict
+        self.power_available_dict = power_available_dict
+        self.thrust_available_df = pd.DataFrame.from_dict(thrust_available_dict, orient = 'index', columns = ['thrust'])
+        self.power_available_df = pd.DataFrame.from_dict(power_available_dict, orient = 'index', columns = ['power'])
+
+        return self.thrust_available_df, self.power_available_df

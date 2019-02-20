@@ -32,12 +32,12 @@ def plot_stability_data():
     ax1.grid()
     ax1.legend()
 
-    ax2.set_xlabel("Alpha")
-    ax2.set_ylabel("SM")
-    ax2.set_title("Static Margin")
-    ax2.plot(SM_plane_on_CG["cg50"])     # Ploting for cg in first position(cg1)
-    ax2.grid()
-    ax2.legend()
+    # ax2.set_xlabel("Alpha")
+    # ax2.set_ylabel("SM")
+    # ax2.set_title("Static Margin")
+    # ax2.plot(SM_plane_on_CG["cg50"])     # Ploting for cg in first position(cg1)
+    # ax2.grid()
+    # ax2.legend()
 
     plt.show()
 
@@ -47,9 +47,9 @@ if __name__ == "__main__":
     plane = Plane(plane_data)
     flight_stability = FlightStability(plane)
 
-    cg_x_range = [round(i, 3) for i in np.linspace(-0.05, -0.1, 10)]
-    cg_z_range = [round(i, 3) for i in np.linspace(-0.01, 0.01, 10)]
-    CM_plane_on_CG, SM_plane_on_CG = flight_stability.vary_CG(cg_x_range, cg_z_range)
+    # cg_x_range = [round(i, 3) for i in np.linspace(-0.05, -0.1, 10)]
+    # cg_z_range = [round(i, 3) for i in np.linspace(-0.01, 0.01, 10)]
+    # CM_plane_on_CG, SM_plane_on_CG = flight_stability.vary_CG(cg_x_range, cg_z_range)
 
     plot_stability_data()
 
