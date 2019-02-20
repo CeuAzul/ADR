@@ -108,3 +108,12 @@ def takeoff_data():
     }
 
     return takeoff_parameters
+
+def mass_data():
+
+    mass_parameters = {
+        "rho_balse": 140, #densidade da madeira balsa em kg/m3
+        "thickness_balse": 0.002 #m
+    }
+
+    return mass_parameters
