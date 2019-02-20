@@ -24,3 +24,9 @@ ADR\.egg-info/
 
 # Ignore Python runtime files
 *.pyc
+
+ADR/\.vscode/
+
+ADR/Methods/VLM/AVL/configs\.avl
+
+ADR/Methods/VLM/AVL/output\.txt
