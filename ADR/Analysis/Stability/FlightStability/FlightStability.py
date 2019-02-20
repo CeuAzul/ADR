@@ -8,7 +8,6 @@ from matplotlib import pyplot as plt
 import pandas as pd
 import numpy as np
 from scipy import interpolate
-from scipy.optimize import root_scalar
 
 from ADR.Components.References.Static_margin import SM
 from ADR.Components.Points.CG import CG

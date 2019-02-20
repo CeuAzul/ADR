@@ -24,3 +24,5 @@ ADR\.egg-info/
 
 # Ignore Python runtime files
 *.pyc
+
+ADR/\.vscode/
