@@ -4,11 +4,10 @@ from math import radians
 import numpy as np
 import pandas as pd
 
-from io_avl import get_value, set_dimensions
+from ADR.Methods.VLM.AVL.io_avl import get_value, set_dimensions
 
 def get_aero_coeffs(data):
 
-    surface_name = data.get("surface_name")
     airfoil1_name = data.get("airfoil1_name")
     airfoil2_name = data.get("airfoil2_name")
     airfoil3_name = data.get("airfoil3_name")
@@ -32,7 +31,7 @@ def get_aero_coeffs(data):
     airfoil3_file = os.path.join(dir_name, airfoil3_name + '.dat')
 
     set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
-                   surface_name, 0, 0, span1, span1+span2, 0, chord1, chord2, chord3,
+                   'wing', 0, 0, span1, span1+span2, 0, chord1, chord2, chord3,
                    incidence, twist1, twist2, twist3)
 
     alpha_range = np.arange(-20, 21, 1)
@@ -57,7 +56,7 @@ def get_aero_coeffs(data):
     CL_df.index.name = 'alpha'
     CD_df = pd.DataFrame.from_dict(CD_dict,  orient="index", columns=["CD"])
     CD_df.index.name = 'alpha'
-    Cm_df = pd.DataFrame.from_dict(Cm_dict,  orient="index", columns=["Cm"])
+    Cm_df = pd.DataFrame.from_dict(Cm_dict,  orient="index", columns=["CM"])
     Cm_df.index.name = 'alpha'
 
     return CL_df, CD_df, Cm_df

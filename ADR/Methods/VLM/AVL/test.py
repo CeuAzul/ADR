@@ -1,18 +1,16 @@
-import pandas as pd
 from matplotlib import pyplot as plt
 
 from avl_runner import get_aero_coeffs
 
 data = {
-    "surface_name": 'wing1',
     "airfoil1_name": 's1223',
     "airfoil2_name": 's1223',
     "airfoil3_name": 's1223',
     "span1": 0.45,
     "span2": 0.45,
-    "chord1": 0.25,
-    "chord2": 0.25,
-    "chord3": 0.25,
+    "chord1": 0.30,
+    "chord2": 0.20,
+    "chord3": 0.10,
     "twist1": 0,
     "twist2": 0,
     "twist3": 0,

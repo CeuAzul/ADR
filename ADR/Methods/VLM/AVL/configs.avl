@@ -6,7 +6,7 @@ teste1
 0 0 0.0
 #Sref Cref Bref
 #Dimensoes_referencia
-0.45 0.25 1.8
+0.072 0.1556 0.48
 #XrefYref Zref
 #Posicao cg
 0.16 0.0 -0.065
@@ -36,7 +36,7 @@ SECTION
 
 #Xle Yle Zle Chord Ainc Nspanwise Sspace
 #Dimensao_wing_secao_1
-0 0 0 0.4 0 0 0
+0 0 0 0.2 0 0 0
 #Xle,Yle,Zle, coordinates of an airfoil's leading edge.
 #Chord, chord length. Airfoils are directed along x axis.
 #Ainc, to change incidence angle of a specific profile. If two sections have defined different
@@ -44,24 +44,24 @@ SECTION
 #Nspanwise, optional place to define vortices distrubtion, especially whena particular number # of vortices between different sections is expected.
 AFILE
 #arquivo_1
-d:\Area de Trabalho\Codigo2ponto0\ADR\ADR\Methods\VLM\AVL\s1223.dat
+d:\area de trabalho\codigo2ponto0\adr\ADR\Methods\VLM\AVL\s1223.dat
 #==================================================================
 SECTION
 #Xle Yle Zle Chord Ainc Nspanwise Sspace
 #Dimensao_wing_secao_2
-0 0.7 0 0.4 0 0 0
+0 0.12 0 0.15 0 0 0
 #A definition of the second section.
 AFILE
 #arquivo_2
-d:\Area de Trabalho\Codigo2ponto0\ADR\ADR\Methods\VLM\AVL\s1223.dat
+d:\area de trabalho\codigo2ponto0\adr\ADR\Methods\VLM\AVL\s1223.dat
 #==================================================================
 SECTION
 #Xle Yle Zle Chord Ainc Nspanwise Sspace
 #Dimensao_wing_secao_3
-0 1.4 0 0.4 0 0 0
+0 0.24 0 0.1 0 0 0
 #A definition of the second section.
 AFILE
 #arquivo_3
-d:\Area de Trabalho\Codigo2ponto0\ADR\ADR\Methods\VLM\AVL\s1223.dat
+d:\area de trabalho\codigo2ponto0\adr\ADR\Methods\VLM\AVL\s1223.dat
 #==================================================================
 

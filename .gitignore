@@ -26,3 +26,7 @@ ADR\.egg-info/
 *.pyc
 
 ADR/\.vscode/
+
+ADR/Methods/VLM/AVL/configs\.avl
+
+ADR/Methods/VLM/AVL/output\.txt

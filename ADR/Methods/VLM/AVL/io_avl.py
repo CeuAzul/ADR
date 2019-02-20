@@ -17,7 +17,25 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
                    surface_name, x, y1, y2, y3, z, c1, c2, c3,
                    angle_incidence, twist1, twist2, twist3):
 
-    with fileinput.input(config_file,inplace = True) as op:
+    S_section1 = (c1+c2)*(y2-y1)*0.5
+    S_section2 = (c2+c3)*(y3-y2)*0.5
+
+    S_total = 2 * (S_section1 + S_section2)
+
+    MAC_section1 = c1 - (2   * (c1 - c2) *
+                        (0.5 *  c1 + c2) /
+                        (3   * (c1 + c2) ) )
+
+    MAC_section2 = c2 - (2   * (c2 - c3) *
+                        (0.5 *  c2 + c3) /
+                        (3   * (c2 + c3) ) )
+
+    MAC = MAC_section1*S_section1/(S_section1+S_section2) + \
+          MAC_section2*S_section2/(S_section1+S_section2)
+
+    B_total = 2 * (y3-y1)
+
+    with fileinput.input(config_file, inplace = True) as op:
         is_the_next_dim_gen = False
         is_the_next_dim1 = False
         is_the_next_dim2 = False
@@ -31,7 +49,7 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
             #DIMENSOES REFERENCIA=============================================================================
 
             if is_the_next_dim_gen == True: #Altera o angulo
-                print(line.replace(line,'{} {} {}'.format(round(((c1+c2)*(y2-y1)*0.5+(c2+c3)*(y3-y2)*0.5)*2,4),round((c1+c2+c3)/3,4),round((y3-y1)*2,4))))
+                print(line.replace(line,'{} {} {}'.format(round(S_total, 4), round(MAC, 4), round(B_total, 4))))
                 is_the_next_dim_gen = False
                 pass
 
