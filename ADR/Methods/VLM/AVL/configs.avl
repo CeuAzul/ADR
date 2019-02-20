@@ -1,0 +1,67 @@
+teste1
+
+#Mach
+0.04
+#IYsym IZsym Zsym
+0 0 0.0
+#Sref Cref Bref
+#Dimensoes_referencia
+0.45 0.25 1.8
+#XrefYref Zref
+#Posicao cg
+0.16 0.0 -0.065
+
+#CDdp
+#arrasto parasita
+0.020
+
+#==================================================================
+SURFACE
+
+Wing
+
+#(Paineis na corda) (Distribuicao na corda) (Paineis na envergadura) (Distribuicao na envergadura)
+8 1.0 12 -2.0
+
+COMPONENT
+4
+
+YDUPLICATE
+0.0
+
+ANGLE
+0
+#==================================================================
+SECTION
+
+#Xle Yle Zle Chord Ainc Nspanwise Sspace
+#Dimensao_wing_secao_1
+0 0 0 0.4 0 0 0
+#Xle,Yle,Zle, coordinates of an airfoil's leading edge.
+#Chord, chord length. Airfoils are directed along x axis.
+#Ainc, to change incidence angle of a specific profile. If two sections have defined different
+#Ainc, an incidence angle will change between them as a result of linear function.
+#Nspanwise, optional place to define vortices distrubtion, especially whena particular number # of vortices between different sections is expected.
+AFILE
+#arquivo_1
+d:\Area de Trabalho\Codigo2ponto0\ADR\ADR\Methods\VLM\AVL\s1223.dat
+#==================================================================
+SECTION
+#Xle Yle Zle Chord Ainc Nspanwise Sspace
+#Dimensao_wing_secao_2
+0 0.7 0 0.4 0 0 0
+#A definition of the second section.
+AFILE
+#arquivo_2
+d:\Area de Trabalho\Codigo2ponto0\ADR\ADR\Methods\VLM\AVL\s1223.dat
+#==================================================================
+SECTION
+#Xle Yle Zle Chord Ainc Nspanwise Sspace
+#Dimensao_wing_secao_3
+0 1.4 0 0.4 0 0 0
+#A definition of the second section.
+AFILE
+#arquivo_3
+d:\Area de Trabalho\Codigo2ponto0\ADR\ADR\Methods\VLM\AVL\s1223.dat
+#==================================================================
+
