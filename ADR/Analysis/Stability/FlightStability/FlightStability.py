@@ -117,7 +117,8 @@ class FlightStability:
                             self.plane.dCM_dalpha.at[alpha_plane, 'CM']) #TODO: We should pass the entire plane into SM analysys
                 SM_alpha[alpha_plane] = self.sm.SM
 
-        self.SM_alpha_df = dict_to_dataframe(SM_alpha, 'CM', 'alpha')
+        self.SM_alpha_df = dict_to_dataframe(SM_alpha, 'SM', 'alpha')
+        self.plane.SM_alpha = self.SM_alpha_df
         return self.SM_alpha_df
 
     def trimm(self):

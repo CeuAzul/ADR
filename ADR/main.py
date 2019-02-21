@@ -5,6 +5,7 @@ from ADR.Analysis.Performance.Power import Power
 from ADR.Analysis.Stability.FlightStability.FlightStability import FlightStability
 
 from ADR.Checkers.TrimmRange import TrimmRangeChecker
+from ADR.Checkers.StaticMargin import StaticMarginChecker
 
 from matplotlib import pyplot as plt
 import numpy as np
@@ -20,8 +21,12 @@ print('MTOW is {}'.format(mtow))
 
 flight_stability = FlightStability(plane)
 CM_plane_on_CG_fixed = flight_stability.CM_plane_CG(plane.cg)
+flight_stability.static_margin()
 
 power_analysis = Power(plane, performance_data)
 
 trimm_range_checker = TrimmRangeChecker(plane)
 trimm_range_checker.check()
+
+sm_checker = StaticMarginChecker(plane)
+sm_checker.check()

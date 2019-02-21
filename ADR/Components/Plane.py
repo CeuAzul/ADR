@@ -130,8 +130,11 @@ class Plane:
         self.alpha_trimm_max = 0
         self.tail_trimm = 0
 
+        self.SM_alpha = None
+
         self.trimm_for_low_angles = False
         self.trimm_for_high_angles = False
+        self.positive_sm_for_positive_alphas = False
 
         self.get_CL_alpha_plane()
 
