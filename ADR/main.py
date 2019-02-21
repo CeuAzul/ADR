@@ -6,6 +6,7 @@ from ADR.Analysis.Stability.FlightStability.FlightStability import FlightStabili
 
 from ADR.Checkers.TrimmRange import TrimmRangeChecker
 from ADR.Checkers.StaticMargin import StaticMarginChecker
+from ADR.Checkers.Scoreboard import MaybeAnAssassin
 
 from matplotlib import pyplot as plt
 import numpy as np
@@ -30,5 +31,8 @@ trimm_range_checker.check()
 
 sm_checker = StaticMarginChecker(plane)
 sm_checker.check()
+
+maybe_an_assassin = MaybeAnAssassin(plane)
+maybe_an_assassin.score_or_kill()
 
 print('Final MTOW is {}'.format(mtow))
