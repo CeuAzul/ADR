@@ -123,15 +123,25 @@ class Plane:
         self.V_stall = 0
         self.V_min = 0
         self.V_max = 0
-        self.mtow = 0
+        self.mtow = 5
         self.alpha_min = 0
         self.alpha_max = 0
+        self.alpha_trimm_min = 0
+        self.alpha_trimm_max = 0
         self.tail_trimm = 0
 
         self.get_CL_alpha_plane()
 
     def __str__(self):
         return self.__class__.__name__
+
+    def set_alpha_trimmed(self, alpha_airplane):
+        self.wing1.update_alpha(alpha_airplane)
+        if self.plane_type == 'biplane':
+            self.wing2.update_alpha(alpha_airplane)
+        hs_incidence = np.interp(alpha_airplane, self.tail_trimm.index.values, self.tail_trimm['hs_incidence'])
+        self.hs.incidence = hs_incidence
+        self.hs.update_alpha(alpha_airplane)
 
     def get_CL_alpha_plane(self):
         CL_alpha_plane = {}
@@ -142,6 +152,11 @@ class Plane:
             CL_alpha_plane[alpha] = numerator / self.wing1.area
         self.CL_alpha = dict_to_dataframe(CL_alpha_plane, 'CL', 'alpha')
         return self.CL_alpha
+
+    def get_V_stall(self, rho):
+        self.CL_max = self.CL_alpha.max()[0]
+        self.V_stall = ( (2*self.mtow*9.81)/(rho*self.wing1.area*self.CL_max) )**0.5
+        return self.V_stall
 
     def show_plane(self):
         print("\nPlane components:\n")

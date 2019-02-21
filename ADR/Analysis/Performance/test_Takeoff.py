@@ -47,10 +47,10 @@ def plot_takeoff_data():
 
 if __name__ == "__main__":
     plane_data = parameters.plane_data()
-    takeoff_data = parameters.takeoff_data()
+    performance_data = parameters.performance_data()
 
     plane = Plane(plane_data)
-    takeoff_analysis = Takeoff(plane, takeoff_data)
+    takeoff_analysis = Takeoff(plane, performance_data)
     mtow = takeoff_analysis.get_mtow()
 
     print('Final MTOW is {}'.format(mtow))

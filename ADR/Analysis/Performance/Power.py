@@ -1,20 +1,24 @@
 from matplotlib import pyplot as plt
 import pandas as pd
 import numpy as np
+from ADR.Core.data_manipulation import dict_to_dataframe
+from ADR.Core.data_manipulation import find_df_roots
 
 class Power:
-    def __init__(self, plane):
+    def __init__(self, plane, performance_parameters):
 
         self.plane = plane
         self.wing1 = plane.wing1
         self.wing2 = plane.wing2
         self.hs = plane.hs
         self.area_ref = plane.wing1.area
-        self.rho = 1.225
-        self.mass = 9.3
+        self.rho = performance_parameters.get("rho_air")
+        self.mass = plane.mtow
         self.weight = self.mass * 9.81
         self.power_required()
         self.power_available()
+        self.power_excess()
+        self.get_V_min_max()
 
     def power_required(self):
         thrust_required_dict = {}
@@ -25,9 +29,9 @@ class Power:
             alpha = -20
             while(total_lift < self.weight):
                 alpha += 0.1
-                total_lift = self.wing1.lift(self.rho, velocity, alpha) + \
-                             self.wing2.lift(self.rho, velocity, alpha) - \
-                             self.hs.lift(self.rho, velocity, alpha)
+                total_lift = self.wing1.lift(self.rho, velocity, alpha) - self.hs.lift(self.rho, velocity, alpha)
+                if self.plane.plane_type == 'biplane':
+                    total_lift += self.wing2.lift(self.rho, velocity, alpha)
                 if alpha >= 20:
                     alpha_nivel = None
                     break
@@ -49,9 +53,9 @@ class Power:
         self.thrust_required_dict = thrust_required_dict
         self.power_required_dict = power_required_dict
         self.alpha_dict = alpha_dict
-        self.alpha_df = pd.DataFrame.from_dict(alpha_dict, orient = 'index', columns = ['alpha'])
-        self.thrust_required_df = pd.DataFrame.from_dict(thrust_required_dict, orient = 'index', columns = ['thrust'])
-        self.power_required_df = pd.DataFrame.from_dict(power_required_dict, orient = 'index', columns = ['power'])
+        self.alpha_df = dict_to_dataframe(alpha_dict, 'Alpha', 'Velocity')
+        self.thrust_required_df = dict_to_dataframe(thrust_required_dict, 'Thrust required', 'Velocity')
+        self.power_required_df = dict_to_dataframe(power_required_dict, 'Power required', 'Velocity')
 
         return self.alpha_df, self.thrust_required_df, self.power_required_df
 
@@ -59,7 +63,7 @@ class Power:
         thrust_available_dict = {}
         power_available_dict = {}
 
-        for velocity in np.arange(0,26,0.1):
+        for velocity in np.arange(0, 26, 0.1):
             thrust_available = self.plane.motor.thrust(velocity)
             thrust_available_dict[velocity] = thrust_available
 
@@ -69,7 +73,35 @@ class Power:
 
         self.thrust_available_dict = thrust_available_dict
         self.power_available_dict = power_available_dict
-        self.thrust_available_df = pd.DataFrame.from_dict(thrust_available_dict, orient = 'index', columns = ['thrust'])
-        self.power_available_df = pd.DataFrame.from_dict(power_available_dict, orient = 'index', columns = ['power'])
 
-        return self.thrust_available_df, self.power_available_df
+        self.thrust_available_df = dict_to_dataframe(thrust_available_dict, 'Thrust available', 'Velocity')
+        self.power_available_df = dict_to_dataframe(power_available_dict, 'Power available', 'Velocity')
+
+        return self.thrust_available_df, self.power_available_df
+
+    def power_excess(self):
+        power_excess_dict = {}
+        for velocity in self.power_available_dict:
+            power_required = self.power_required_dict[velocity]
+            power_available = self.power_available_dict[velocity]
+            power_excess_dict[velocity] = power_available - power_required
+        self.power_excess_dict = power_excess_dict
+        self.power_excess_df = dict_to_dataframe(power_excess_dict, 'Power excess', 'Velocity')
+
+    def get_V_min_max(self):
+        V_stall = self.plane.get_V_stall(self.rho)
+        roots = find_df_roots(self.power_excess_df, 'Power excess')
+        if len(roots) == 1:
+            self.plane.V_min = V_stall
+            self.plane.V_max = roots[0]
+            alpha_max = np.interp(self.plane.CL_max, self.plane.CL_alpha['CL'], self.plane.CL_alpha.index.values)
+        elif len(roots) == 2:
+            self.plane.V_min = roots[0]
+            self.plane.V_max = roots[1]
+            alpha_max = np.interp(self.plane.V_min, self.alpha_df.index.values, self.alpha_df['Alpha'])
+        elif len(roots) == 0:
+            raise ValueError ('Airplane has no power excess! Get this drag down or buy a new motor!')
+        self.plane.alpha_min = self.alpha_dict[self.plane.V_max]
+
+        self.plane.alpha_max = alpha_max
+
