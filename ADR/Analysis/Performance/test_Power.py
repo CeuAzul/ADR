@@ -4,7 +4,7 @@ from ADR.Analysis.Performance.Power import Power
 
 from matplotlib import pyplot as plt
 
-def plot_power_curves():
+def plot_power_curves(power_analysis):
 
     fig1, ((ax1, ax2, ax3, ax4)) = plt.subplots(1, 4)
 
@@ -27,12 +27,11 @@ def plot_power_curves():
     ax4.grid()
     ax4.legend()
 
-    plt.show()
-
 if __name__ == "__main__":
     plane_data = parameters.plane_data()
     performance_data = parameters.performance_data()
 
     plane = Plane(plane_data)
     power_analysis = Power(plane, performance_data)
-    plot_power_curves()
+    plot_power_curves(power_analysis)
+    plt.show()

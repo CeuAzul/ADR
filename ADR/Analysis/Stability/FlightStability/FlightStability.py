@@ -24,6 +24,10 @@ class FlightStability:
         if self.plane.plane_type != "monoplane" and self.plane.plane_type != "biplane":
             print("Incapable of analysing FlightStability of this plane type")
 
+        self.CM_plane_CG(plane.cg)
+        self.static_margin()
+
+
     # def vary_CG(self, cg_x_range, cg_z_range):
     #     CM_plane_changing_CG = {}
     #     SM_plane_changing_CG = {}
