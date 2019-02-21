@@ -1,4 +1,5 @@
 import fileinput
+import pandas as pd
 
 def get_value(output_file, variable_name):
     var = '{}'.format(variable_name)
@@ -12,6 +13,20 @@ def get_value(output_file, variable_name):
                     if var in data:
                         coef = data.split('=')
                         return float(coef[1].strip('\n'))
+
+def get_clmax(output):
+    with fileinput.input(output, inplace=True) as op:
+        for line in op:
+            if 'c cl' in line:
+                print(line.replace('c cl','c_cl'))
+            else:
+                print(line.replace('\n',''))
+
+
+    fid_df = pd.read_csv(output, skiprows=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,20], skipfooter=28, delim_whitespace=True)
+    fid_df.set_index('j', inplace=True)
+    cl_max = fid_df['cl'].max()
+    return cl_max
 
 def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
                    surface_name, x, y1, y2, y3, z, c1, c2, c3,
@@ -44,6 +59,7 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
         is_the_next_airfoil1_file = False
         is_the_next_airfoil2_file = False
         is_the_next_airfoil3_file = False
+        is_the_next_loc_cg = False
         for line in op:
 
             #DIMENSOES REFERENCIA=============================================================================
@@ -53,9 +69,21 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
                 is_the_next_dim_gen = False
                 pass
 
-            elif '#Dimensoes_referencia' in line: #Define a linha que tem o angulo
+            elif '#Dimensoes_referencia_{}'.format(surface_name) in line: #Define a linha que tem o angulo
                 print(line.replace('\n',''))
                 is_the_next_dim_gen = True
+                pass
+
+            #LOCALIZACAO DO CG PARA CM_CA=============================================================================
+
+            elif is_the_next_loc_cg == True: #Altera o angulo
+                print(line.replace(line,'{} {} {}'.format(round(MAC/4, 4), 0, 0)))
+                is_the_next_loc_cg = False
+                pass
+
+            elif '#Localizacao_cg_{}'.format(surface_name) in line: #Define a linha que tem o angulo
+                print(line.replace('\n',''))
+                is_the_next_loc_cg = True
                 pass
 
             #ARQUIVO DO PERFIL===========================================================================
@@ -65,7 +93,7 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
                 is_the_next_airfoil1_file = False
                 pass
 
-            elif '#arquivo_1' in line: #Define a linha que tem o arquivo
+            elif '#arquivo_{}_1'.format(surface_name) in line: #Define a linha que tem o arquivo
                 print(line.replace('\n',''))
                 is_the_next_airfoil1_file = True
                 pass
@@ -75,7 +103,7 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
                 is_the_next_airfoil2_file = False
                 pass
 
-            elif '#arquivo_2' in line: #Define a linha que tem o arquivo
+            elif '#arquivo_{}_2'.format(surface_name) in line: #Define a linha que tem o arquivo
                 print(line.replace('\n',''))
                 is_the_next_airfoil2_file = True
                 pass
@@ -85,7 +113,7 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
                 is_the_next_airfoil3_file = False
                 pass
 
-            elif '#arquivo_3' in line: #Define a linha que tem o arquivo
+            elif '#arquivo_{}_3'.format(surface_name) in line: #Define a linha que tem o arquivo
                 print(line.replace('\n',''))
                 is_the_next_airfoil3_file = True
                 pass
@@ -97,7 +125,7 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
                 is_the_next_angle = False
                 pass
 
-            elif 'ANGLE' in line: #Define a linha que tem o angulo
+            elif '#Angulo_incidencia_{}'.format(surface_name) in line: #Define a linha que tem o angulo
                 print(line.replace('\n',''))
                 is_the_next_angle = True
                 pass

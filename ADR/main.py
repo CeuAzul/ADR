@@ -21,7 +21,7 @@ mtow = takeoff_analysis.get_mtow()
 print('Initial MTOW is {}'.format(mtow))
 
 flight_stability = FlightStability(plane)
-CM_plane_on_CG_fixed = flight_stability.CM_plane_CG(plane.cg)
+flight_stability.CM_plane_CG(plane.cg)
 flight_stability.static_margin()
 
 power_analysis = Power(plane, performance_data)

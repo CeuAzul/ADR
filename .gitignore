@@ -27,6 +27,4 @@ ADR\.egg-info/
 
 ADR/\.vscode/
 
-ADR/Methods/VLM/AVL/configs\.avl
-
-ADR/Methods/VLM/AVL/output\.txt
+ADR/Methods/VLM/AVL/outputs/

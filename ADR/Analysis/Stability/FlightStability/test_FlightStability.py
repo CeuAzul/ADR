@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt
 from scipy import interpolate
-from scipy.optimize import root_scalar
+# from scipy.optimize import root_scalar
 
 from ADR import parameters
 from ADR.Components.Plane import Plane
@@ -8,10 +8,10 @@ from ADR.Analysis.Stability.FlightStability.FlightStability import FlightStabili
 from ADR.Components.Points.CG import CG
 import numpy as np
 
-def find_root(x_axis, y_axis, extremes):
-    intepolated = interpolate.interp1d(x_axis, y_axis['CM'])
-    data = root_scalar(intepolated, bracket=extremes, method="bisect")
-    return data.root
+# def find_root(x_axis, y_axis, extremes):
+#     intepolated = interpolate.interp1d(x_axis, y_axis['CM'])
+#     data = root_scalar(intepolated, bracket=extremes, method="bisect")
+#     return data.root
 
 def plot_stability_data():
 

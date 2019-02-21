@@ -1,19 +1,19 @@
-teste1
+configs
 
 #Mach
 0.04
 #IYsym IZsym Zsym
 0 0 0.0
 #Sref Cref Bref
-#Dimensoes_referencia
-0.072 0.1556 0.48
+#Dimensoes_referencia_wing
+0.48 0.3111 1.6
 #XrefYref Zref
-#Posicao cg
-0.16 0.0 -0.065
+#Localizacao_cg_wing
+0.0778 0 0
 
 #CDdp
 #arrasto parasita
-0.020
+0.0
 
 #==================================================================
 SURFACE
@@ -30,38 +30,36 @@ YDUPLICATE
 0.0
 
 ANGLE
+#Angulo_incidencia_wing
 0
 #==================================================================
 SECTION
 
 #Xle Yle Zle Chord Ainc Nspanwise Sspace
 #Dimensao_wing_secao_1
-0 0 0 0.2 0 0 0
-#Xle,Yle,Zle, coordinates of an airfoil's leading edge.
-#Chord, chord length. Airfoils are directed along x axis.
-#Ainc, to change incidence angle of a specific profile. If two sections have defined different
-#Ainc, an incidence angle will change between them as a result of linear function.
-#Nspanwise, optional place to define vortices distrubtion, especially whena particular number # of vortices between different sections is expected.
+0 0 0 0.4 0 0 0
+
 AFILE
-#arquivo_1
-d:\area de trabalho\codigo2ponto0\adr\ADR\Methods\VLM\AVL\s1223.dat
+#arquivo_wing_1
+d:\area de trabalho\codigo2ponto0\adr\ADR\Methods\VLM\AVL\airfoils\s1223.dat
 #==================================================================
 SECTION
 #Xle Yle Zle Chord Ainc Nspanwise Sspace
+
 #Dimensao_wing_secao_2
-0 0.12 0 0.15 0 0 0
+0 0.4 0 0.3 0 0 0
 #A definition of the second section.
 AFILE
-#arquivo_2
-d:\area de trabalho\codigo2ponto0\adr\ADR\Methods\VLM\AVL\s1223.dat
+#arquivo_wing_2
+d:\area de trabalho\codigo2ponto0\adr\ADR\Methods\VLM\AVL\airfoils\s1223.dat
 #==================================================================
 SECTION
 #Xle Yle Zle Chord Ainc Nspanwise Sspace
 #Dimensao_wing_secao_3
-0 0.24 0 0.1 0 0 0
+0 0.8 0 0.2 0 0 0
 #A definition of the second section.
 AFILE
-#arquivo_3
-d:\area de trabalho\codigo2ponto0\adr\ADR\Methods\VLM\AVL\s1223.dat
+#arquivo_wing_3
+d:\area de trabalho\codigo2ponto0\adr\ADR\Methods\VLM\AVL\airfoils\s1223.dat
 #==================================================================
 
