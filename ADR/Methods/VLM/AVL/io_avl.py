@@ -1,4 +1,5 @@
 import fileinput
+import pandas as pd
 
 def get_value(output_file, variable_name):
     var = '{}'.format(variable_name)
@@ -12,6 +13,20 @@ def get_value(output_file, variable_name):
                     if var in data:
                         coef = data.split('=')
                         return float(coef[1].strip('\n'))
+
+def get_clmax(output):
+    with fileinput.input(output, inplace=True) as op:
+        for line in op:
+            if 'c cl' in line:
+                print(line.replace('c cl','c_cl'))
+            else:
+                print(line.replace('\n',''))
+
+
+    fid_df = pd.read_csv(output, skiprows=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,20], skipfooter=28, delim_whitespace=True)
+    fid_df.set_index('j', inplace=True)
+    cl_max = fid_df['cl'].max()
+    return cl_max
 
 def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
                    surface_name, x, y1, y2, y3, z, c1, c2, c3,
@@ -48,7 +63,7 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
         for line in op:
 
             #DIMENSOES REFERENCIA=============================================================================
-            
+
             if is_the_next_dim_gen == True: #Altera o angulo
                 print(line.replace(line,'{} {} {}'.format(round(S_total, 4), round(MAC, 4), round(B_total, 4))))
                 is_the_next_dim_gen = False
@@ -60,7 +75,7 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
                 pass
 
             #LOCALIZACAO DO CG PARA CM_CA=============================================================================
-            
+
             elif is_the_next_loc_cg == True: #Altera o angulo
                 print(line.replace(line,'{} {} {}'.format(round(MAC/4, 4), 0, 0)))
                 is_the_next_loc_cg = False
@@ -70,7 +85,7 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
                 print(line.replace('\n',''))
                 is_the_next_loc_cg = True
                 pass
-            
+
             #ARQUIVO DO PERFIL===========================================================================
 
             elif is_the_next_airfoil1_file == True: #Altera o arquivo

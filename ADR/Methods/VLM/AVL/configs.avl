@@ -41,7 +41,7 @@ SECTION
 
 AFILE
 #arquivo_wing_1
-c:\Aero\AVL Tools\AVL Tools\AVL\airfoils\s1223.dat
+d:\area de trabalho\codigo2ponto0\adr\ADR\Methods\VLM\AVL\airfoils\s1223.dat
 #==================================================================
 SECTION
 #Xle Yle Zle Chord Ainc Nspanwise Sspace
@@ -51,7 +51,7 @@ SECTION
 #A definition of the second section.
 AFILE
 #arquivo_wing_2
-c:\Aero\AVL Tools\AVL Tools\AVL\airfoils\s1223.dat
+d:\area de trabalho\codigo2ponto0\adr\ADR\Methods\VLM\AVL\airfoils\s1223.dat
 #==================================================================
 SECTION
 #Xle Yle Zle Chord Ainc Nspanwise Sspace
@@ -60,6 +60,6 @@ SECTION
 #A definition of the second section.
 AFILE
 #arquivo_wing_3
-c:\Aero\AVL Tools\AVL Tools\AVL\airfoils\s1223.dat
+d:\area de trabalho\codigo2ponto0\adr\ADR\Methods\VLM\AVL\airfoils\s1223.dat
 #==================================================================
 

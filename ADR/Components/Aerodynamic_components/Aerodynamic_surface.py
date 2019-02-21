@@ -2,7 +2,7 @@ from ADR.Components.Points.CA import CA
 from ADR.Components.Aerodynamic_components.Aerodynamic_section import Aerodynamic_section
 from ADR.Components.Aerodynamic_components.Airfoil import Airfoil
 from ADR.Components.Component import Component
-from ADR.Methods.VLM.AVL.avl_runner import get_aero_coeffs
+from ADR.Methods.VLM.AVL.avl_runner import get_aero_coef, change_dimensions
 from ADR.Methods.VLM.pyVLM.pyvlm.vlm import PyVLM
 from matplotlib import pyplot as plt
 import numpy as np
@@ -16,6 +16,7 @@ class Aerodynamic_surface(Component):
 
         self.data = data
 
+        self.airfoil_clmax = data.get("airfoil_clmax")
         self.airfoil1_name = data.get("airfoil1_name")
         self.airfoil2_name = data.get("airfoil2_name")
         self.airfoil3_name = data.get("airfoil3_name")
@@ -58,7 +59,7 @@ class Aerodynamic_surface(Component):
         self.area = 2 * (self.section1.area + self.section2.area)
         self.MAC = self.calc_MAC()
 
-        self.vlm = 'pyVLM'
+        self.vlm = 'AVL'
         self.calc_aerodynamic_data()
 
         self.ca = CA({
@@ -67,9 +68,6 @@ class Aerodynamic_surface(Component):
             "surface_x": self.x,
             "surface_z": self.z,
             })
-        self.CM_ca = data.get("CM_ca")
-
-        self.downwash_angle = 0
 
     def __str__(self):
         return self.__class__.__name__
@@ -81,18 +79,26 @@ class Aerodynamic_surface(Component):
         # This entire method is NOT bullshit\
 
         if self.vlm == 'AVL':
-            self.CL_alpha, self.CD_alpha, self.CM_alpha = get_aero_coeffs(self.data)
+            change_dimensions(self.data)
+            a, b, c, self.CL_alpha, self.CD_alpha, self.Cm_alpha = get_aero_coef(self.airfoil_clmax)
 
-            self.stall_min = -10 #TODO: Implement crictical section method
-            self.stall_max = +20
+            self.CM_ca = self.Cm_alpha['Cm'].mean()
+
+            self.stall_min = self.CL_alpha.index.min()
+            self.stall_max = self.CL_alpha.index.max()
 
         elif self.vlm == 'pyVLM':
             Aerodynamic_calculator = PyVLM()
 
-            self.stall_min = -10
-            self.stall_max = +20
+            if self.__str__() == "Wing":
+                self.CM_ca = -0.32
+            elif self.__str__() == "HS":
+                self.CM_ca = 0.092
+            else:
+                self.CM_ca = 0
 
-            self.downwash_angle = 0
+            self.stall_min = -10
+            self.stall_max = +15
 
             # GEOMETRY DEFINITION #
             # Section 2
@@ -232,7 +238,7 @@ class Aerodynamic_surface(Component):
         return CM
 
     def get_alpha_range(self):
-        alpha_range = range(self.stall_min, self.stall_max + 1)
+        alpha_range = np.arange(self.stall_min, self.stall_max + 1)
         return alpha_range
 
     def calc_MAC(self):
@@ -248,9 +254,8 @@ class Aerodynamic_surface(Component):
         CD = np.interp(alpha, self.CD_alpha.index.values, self.CD_alpha['CD'])
         return CD
 
-    def get_CM(self, alpha):
-        CM = np.interp(alpha, self.CM_alpha.index.values, self.CM_alpha['CM'])
-        return CM
+    def get_CM(self):
+        return self.CM_ca
 
     def lift(self, air_density, velocity, alpha):
         lift = 0.5 * air_density * velocity ** 2 * self.area * self.get_CL(alpha)
@@ -261,5 +266,5 @@ class Aerodynamic_surface(Component):
         return drag
 
     def moment(self, air_density, velocity, alpha):
-        moment = 0.5 * air_density * velocity ** 2 * self.area * self.get_CM(alpha)
+        moment = 0.5 * air_density * velocity ** 2 * self.area * self.get_CM()
         return moment

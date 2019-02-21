@@ -47,7 +47,7 @@ class FlightStability:
         self.plane_stall_min = self.surfaces_stall_min - incidence_min
         self.plane_stall_max = self.surfaces_stall_max - incidence_max
 
-        self.alpha_plane_range = range(self.plane_stall_min, self.plane_stall_max + 1)
+        self.alpha_plane_range = np.arange(self.plane_stall_min, self.plane_stall_max + 1)
 
         CM_alpha_CG_tail = {}
         CM_alpha_CG_wing1 = {}

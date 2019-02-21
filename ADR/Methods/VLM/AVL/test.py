@@ -1,16 +1,13 @@
 from matplotlib import pyplot as plt
 import numpy as np
-from avl_runner import get_aero_coef
-from avl_runner import change_dimensions
-        
+from ADR.Methods.VLM.AVL.avl_runner import get_aero_coef, change_dimensions
+
 data_wing = {
     "surface_name": 'wing',
     "cl_max_airfoil": 2.2,
     "airfoil1_name": 's1223',
     "airfoil2_name": 's1223',
     "airfoil3_name": 's1223',
-    "LE_x_location" : 0,
-    "LE_z_location" : 0,
     "span1": 0.4,
     "span2": 0.4,
     "chord1": 0.4,

@@ -5,16 +5,13 @@
 
 def plane_data():
 
-    wing1_CM_ca = -0.32
-    wing2_CM_ca = -0.32
-    hs_CM_ca = 0.092
-
     plane_data = {
         "plane_type": 'monoplane',
 
         "wing1_x": 0,
         "wing1_y": 0,
         "wing1_z": 0,
+        "wing1_clmax_airfoil": 2.2,
         "wing1_airfoil1_name": "s1223",
         "wing1_airfoil2_name": "s1223",
         "wing1_airfoil3_name": "s1223",
@@ -27,11 +24,11 @@ def plane_data():
         "wing1_twist2": 0,
         "wing1_twist3": 0,
         "wing1_incidence": 0,
-        "wing1_CM_ca": wing1_CM_ca,
 
         "wing2_x": 0,
         "wing2_y": 0,
         "wing2_z": 0.3,
+        "wing2_clmax_airfoil": 2.2,
         "wing2_airfoil1_name": "s1223",
         "wing2_airfoil2_name": "s1223",
         "wing2_airfoil3_name": "s1223",
@@ -44,11 +41,11 @@ def plane_data():
         "wing2_twist2": 0,
         "wing2_twist3": 0,
         "wing2_incidence": 0,
-        "wing2_CM_ca": wing2_CM_ca,
 
         "hs_x": -0.7,
         "hs_y": 0,
         "hs_z": 0,
+        "hs_clmax_airfoil": 2.2,
         "hs_airfoil1_name": "s1223",
         "hs_airfoil2_name": "s1223",
         "hs_airfoil3_name": "s1223",
@@ -61,12 +58,12 @@ def plane_data():
         "hs_twist2": 0,
         "hs_twist3": 0,
         "hs_incidence": 0,
-        "hs_CM_ca": hs_CM_ca,
 
 
         "vs_x": -0.7,
         "vs_y": 0,
         "vs_z": 0,
+        "vs_clmax_airfoil": 2.2,
         "vs_airfoil1_name": "s1223",
         "vs_airfoil2_name": "s1223",
         "vs_airfoil3_name": "s1223",
