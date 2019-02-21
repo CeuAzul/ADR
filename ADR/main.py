@@ -17,7 +17,7 @@ plane = Plane(plane_data)
 
 takeoff_analysis = Takeoff(plane, performance_data)
 mtow = takeoff_analysis.get_mtow()
-print('MTOW is {}'.format(mtow))
+print('Initial MTOW is {}'.format(mtow))
 
 flight_stability = FlightStability(plane)
 CM_plane_on_CG_fixed = flight_stability.CM_plane_CG(plane.cg)
@@ -30,3 +30,5 @@ trimm_range_checker.check()
 
 sm_checker = StaticMarginChecker(plane)
 sm_checker.check()
+
+print('Final MTOW is {}'.format(mtow))

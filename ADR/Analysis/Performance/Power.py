@@ -13,11 +13,25 @@ class Power:
         self.hs = plane.hs
         self.area_ref = plane.wing1.area
         self.rho = performance_parameters.get("rho_air")
-        self.mass = plane.mtow
-        self.weight = self.mass * 9.81
-        self.power_required()
+        self.checks_and_update_mtow()
+
+    def checks_and_update_mtow(self):
         self.power_available()
+        self.power_required()
         self.power_excess()
+
+        positive_power = (self.power_excess_df['Power excess'] > 0)
+        has_power_excess = positive_power.any()
+
+        while has_power_excess == False:
+            self.plane.mtow -= 0.1
+            if self.plane.mtow >0:
+                self.power_available()
+                self.power_required()
+                self.power_excess()
+            else:
+                raise ValueError('Aircraft cannot sustain flight even with zero weight')
+
         self.get_V_min_max()
 
     def power_required(self):
@@ -27,7 +41,7 @@ class Power:
         for velocity in np.arange(0,26,0.1):
             total_lift = 0
             alpha = -20
-            while(total_lift < self.weight):
+            while(total_lift < self.plane.mtow * 9.81):
                 alpha += 0.1
                 total_lift = self.wing1.lift(self.rho, velocity, alpha) - self.hs.lift(self.rho, velocity, alpha)
                 if self.plane.plane_type == 'biplane':
@@ -104,4 +118,3 @@ class Power:
         self.plane.alpha_min = self.alpha_dict[self.plane.V_max]
 
         self.plane.alpha_max = alpha_max
-
