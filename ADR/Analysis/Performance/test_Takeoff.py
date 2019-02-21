@@ -3,7 +3,7 @@ from ADR.Components.Plane import Plane
 from ADR.Analysis.Performance.Takeoff import Takeoff
 from matplotlib import pyplot as plt
 
-def plot_takeoff_data():
+def plot_takeoff_data(takeoff_analysis, mtow):
 
     fig1, ((ax1, ax2, ax3), (ax4, ax5, ax6)) = plt.subplots(2, 3)
 
@@ -43,8 +43,6 @@ def plot_takeoff_data():
     ax6.grid()
     ax6.legend()
 
-    plt.show()
-
 if __name__ == "__main__":
     plane_data = parameters.plane_data()
     performance_data = parameters.performance_data()
@@ -54,4 +52,6 @@ if __name__ == "__main__":
     mtow = takeoff_analysis.get_mtow()
 
     print('Final MTOW is {}'.format(mtow))
-    plot_takeoff_data()
+    plot_takeoff_data(takeoff_analysis, mtow)
+
+    plt.show()
