@@ -136,6 +136,12 @@ class Plane:
         self.trimm_for_high_angles = False
         self.positive_sm_for_positive_alphas = False
 
+        self.dead_weight = 0
+        self.payload = 0
+        self.score = None
+
+        self.dead = False
+
         self.get_CL_alpha_plane()
 
     def __str__(self):
