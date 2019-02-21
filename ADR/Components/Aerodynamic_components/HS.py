@@ -1,4 +1,5 @@
 from ADR.Components.Aerodynamic_components.Aerodynamic_surface import Aerodynamic_surface
+import numpy as np
 
 class HS(Aerodynamic_surface):
     def __init__(self, data):
@@ -7,4 +8,7 @@ class HS(Aerodynamic_surface):
         self.calc_area()
 
     def calc_area(self):
-            self.area = 2 * (self.section1.area + self.section2.area)
+        self.area = 2 * (self.section1.area + self.section2.area)
+
+    def update_alpha(self, alpha_airplane):
+        self.attack_angle =  self.incidence - alpha_airplane

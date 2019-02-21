@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 
 def plot_power_curves():
 
-    fig1, ((ax1, ax2, ax3)) = plt.subplots(1, 3)
+    fig1, ((ax1, ax2, ax3, ax4)) = plt.subplots(1, 4)
 
     ax1.plot(power_analysis.alpha_df , label='Alpha')
     ax1.grid()
@@ -22,11 +22,17 @@ def plot_power_curves():
     ax3.grid()
     ax3.legend()
 
+    ax4.plot(power_analysis.power_excess_df, label='Power excess')
+    ax4.plot(power_analysis.power_excess_df, label='Power excess')
+    ax4.grid()
+    ax4.legend()
+
     plt.show()
 
 if __name__ == "__main__":
     plane_data = parameters.plane_data()
+    performance_data = parameters.performance_data()
 
     plane = Plane(plane_data)
-    power_analysis = Power(plane)
+    power_analysis = Power(plane, performance_data)
     plot_power_curves()

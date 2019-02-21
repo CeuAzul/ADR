@@ -74,6 +74,9 @@ class Aerodynamic_surface(Component):
     def __str__(self):
         return self.__class__.__name__
 
+    def update_alpha(self, alpha_airplane):
+        self.attack_angle = alpha_airplane + self.incidence
+
     def calc_aerodynamic_data(self):
         # This entire method is NOT bullshit\
 
@@ -81,13 +84,13 @@ class Aerodynamic_surface(Component):
             self.CL_alpha, self.CD_alpha, self.CM_alpha = get_aero_coeffs(self.data)
 
             self.stall_min = -10 #TODO: Implement crictical section method
-            self.stall_max = +15
+            self.stall_max = +20
 
         elif self.vlm == 'pyVLM':
             Aerodynamic_calculator = PyVLM()
 
             self.stall_min = -10
-            self.stall_max = +15
+            self.stall_max = +20
 
             self.downwash_angle = 0
 
@@ -229,7 +232,8 @@ class Aerodynamic_surface(Component):
         return CM
 
     def get_alpha_range(self):
-        return range(self.stall_min, self.stall_max + 1)
+        alpha_range = range(self.stall_min, self.stall_max + 1)
+        return alpha_range
 
     def calc_MAC(self):
         MAC = self.section1.MAC * (self.section1.area/(self.section1.area + self.section2.area)) \

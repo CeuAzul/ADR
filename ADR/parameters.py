@@ -99,10 +99,10 @@ def plane_data():
 
     return plane_data
 
-def takeoff_data():
+def performance_data():
 
     takeoff_parameters = {
-        "rho_air": 1.15, # Densidade do ar [kg/m^3]
+        "rho_air": 1.225, # Densidade do ar [kg/m^3]
         "dist_max": 60, # Distancia maxima de decolagem pelo regulamento [m]
         "offset_pilot": 5 # Distancia antes do fim da pista em que o piloto aciona o profundor [m]
     }

@@ -4,12 +4,12 @@ import pandas as pd
 from ADR.Methods.FundamentalEquations import lift, drag, moment
 
 class Takeoff:
-    def __init__(self, plane, takeoff_parameters):
+    def __init__(self, plane, performance_parameters):
 
         self.plane = plane
-        self.rho_air = takeoff_parameters.get("rho_air")
-        self.dist_max = takeoff_parameters.get("dist_max")
-        self.offset_pilot = takeoff_parameters.get("offset_pilot")
+        self.rho_air = performance_parameters.get("rho_air")
+        self.dist_max = performance_parameters.get("dist_max")
+        self.offset_pilot = performance_parameters.get("offset_pilot")
 
         self.distx_wing1_tpr = abs(plane.wing1.ca.abs_x - plane.tpr.x)
         self.distz_wing1_tpr = abs(plane.wing1.ca.abs_z - plane.tpr.z)
@@ -144,4 +144,5 @@ class Takeoff:
             time_df.index.name = 't'
             self.mass_dict[m] = time_df
 
+        self.plane.mtow = self.mtow
         return self.mtow
