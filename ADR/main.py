@@ -4,6 +4,8 @@ from ADR.Analysis.Performance.Takeoff import Takeoff
 from ADR.Analysis.Performance.Power import Power
 from ADR.Analysis.Stability.FlightStability.FlightStability import FlightStability
 
+from ADR.Checkers.TrimmRange import TrimmRangeChecker
+
 from matplotlib import pyplot as plt
 import numpy as np
 
@@ -20,5 +22,6 @@ flight_stability = FlightStability(plane)
 CM_plane_on_CG_fixed = flight_stability.CM_plane_CG(plane.cg)
 
 power_analysis = Power(plane, performance_data)
-print('Vmin is {} for AlphaMax of {}'.format(plane.V_min, plane.alpha_max))
-print('Vmax is {} for AlphaMin of {}'.format(plane.V_max, plane.alpha_min))
+
+trimm_range_checker = TrimmRangeChecker(plane)
+trimm_range_checker.check()
