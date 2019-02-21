@@ -44,20 +44,33 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
         is_the_next_airfoil1_file = False
         is_the_next_airfoil2_file = False
         is_the_next_airfoil3_file = False
+        is_the_next_loc_cg = False
         for line in op:
 
             #DIMENSOES REFERENCIA=============================================================================
-
+            
             if is_the_next_dim_gen == True: #Altera o angulo
                 print(line.replace(line,'{} {} {}'.format(round(S_total, 4), round(MAC, 4), round(B_total, 4))))
                 is_the_next_dim_gen = False
                 pass
 
-            elif '#Dimensoes_referencia' in line: #Define a linha que tem o angulo
+            elif '#Dimensoes_referencia_{}'.format(surface_name) in line: #Define a linha que tem o angulo
                 print(line.replace('\n',''))
                 is_the_next_dim_gen = True
                 pass
 
+            #LOCALIZACAO DO CG PARA CM_CA=============================================================================
+            
+            elif is_the_next_loc_cg == True: #Altera o angulo
+                print(line.replace(line,'{} {} {}'.format(round(MAC/4, 4), 0, 0)))
+                is_the_next_loc_cg = False
+                pass
+
+            elif '#Localizacao_cg_{}'.format(surface_name) in line: #Define a linha que tem o angulo
+                print(line.replace('\n',''))
+                is_the_next_loc_cg = True
+                pass
+            
             #ARQUIVO DO PERFIL===========================================================================
 
             elif is_the_next_airfoil1_file == True: #Altera o arquivo
@@ -65,7 +78,7 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
                 is_the_next_airfoil1_file = False
                 pass
 
-            elif '#arquivo_1' in line: #Define a linha que tem o arquivo
+            elif '#arquivo_{}_1'.format(surface_name) in line: #Define a linha que tem o arquivo
                 print(line.replace('\n',''))
                 is_the_next_airfoil1_file = True
                 pass
@@ -75,7 +88,7 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
                 is_the_next_airfoil2_file = False
                 pass
 
-            elif '#arquivo_2' in line: #Define a linha que tem o arquivo
+            elif '#arquivo_{}_2'.format(surface_name) in line: #Define a linha que tem o arquivo
                 print(line.replace('\n',''))
                 is_the_next_airfoil2_file = True
                 pass
@@ -85,7 +98,7 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
                 is_the_next_airfoil3_file = False
                 pass
 
-            elif '#arquivo_3' in line: #Define a linha que tem o arquivo
+            elif '#arquivo_{}_3'.format(surface_name) in line: #Define a linha que tem o arquivo
                 print(line.replace('\n',''))
                 is_the_next_airfoil3_file = True
                 pass
@@ -97,7 +110,7 @@ def set_dimensions(config_file, airfoil1_file, airfoil2_file, airfoil3_file,
                 is_the_next_angle = False
                 pass
 
-            elif 'ANGLE' in line: #Define a linha que tem o angulo
+            elif '#Angulo_incidencia_{}'.format(surface_name) in line: #Define a linha que tem o angulo
                 print(line.replace('\n',''))
                 is_the_next_angle = True
                 pass
