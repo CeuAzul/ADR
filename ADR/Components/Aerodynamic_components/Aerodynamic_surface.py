@@ -97,8 +97,8 @@ class Aerodynamic_surface(Component):
             else:
                 self.CM_ca = 0
 
-            self.stall_min = -10
-            self.stall_max = +15
+            self.stall_min = -10.0
+            self.stall_max = +15.0
 
             # GEOMETRY DEFINITION #
             # Section 2

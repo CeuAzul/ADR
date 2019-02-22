@@ -147,9 +147,24 @@ class Plane:
         self.dead = False
 
         self.get_CL_alpha_plane()
+        self.set_alpha_range()
+        self.hs.set_incidence_range(self.stall_min, self.stall_max)
 
     def __str__(self):
         return self.__class__.__name__
+
+    def set_alpha_range(self):
+        wings_stall_min = min(self.wing1.stall_min, self.wing2.stall_min, key=abs)
+        wings_stall_max = min(self.wing1.stall_max, self.wing2.stall_max, key=abs)
+
+        # incidence_min = min(self.wing1.incidence, self.wing2.incidence)
+        # incidence_max = max(self.wing1.incidence, self.wing2.incidence)
+        #TODO: Incidence for now is fixed on 0 and should be better implemented
+
+        self.stall_min = wings_stall_min
+        self.stall_max = wings_stall_max
+
+        self.alpha_range = np.arange(self.stall_min, self.stall_max + 1)
 
     def set_alpha_trimmed(self, alpha_airplane):
         self.wing1.update_alpha(alpha_airplane)

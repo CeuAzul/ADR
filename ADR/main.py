@@ -62,4 +62,4 @@ def adr_analyser(individual):
 if __name__ == "__main__":
     plot = True
     plane_data = parameters.plane_data()
-    adr_analyser(plane_data)
+    adr_analyser([1,1,1,1])

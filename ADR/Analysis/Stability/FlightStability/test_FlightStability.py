@@ -24,7 +24,7 @@ def plot_stability_data(flight_stability):
     ax1.plot(flight_stability.wing1.CM_alpha_CG, label="Wing1")
     if flight_stability.plane.plane_type == 'biplane':
         ax1.plot(flight_stability.wing2.CM_alpha_CG, label="Wing2")
-    for hs_incidence in flight_stability.hs.get_alpha_range():
+    for hs_incidence in flight_stability.hs.incidence_range:
         ax1.plot(flight_stability.CM_alpha_CG_plane_each_hs_incidence[hs_incidence])   # Ploting for cg in first position(cg1)
     ax1.grid()
     ax1.legend()
