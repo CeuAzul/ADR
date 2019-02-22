@@ -1,4 +1,4 @@
-import subprocess
+from subprocess import Popen, PIPE, STDOUT, DEVNULL
 import os
 from math import radians
 import numpy as np
@@ -52,12 +52,11 @@ def get_aero_coef(Cl_max_airfoil):
     open(output_file, 'a').close()
     open(output2_file, 'a').close()
 
-
     for alpha in alpha_range:
         os.remove(output_file)
         os.remove(output2_file)
         comm_string = 'load {}\n oper\n a\n a\n {}\n x\n ft\n{}\nfs\n{}\n'.format(config_file, alpha, output_file, output2_file)
-        Process=subprocess.Popen([avl_file], stdin=subprocess.PIPE, shell = True)
+        Process=Popen([avl_file], stdin=PIPE, stdout=DEVNULL , stderr=STDOUT)
         Process.communicate(bytes(comm_string, encoding='utf8'))
         if get_clmax(output2_file) > Cl_max_airfoil:
             break
