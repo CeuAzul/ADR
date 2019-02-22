@@ -11,6 +11,7 @@ from ADR.Analysis.Stability.FlightStability.test_FlightStability import plot_sta
 from ADR.Checkers.TrimmRange import TrimmRangeChecker
 from ADR.Checkers.StaticMargin import StaticMarginChecker
 from ADR.Checkers.Scoreboard import MaybeAnAssassin
+from ADR.Checkers.Dimensions import Ruler
 
 from matplotlib import pyplot as plt
 import numpy as np
@@ -45,6 +46,9 @@ def adr_analyser(individual):
 
     sm_checker = StaticMarginChecker(plane)
     sm_checker.check()
+
+    ruler = Ruler(plane)
+    ruler.measure()
 
     maybe_an_assassin = MaybeAnAssassin(plane)
     maybe_an_assassin.score_or_kill()

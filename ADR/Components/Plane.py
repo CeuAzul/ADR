@@ -139,7 +139,9 @@ class Plane:
         self.trimm_for_low_angles = False
         self.trimm_for_high_angles = False
         self.positive_sm_for_positive_alphas = False
+        self.dimensions_are_good = False
 
+        self.total_dimensions = 0
         self.dead_weight = 0
         self.payload = 0
         self.score = None

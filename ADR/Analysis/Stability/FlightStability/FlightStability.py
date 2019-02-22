@@ -84,7 +84,6 @@ class FlightStability:
 
         self.trimm()
 
-        print(self.CM_alpha_CG_plane_each_hs_incidence[0])
         dCM_dalpha_plane_df = self.CM_alpha_CG_plane_each_hs_incidence[0].diff()
         dCM_dalpha_plane_df.fillna(method="bfill", inplace=True)
         self.plane.dCM_dalpha = dCM_dalpha_plane_df
