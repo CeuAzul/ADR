@@ -23,14 +23,16 @@ class Power:
         positive_power = (self.power_excess_df['Power excess'] > 0)
         has_power_excess = positive_power.any()
 
-        while has_power_excess == False:
-            self.plane.mtow -= 0.1
+        while has_power_excess == False and self.plane.mtow != 0:
+            self.plane.mtow -= 1 #TODO: This is a big reduce-step. We should get this down by getting the power analysis time down.
+            print('New MTOW: {}'.format(self.plane.mtow))
             if self.plane.mtow >0:
                 self.power_available()
                 self.power_required()
                 self.power_excess()
             else:
-                raise ValueError('Aircraft cannot sustain flight even with zero weight')
+                self.plane.mtow = 0
+                print('Aircraft cannot sustain flight even with zero weight')
 
         self.get_V_min_max()
 
@@ -114,7 +116,10 @@ class Power:
             self.plane.V_max = roots[1]
             alpha_max = np.interp(self.plane.V_min, self.alpha_df.index.values, self.alpha_df['Alpha'])
         elif len(roots) == 0:
-            raise ValueError ('Airplane has no power excess! Get this drag down or buy a new motor!')
+            self.plane.V_min = V_stall
+            self.plane.V_max = 25
+            alpha_max = np.interp(self.plane.V_min, self.alpha_df.index.values, self.alpha_df['Alpha'])
+            print('Airplane has no power excess! Get this drag down or buy a new motor!')
         self.plane.alpha_min = self.alpha_dict[self.plane.V_max]
 
         self.plane.alpha_max = alpha_max

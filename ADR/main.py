@@ -1,4 +1,5 @@
 from ADR import parameters
+from ADR import parameters_optmizer
 from ADR.Components.Plane import Plane
 from ADR.Analysis.Performance.Takeoff import Takeoff
 from ADR.Analysis.Performance.test_Takeoff import plot_takeoff_data
@@ -14,37 +15,51 @@ from ADR.Checkers.Scoreboard import MaybeAnAssassin
 from matplotlib import pyplot as plt
 import numpy as np
 
-plot = True
+plot = False
 
-plane_data = parameters.plane_data()
-performance_data = parameters.performance_data()
+def adr_analyser(individual):
 
-plane = Plane(plane_data)
+    airplane_var_data = parameters_optmizer.enter_parameters(individual)
 
-takeoff_analysis = Takeoff(plane, performance_data)
-mtow = takeoff_analysis.get_mtow()
-plot_takeoff_data(takeoff_analysis, mtow)
+    plane_data = parameters_optmizer.plane_data(airplane_var_data)
+    performance_data = parameters.performance_data()
 
-print('Initial MTOW is {}'.format(mtow))
+    plane = Plane(plane_data)
+    plane.show_plane()
 
-flight_stability = FlightStability(plane)
-flight_stability.CM_plane_CG(plane.cg)
-flight_stability.static_margin()
-plot_stability_data(flight_stability)
+    print('Plane parameters: {}'.format(individual))
 
-power_analysis = Power(plane, performance_data)
-plot_power_curves(power_analysis)
+    takeoff_analysis = Takeoff(plane, performance_data)
+    mtow = takeoff_analysis.get_mtow()
 
-trimm_range_checker = TrimmRangeChecker(plane)
-trimm_range_checker.check()
+    print('Initial MTOW is {}'.format(mtow))
 
-sm_checker = StaticMarginChecker(plane)
-sm_checker.check()
+    flight_stability = FlightStability(plane)
+    flight_stability.CM_plane_CG(plane.cg)
+    flight_stability.static_margin()
 
-maybe_an_assassin = MaybeAnAssassin(plane)
-maybe_an_assassin.score_or_kill()
+    power_analysis = Power(plane, performance_data)
 
-print('Final MTOW is {}'.format(mtow))
+    trimm_range_checker = TrimmRangeChecker(plane)
+    trimm_range_checker.check()
 
-if plot == True:
-    plt.show()
+    sm_checker = StaticMarginChecker(plane)
+    sm_checker.check()
+
+    maybe_an_assassin = MaybeAnAssassin(plane)
+    maybe_an_assassin.score_or_kill()
+
+    print('Final MTOW is {}'.format(mtow))
+
+    if plot == True:
+        plot_takeoff_data(takeoff_analysis, mtow)
+        plot_stability_data(flight_stability)
+        plot_power_curves(power_analysis)
+        plt.show()
+
+    return plane.score,
+
+if __name__ == "__main__":
+    plot = True
+    plane_data = parameters.plane_data()
+    adr_analyser(plane_data)
