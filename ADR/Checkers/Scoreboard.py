@@ -6,6 +6,7 @@ class MaybeAnAssassin:
         if (self.plane.trimm_for_low_angles and
             self.plane.trimm_for_high_angles and
             self.plane.positive_sm_for_positive_alphas and
+            self.plane.dimensions_are_good and
             self.plane.mtow > 0):
 
             self.plane.payload = (self.plane.mtow - self.plane.dead_weight)
