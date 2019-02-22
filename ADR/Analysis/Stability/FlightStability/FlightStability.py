@@ -42,16 +42,6 @@ class FlightStability:
     #     return CM_plane_changing_CG, SM_plane_changing_CG
 
     def CM_plane_CG(self, cg):
-        self.surfaces_stall_min = min(self.wing1.stall_min, self.wing2.stall_min, key=abs)
-        self.surfaces_stall_max = min(self.wing1.stall_max, self.wing2.stall_max, key=abs)
-
-        incidence_min = min(self.wing1.incidence, self.wing2.incidence)
-        incidence_max = max(self.wing1.incidence, self.wing2.incidence)
-
-        self.plane_stall_min = self.surfaces_stall_min - incidence_min
-        self.plane_stall_max = self.surfaces_stall_max - incidence_max
-
-        self.alpha_plane_range = np.arange(self.plane_stall_min, self.plane_stall_max + 1)
 
         CM_alpha_CG_tail = {}
         CM_alpha_CG_wing1 = {}
@@ -60,7 +50,7 @@ class FlightStability:
         CM_alpha_CG_plane = {}
         self.CM_alpha_CG_plane_each_hs_incidence = {}
 
-        for alpha_plane in self.alpha_plane_range:
+        for alpha_plane in self.plane.alpha_range:
 
             self.wing1.update_alpha(float(alpha_plane))
             self.wing2.update_alpha(float(alpha_plane))
@@ -74,15 +64,14 @@ class FlightStability:
                 CM_alpha_CG_wing2[alpha_plane] = self.wing2.moment_on_CG(self.wing1, self.plane.cg, alpha_plane)
                 CM_alpha_CG_wings[alpha_plane] += CM_alpha_CG_wing2[alpha_plane]
 
-        for hs_incidence in self.hs.get_alpha_range():
+        for hs_incidence in self.hs.incidence_range:
             self.hs.incidence = hs_incidence
-            for alpha_plane in self.alpha_plane_range:
+            for alpha_plane in self.plane.alpha_range:
                 self.hs.update_alpha(float(alpha_plane))
 
                 if self.hs.attack_angle in self.hs.get_alpha_range():
                     # Getting CM_alpha of tail
                     CM_alpha_CG_tail[alpha_plane] = self.hs.moment_on_CG(self.wing1, self.plane.cg, alpha_plane)
-
                     # Summing CM of tail with CM of wing per each alpha
                     # Getting CM_alpha of plane
                     CM_alpha_CG_plane[alpha_plane] = CM_alpha_CG_wings[alpha_plane] + CM_alpha_CG_tail[alpha_plane]
@@ -95,7 +84,8 @@ class FlightStability:
 
         self.trimm()
 
-        dCM_dalpha_plane_df = CM_alpha_CG_plane_df.diff()
+        print(self.CM_alpha_CG_plane_each_hs_incidence[0])
+        dCM_dalpha_plane_df = self.CM_alpha_CG_plane_each_hs_incidence[0].diff()
         dCM_dalpha_plane_df.fillna(method="bfill", inplace=True)
         self.plane.dCM_dalpha = dCM_dalpha_plane_df
 
@@ -108,7 +98,7 @@ class FlightStability:
     def static_margin(self):
         SM_alpha = {}
         self.hs.incidence = 0
-        for alpha_plane in self.alpha_plane_range:
+        for alpha_plane in self.plane.alpha_range:
             self.wing1.update_alpha(float(alpha_plane))
             self.wing2.update_alpha(float(alpha_plane))
             self.hs.update_alpha(float(alpha_plane))
