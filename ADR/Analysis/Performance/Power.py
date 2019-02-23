@@ -16,6 +16,8 @@ class Power:
         self.checks_and_update_mtow()
 
     def checks_and_update_mtow(self):
+        self.velocity_range = np.arange(0, 40, 0.1)
+
         self.power_available()
         self.power_required()
         self.power_excess()
@@ -24,9 +26,11 @@ class Power:
         has_power_excess = positive_power.any()
 
         while has_power_excess == False and self.plane.mtow != 0:
+            positive_power = (self.power_excess_df['Power excess'] > 0)
+            has_power_excess = positive_power.any()
             self.plane.mtow -= 1 #TODO: This is a big reduce-step. We should get this down by getting the power analysis time down.
             print('New MTOW: {}'.format(self.plane.mtow))
-            if self.plane.mtow >0:
+            if self.plane.mtow > 0:
                 self.power_available()
                 self.power_required()
                 self.power_excess()
@@ -40,7 +44,7 @@ class Power:
         thrust_required_dict = {}
         power_required_dict = {}
         alpha_dict = {}
-        for velocity in np.arange(0,26,0.1):
+        for velocity in self.velocity_range:
             total_lift = 0
             alpha = -20
             while(total_lift < self.plane.mtow * 9.81):
@@ -48,7 +52,7 @@ class Power:
                 total_lift = self.wing1.lift(self.rho, velocity, alpha) - self.hs.lift(self.rho, velocity, alpha)
                 if self.plane.plane_type == 'biplane':
                     total_lift += self.wing2.lift(self.rho, velocity, alpha)
-                if alpha >= 20:
+                if alpha >= 30:
                     alpha_nivel = None
                     break
                 else:
@@ -79,7 +83,7 @@ class Power:
         thrust_available_dict = {}
         power_available_dict = {}
 
-        for velocity in np.arange(0, 26, 0.1):
+        for velocity in self.velocity_range:
             thrust_available = self.plane.motor.thrust(velocity)
             thrust_available_dict[velocity] = thrust_available
 
@@ -110,16 +114,17 @@ class Power:
         if len(roots) == 1:
             self.plane.V_min = V_stall
             self.plane.V_max = roots[0]
-            alpha_max = np.interp(self.plane.CL_max, self.plane.CL_alpha['CL'], self.plane.CL_alpha.index.values)
+            alpha_max = self.alpha_df['Alpha'].max()[0]
         elif len(roots) == 2:
             self.plane.V_min = roots[0]
             self.plane.V_max = roots[1]
             alpha_max = np.interp(self.plane.V_min, self.alpha_df.index.values, self.alpha_df['Alpha'])
         elif len(roots) == 0:
             self.plane.V_min = V_stall
-            self.plane.V_max = 25
-            alpha_max = np.interp(self.plane.V_min, self.alpha_df.index.values, self.alpha_df['Alpha'])
+            self.plane.V_max = np.amax(self.velocity_range)
+            alpha_max = self.alpha_df['Alpha'].max()[0]
             print('Airplane has no power excess! Get this drag down or buy a new motor!')
         self.plane.alpha_min = self.alpha_dict[self.plane.V_max]
 
+        print('Alpha_max: {}'.format(alpha_max))
         self.plane.alpha_max = alpha_max
