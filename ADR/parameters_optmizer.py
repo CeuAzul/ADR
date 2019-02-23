@@ -31,7 +31,7 @@ def enter_parameters(bounds):
 def plane_data(data):
 
     plane_data = {
-        "plane_type": 'monoplane',
+        "plane_type": 'biplane',
 
         "wing1_x": 0,
         "wing1_y": 0,
