@@ -16,7 +16,9 @@ class Power:
         self.checks_and_update_mtow()
 
     def checks_and_update_mtow(self):
-        self.velocity_range = np.arange(0, 40, 0.1)
+        self.plane.get_V_stall(self.rho)
+        self.plane.get_V_CLmin(self.rho)
+        self.velocity_range = np.arange(self.plane.V_stall, self.plane.V_CLmin, 0.1)
 
         self.power_available()
         self.power_required()
@@ -46,13 +48,13 @@ class Power:
         alpha_dict = {}
         for velocity in self.velocity_range:
             total_lift = 0
-            alpha = -20
+            alpha = self.plane.stall_min
             while(total_lift < self.plane.mtow * 9.81):
                 alpha += 0.1
                 total_lift = self.wing1.lift(self.rho, velocity, alpha) - self.hs.lift(self.rho, velocity, alpha)
                 if self.plane.plane_type == 'biplane':
                     total_lift += self.wing2.lift(self.rho, velocity, alpha)
-                if alpha >= 30:
+                if alpha >= self.plane.stall_max:
                     alpha_nivel = None
                     break
                 else:
@@ -109,10 +111,9 @@ class Power:
         self.power_excess_df = dict_to_dataframe(power_excess_dict, 'Power excess', 'Velocity')
 
     def get_V_min_max(self):
-        V_stall = self.plane.get_V_stall(self.rho)
         roots = find_df_roots(self.power_excess_df, 'Power excess')
         if len(roots) == 1:
-            self.plane.V_min = V_stall
+            self.plane.V_min = self.plane.V_stall
             self.plane.V_max = roots[0]
             alpha_max = self.alpha_df['Alpha'].max()[0]
         elif len(roots) == 2:
@@ -120,7 +121,7 @@ class Power:
             self.plane.V_max = roots[1]
             alpha_max = np.interp(self.plane.V_min, self.alpha_df.index.values, self.alpha_df['Alpha'])
         elif len(roots) == 0:
-            self.plane.V_min = V_stall
+            self.plane.V_min = self.plane.V_stall
             self.plane.V_max = np.amax(self.velocity_range)
             alpha_max = self.alpha_df['Alpha'].max()[0]
             print('Airplane has no power excess! Get this drag down or buy a new motor!')
