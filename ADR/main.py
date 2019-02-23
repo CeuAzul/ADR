@@ -16,7 +16,7 @@ from ADR.Checkers.Dimensions import Ruler
 from matplotlib import pyplot as plt
 import numpy as np
 
-plot = False
+plot = True
 
 def adr_analyser(individual):
 
@@ -53,7 +53,7 @@ def adr_analyser(individual):
     maybe_an_assassin = MaybeAnAssassin(plane)
     maybe_an_assassin.score_or_kill()
 
-    print('Final MTOW is {}'.format(mtow))
+    print('Final MTOW is {}'.format(plane.mtow))
 
     if plot == True:
         plot_takeoff_data(takeoff_analysis, mtow)

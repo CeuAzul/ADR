@@ -5,17 +5,33 @@
 
 def enter_parameters(bounds):
     wing_span = 1 + 1*bounds[0]
-    wing_chord = 0.2 + 0.5*bounds[1]
-    hs_span = 0.3 + 0.7*bounds[2]
-    hs_chord = 0.05 + 0.4*bounds[3]
+    wing_chord = 0.15 + 0.35*bounds[1]
+    hs_span = 0.3 + 0.3*bounds[2]
+    hs_chord = 0.05 + 0.1*bounds[3]
 
-    airplane_data = [wing_span, wing_chord, hs_span, hs_chord]
+    motor_x = 0.2
+    hs_x = -(3.68 - wing_span - motor_x - hs_chord)
+
+    total_dimension = wing_span + motor_x + hs_chord - hs_x
+
+    print()
+    print('---------------------------------------')
+    print('Wing span: {}'.format(wing_span))
+    print('Wing chord: {}'.format(wing_chord))
+    print('HS span: {}'.format(hs_span))
+    print('HS chord: {}'.format(hs_chord))
+    print('HS_x: {}'.format(hs_x))
+    print('Total dimensions is: {}'.format(total_dimension))
+    print()
+
+
+    airplane_data = [wing_span, wing_chord, hs_span, hs_chord, motor_x, hs_x]
     return airplane_data
 
 def plane_data(data):
 
     plane_data = {
-        "plane_type": 'monoplane',
+        "plane_type": 'biplane',
 
         "wing1_x": 0,
         "wing1_y": 0,
@@ -41,17 +57,17 @@ def plane_data(data):
         "wing2_airfoil1_name": "s1223",
         "wing2_airfoil2_name": "s1223",
         "wing2_airfoil3_name": "s1223",
-        "wing2_span1": 0.45,
-        "wing2_span2": 0.45,
-        "wing2_chord1": 0.25,
-        "wing2_chord2": 0.25,
-        "wing2_chord3": 0.25,
+        "wing2_span1": data[0]/4,
+        "wing2_span2": data[0]/4,
+        "wing2_chord1": data[1],
+        "wing2_chord2": data[1],
+        "wing2_chord3": data[1],
         "wing2_twist1": 0,
         "wing2_twist2": 0,
         "wing2_twist3": 0,
         "wing2_incidence": 0,
 
-        "hs_x": -0.7,
+        "hs_x": data[5],
         "hs_y": 0,
         "hs_z": 0,
         "hs_clmax_airfoil": 2.2,
@@ -86,18 +102,18 @@ def plane_data(data):
         "vs_twist3": 0,
         "vs_incidence": 0,
 
-        "motor_x": 0.25,
-        "motor_z": -0.05,
-        "static_thrust": 27,
+        "motor_x": data[4],
+        "motor_z": 0,
+        "static_thrust": 45,
         "linear_decay_coefficient": 0.875,
 
-        "cg_x": -0.0725,
+        "cg_x": - data[1]/4 - 0.01,
         "cg_z": -0.1,
 
-        "tpr_x": -0.1225,
+        "tpr_x": - data[1]/4 - 0.01 - 0.1,
         "tpr_z": -0.2,
 
-        "Iyy_TPR": 0.114,
+        "Iyy_TPR": 0.2,
         "CD_tp": 0.02,
         "CD_fus": 0.02,
         "u_k": 0.05

@@ -191,6 +191,11 @@ class Plane:
         self.V_stall = ( (2*self.mtow*9.81)/(rho*self.wing1.area*self.CL_max) )**0.5
         return self.V_stall
 
+    def get_V_CLmin(self, rho):
+        self.CL_min = self.CL_alpha.min()[0]
+        self.V_CLmin = ( (2*self.mtow*9.81)/(rho*self.wing1.area*self.CL_min) )**0.5
+        return self.V_CLmin
+
     def show_plane(self):
         pass
         # print('-------------------------------------------------------------')
