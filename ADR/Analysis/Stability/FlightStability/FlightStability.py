@@ -11,7 +11,7 @@ from scipy import interpolate
 
 from ADR.Components.References.Static_margin import SM
 from ADR.Components.Points.CG import CG
-from ADR.Core.data_manipulation import dict_to_dataframe
+from ADR.Core.data_manipulation import dict_to_dataframe, find_df_roots
 
 
 class FlightStability:
@@ -116,19 +116,21 @@ class FlightStability:
 
     def trimm(self):
         tail_trimm = {}
-        for hs_incidence, CM_alpha_CG in self.CM_alpha_CG_plane_each_hs_incidence.items():
-            cm_min = 1000
-            for alpha, value in CM_alpha_CG.iterrows():
-                cm = value[0]
-                if abs(cm) < abs(cm_min):
-                    cm_min = cm
-                    alpha_cm_min = alpha
-            tail_trimm[alpha_cm_min] = hs_incidence
+        for hs_incidence in self.hs.incidence_range:
+            root = find_df_roots(self.CM_alpha_CG_plane_each_hs_incidence[hs_incidence], 'CM')
+            if len(root) != 0:
+                alpha_trimm = root[0]
+                tail_trimm[alpha_trimm] = hs_incidence
+
         self.tail_trimm = tail_trimm
         self.tail_trimm_df = dict_to_dataframe(tail_trimm, 'hs_incidence', 'alpha')
         self.plane.tail_trimm = self.tail_trimm_df
 
-        self.plane.alpha_trimm_min = min(tail_trimm, key=tail_trimm.get)
-        self.plane.alpha_trimm_max = max(tail_trimm, key=tail_trimm.get)
+        if tail_trimm:
+            self.plane.alpha_trimm_min = min(tail_trimm, key=tail_trimm.get) - 1 # This sums are here because the CM_alpha does not
+            self.plane.alpha_trimm_max = max(tail_trimm, key=tail_trimm.get) + 1 # extend till the last incidence trimm
+        else:
+            self.plane.alpha_trimm_min = 0
+            self.plane.alpha_trimm_max = 0
 
         return self.tail_trimm_df
