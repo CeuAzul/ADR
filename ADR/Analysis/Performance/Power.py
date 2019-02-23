@@ -115,7 +115,7 @@ class Power:
         if len(roots) == 1:
             self.plane.V_min = self.plane.V_stall
             self.plane.V_max = roots[0]
-            alpha_max = self.alpha_df['Alpha'].max()[0]
+            alpha_max = self.alpha_df.max()[0]
         elif len(roots) == 2:
             self.plane.V_min = roots[0]
             self.plane.V_max = roots[1]
@@ -123,7 +123,7 @@ class Power:
         elif len(roots) == 0:
             self.plane.V_min = self.plane.V_stall
             self.plane.V_max = np.amax(self.velocity_range)
-            alpha_max = self.alpha_df['Alpha'].max()[0]
+            alpha_max = self.alpha_df.max()[0]
             print('Airplane has no power excess! Get this drag down or buy a new motor!')
         self.plane.alpha_min = self.alpha_dict[self.plane.V_max]
 
