@@ -40,7 +40,12 @@ def main():
 
 if __name__ == "__main__":
     pop, log, hof = main()
-    print("Best individual is: %s\nwith fitness: %s" % (hof[0], hof[0].fitness))
+
+    print("Individual #{} is: {}\nwith fitness: {}".format(1, hof[0], hof[0].fitness))
+    print("Individual #{} is: {}\nwith fitness: {}".format(2, hof[1], hof[1].fitness))
+    print("Individual #{} is: {}\nwith fitness: {}".format(3, hof[2], hof[2].fitness))
+    print("Individual #{} is: {}\nwith fitness: {}".format(4, hof[3], hof[3].fitness))
+    print("Individual #{} is: {}\nwith fitness: {}".format(5, hof[4], hof[4].fitness))
 
     import matplotlib.pyplot as plt
     gen, avg, min_, max_ = log.select("gen", "avg", "min", "max")
