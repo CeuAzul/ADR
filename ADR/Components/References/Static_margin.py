@@ -12,8 +12,8 @@ class SM:
         eta = 0.9
         den = wing1.dCL_dalpha.at[wing1.attack_angle, 'CL'] * cos(radians(alpha_plane))\
               + wing1.dCD_dalpha.at[wing1.attack_angle, 'CD'] * sin(radians(alpha_plane))\
-              + hs.dCL_dalpha.at[hs.attack_angle, 'CL'] * cos(radians(alpha_plane) \
-              + hs.dCD_dalpha.at[hs.attack_angle, 'CD'] * sin(radians(alpha_plane)))\
+              + ( hs.dCL_dalpha.at[hs.attack_angle, 'CL'] * cos(radians(alpha_plane)) \
+              + hs.dCD_dalpha.at[hs.attack_angle, 'CD'] * sin(radians(alpha_plane)) ) \
               * eta * hs.area / wing1.area
 
         if plane_type == "biplane":
