@@ -12,7 +12,7 @@ class Ruler:
 
         if total_dimension < 3.7:
             self.plane.dimensions_are_good = True
-            print('Plane is inside the dimensions. Total: {}'.format(self.plane.total_dimensions))
+            # print('Plane is inside the dimensions. Total: {}'.format(self.plane.total_dimensions))
         else:
             self.plane.dimensions_are_good = False
             print('Plane is *outside* the dimensions. Total: {}'.format(self.plane.total_dimensions))
