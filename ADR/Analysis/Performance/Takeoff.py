@@ -40,12 +40,11 @@ class Takeoff:
 
         takeoff_failed = False
 
-        self.mtow = 0
-
         self.mass_dict = {}
 
         while(not takeoff_failed):
             m = m+dm
+            self.plane.mtow = m
 
             theta_airplane_deg = 0 # Angulo do aviao com a pista [°]
             V_x = 0 # Velocidade inicial do aviao no eixo X [m/s]
@@ -62,10 +61,11 @@ class Takeoff:
 
             on_ground = True
             takeoff_failed = False
+            going_forward = True
 
             time_dict = {}
 
-            while(on_ground and not takeoff_failed):
+            while(on_ground and going_forward and not takeoff_failed):
 
                 alpha_w1 = theta_airplane_deg + incidence_w1
                 if self.plane.plane_type == 'biplane':
@@ -130,12 +130,26 @@ class Takeoff:
                     takeoff_failed = True
                 else:
                     takeoff_failed = False
-                    self.mtow = m
 
                 if N>0:
                     on_ground = True
                 else:
                     on_ground = False
+
+                    V_takeoff = V_x
+                    V_stall = self.plane.get_V_stall(self.rho_air)
+
+                    if V_takeoff < V_stall or D > E_x:
+                        takeoff_failed = True
+
+                    self.plane.V_takeoff = V_takeoff
+
+                if dist_x > -5:
+                    going_forward = True
+                else:
+                    going_forward = False
+                    takeoff_failed = True
+                    print('Indo pra tras')
 
                 time_data = [theta_airplane_deg, E, L, L_w1, L_w2, L_hs, D, D_w1, D_w2, D_hs, N, F_at, V_x, dist_x, M, M_w1, M_w2, M_hs, dTheta, incidence_hs]
                 time_dict[t] = time_data
@@ -144,5 +158,4 @@ class Takeoff:
             time_df.index.name = 't'
             self.mass_dict[m] = time_df
 
-        self.plane.mtow = self.mtow
-        return self.mtow
+        return self.plane.mtow
