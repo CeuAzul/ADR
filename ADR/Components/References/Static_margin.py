@@ -19,8 +19,8 @@ class SM:
         if plane_type == "biplane":
             den += wing2.dCL_dalpha.at[wing2.attack_angle, 'CL'] * cos(radians(alpha_plane)) * wing2.area / wing1.area \
                    + wing2.dCD_dalpha.at[wing2.attack_angle, 'CD'] * sin(radians(alpha_plane)) * wing2.area / wing1.area
-            self.SM = -CM * wing1.chord1 / den  # Colocar a corda media aerodinamica e nao a chorda da raiz.
+            self.SM = -CM / den  # Colocar a corda media aerodinamica e nao a chorda da raiz.
         elif plane_type == "monoplane":
-            self.SM = -CM * wing1.chord1 / den  # Colocar a corda media aerodinamica e nao a chorda da raiz.
+            self.SM = -CM / den  # Colocar a corda media aerodinamica e nao a chorda da raiz.
         else:
             print("------ Error: Incapable of analysing Static Margin of given plane ------")
