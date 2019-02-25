@@ -12,13 +12,12 @@ import random
 from ADR.main import adr_analyser
 from ADR.parameters_optmizer import plane_data, enter_parameters
 
-N=4
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
 toolbox.register("attr_bool", random.uniform, 0, 1)
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=4)
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=9)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("evaluate", adr_analyser)
@@ -41,7 +40,12 @@ def main():
 
 if __name__ == "__main__":
     pop, log, hof = main()
-    print("Best individual is: %s\nwith fitness: %s" % (hof[0], hof[0].fitness))
+
+    print("Individual #{} is: {}\nwith fitness: {}".format(1, hof[0], hof[0].fitness))
+    print("Individual #{} is: {}\nwith fitness: {}".format(2, hof[1], hof[1].fitness))
+    print("Individual #{} is: {}\nwith fitness: {}".format(3, hof[2], hof[2].fitness))
+    print("Individual #{} is: {}\nwith fitness: {}".format(4, hof[3], hof[3].fitness))
+    print("Individual #{} is: {}\nwith fitness: {}".format(5, hof[4], hof[4].fitness))
 
     import matplotlib.pyplot as plt
     gen, avg, min_, max_ = log.select("gen", "avg", "min", "max")

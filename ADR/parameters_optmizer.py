@@ -8,11 +8,18 @@ def enter_parameters(bounds):
     wing_chord = 0.05 + 0.75*bounds[1]
     hs_span = 1 + 2*bounds[2]
     hs_chord = 0.05 + 0.35*bounds[3]
+    wing2_height = 0.35 + 0.65*bounds[4]
+    hs_z = bounds[5]
+    motor_z = 0.5*bounds[6]
+    cg_x = - wing_chord/4 - 0.1*bounds[7]
+    tpr_x = cg_x - 0.1*bounds[8]
+
+    y_max = max(wing_span, hs_span)
 
     motor_x = 0.2
-    hs_x = -(3.68 - wing_span - motor_x - hs_chord)
+    hs_x = -(3.70 - y_max - motor_x - hs_chord)
 
-    total_dimension = wing_span + motor_x + hs_chord - hs_x
+    total_dimension = y_max + motor_x + hs_chord - hs_x
 
     print()
     print('---------------------------------------')
@@ -21,11 +28,15 @@ def enter_parameters(bounds):
     print('HS span: {}'.format(hs_span))
     print('HS chord: {}'.format(hs_chord))
     print('HS_x: {}'.format(hs_x))
-    print('Total dimensions is: {}'.format(total_dimension))
+    print('HS_z: {}'.format(hs_z))
+    print('Wing2 height: {}'.format(wing2_height))
+    print('Motor height: {}'.format(motor_z))
+    print('CG_x: {}'.format(cg_x))
+    print('TPR_x: {}'.format(tpr_x))
     print()
 
 
-    airplane_data = [wing_span, wing_chord, hs_span, hs_chord, motor_x, hs_x]
+    airplane_data = [wing_span, wing_chord, hs_span, hs_chord, motor_x, hs_x, wing2_height, hs_z, motor_z, cg_x, tpr_x]
     return airplane_data
 
 def plane_data(data):
@@ -52,7 +63,7 @@ def plane_data(data):
 
         "wing2_x": 0,
         "wing2_y": 0,
-        "wing2_z": 0.6,
+        "wing2_z": data[6],
         "wing2_clmax_airfoil": 2.2,
         "wing2_airfoil1_name": "s1223",
         "wing2_airfoil2_name": "s1223",
@@ -69,7 +80,7 @@ def plane_data(data):
 
         "hs_x": data[5],
         "hs_y": 0,
-        "hs_z": 0,
+        "hs_z": data[7],
         "hs_clmax_airfoil": 2.2,
         "hs_airfoil1_name": "s1223",
         "hs_airfoil2_name": "s1223",
@@ -103,14 +114,14 @@ def plane_data(data):
         "vs_incidence": 0,
 
         "motor_x": data[4],
-        "motor_z": 0,
+        "motor_z": data[8],
         "static_thrust": 45,
         "linear_decay_coefficient": 1.1,
 
-        "cg_x": - data[1]/4 - 0.01,
+        "cg_x": data[9],
         "cg_z": -0.1,
 
-        "tpr_x": - data[1]/4 - 0.01 - 0.04,
+        "tpr_x": data[10],
         "tpr_z": -0.2,
 
         "Iyy_TPR": 0.2,

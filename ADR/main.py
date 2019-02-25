@@ -27,10 +27,10 @@ def adr_analyser(optmizer_list):
         if len(optmizer_list) != 0:
             airplane_var_data = parameters_optmizer.enter_parameters(optmizer_list)
             plane_data = parameters_optmizer.plane_data(airplane_var_data)
+            performance_data = parameters_optmizer.performance_data()
         else:
             plane_data = parameters.plane_data()
-
-        performance_data = parameters.performance_data()
+            performance_data = parameters.performance_data()
 
         plane = Plane(plane_data)
         plane.show_plane()
@@ -78,4 +78,4 @@ def adr_analyser(optmizer_list):
 if __name__ == "__main__":
     plot = True
     plane_data = parameters.plane_data()
-    adr_analyser([0.3114032999735177, 0.9984532502609877, 0.9770092892443677, 0.4586660405383568])
+    adr_analyser([0.13871328223159263, 0.7440855281071194, 0.5122958759754443, 0.1770265953909208, 0.3423403831822237, 0.32601107216390657, 0.04757035250450403, 0.739722623828638, 0.45727374696035916])
