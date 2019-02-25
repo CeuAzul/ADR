@@ -124,7 +124,6 @@ class Power:
             self.plane.V_min = self.plane.V_stall
             self.plane.V_max = np.amax(self.velocity_range)
             alpha_max = self.alpha_df.max()[0]
-            print('Airplane has no power excess! Get this drag down or buy a new motor!')
         self.plane.alpha_min = self.alpha_dict[self.plane.V_max]
 
         print('Alpha_max: {}'.format(alpha_max))
