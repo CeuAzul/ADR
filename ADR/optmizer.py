@@ -12,13 +12,12 @@ import random
 from ADR.main import adr_analyser
 from ADR.parameters_optmizer import plane_data, enter_parameters
 
-N=4
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
 toolbox.register("attr_bool", random.uniform, 0, 1)
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=4)
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=9)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 toolbox.register("evaluate", adr_analyser)
