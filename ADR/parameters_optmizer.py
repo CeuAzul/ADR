@@ -4,10 +4,10 @@
 # dummy data (zeros or anything).
 
 def enter_parameters(bounds):
-    wing_span = 1 + 1*bounds[0]
-    wing_chord = 0.15 + 0.35*bounds[1]
-    hs_span = 0.3 + 0.3*bounds[2]
-    hs_chord = 0.05 + 0.1*bounds[3]
+    wing_span = 1 + 2*bounds[0]
+    wing_chord = 0.05 + 0.75*bounds[1]
+    hs_span = 1 + 2*bounds[2]
+    hs_chord = 0.05 + 0.35*bounds[3]
 
     motor_x = 0.2
     hs_x = -(3.68 - wing_span - motor_x - hs_chord)
@@ -52,7 +52,7 @@ def plane_data(data):
 
         "wing2_x": 0,
         "wing2_y": 0,
-        "wing2_z": 0.3,
+        "wing2_z": 0.6,
         "wing2_clmax_airfoil": 2.2,
         "wing2_airfoil1_name": "s1223",
         "wing2_airfoil2_name": "s1223",
@@ -105,12 +105,12 @@ def plane_data(data):
         "motor_x": data[4],
         "motor_z": 0,
         "static_thrust": 45,
-        "linear_decay_coefficient": 0.875,
+        "linear_decay_coefficient": 1.1,
 
         "cg_x": - data[1]/4 - 0.01,
         "cg_z": -0.1,
 
-        "tpr_x": - data[1]/4 - 0.01 - 0.1,
+        "tpr_x": - data[1]/4 - 0.01 - 0.04,
         "tpr_z": -0.2,
 
         "Iyy_TPR": 0.2,
@@ -124,8 +124,8 @@ def plane_data(data):
 def performance_data():
 
     takeoff_parameters = {
-        "rho_air": 1.225, # Densidade do ar [kg/m^3]
-        "dist_max": 60, # Distancia maxima de decolagem pelo regulamento [m]
+        "rho_air": 1.1, # Densidade do ar [kg/m^3]
+        "dist_max": 45, # Distancia maxima de decolagem pelo regulamento [m]
         "offset_pilot": 5 # Distancia antes do fim da pista em que o piloto aciona o profundor [m]
     }
 
