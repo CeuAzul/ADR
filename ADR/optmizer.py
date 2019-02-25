@@ -28,14 +28,14 @@ toolbox.register("mutate", tools.mutFlipBit, indpb=0.10)
 toolbox.register("select", tools.selTournament, tournsize=2)
 
 def main():
-    pop = toolbox.population(n=10)
-    hof = tools.HallOfFame(1)
+    pop = toolbox.population(n=100)
+    hof = tools.HallOfFame(5)
     stats = tools.Statistics(lambda ind: ind.fitness.values)
     stats.register("avg", numpy.mean)
     stats.register("min", numpy.min)
     stats.register("max", numpy.max)
 
-    pop, logbook = algorithms.eaSimple(pop, toolbox, cxpb=0.5, mutpb=0.2, ngen=2, stats=stats, halloffame=hof, verbose=True)
+    pop, logbook = algorithms.eaSimple(pop, toolbox, cxpb=0.5, mutpb=0.2, ngen=5, stats=stats, halloffame=hof, verbose=True)
 
     return pop, logbook, hof
 

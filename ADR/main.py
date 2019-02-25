@@ -16,54 +16,66 @@ from ADR.Checkers.Dimensions import Ruler
 from matplotlib import pyplot as plt
 import numpy as np
 
-plot = True
+import traceback
+import logging
 
-def adr_analyser(individual):
+plot = False
 
-    airplane_var_data = parameters_optmizer.enter_parameters(individual)
+def adr_analyser(optmizer_list):
 
-    plane_data = parameters_optmizer.plane_data(airplane_var_data)
-    performance_data = parameters.performance_data()
+    try:
+        if len(optmizer_list) != 0:
+            airplane_var_data = parameters_optmizer.enter_parameters(optmizer_list)
+            plane_data = parameters_optmizer.plane_data(airplane_var_data)
+        else:
+            plane_data = parameters.plane_data()
 
-    plane = Plane(plane_data)
-    plane.show_plane()
+        performance_data = parameters.performance_data()
 
-    print('Plane parameters: {}'.format(individual))
+        plane = Plane(plane_data)
+        plane.show_plane()
 
-    takeoff_analysis = Takeoff(plane, performance_data)
-    mtow = takeoff_analysis.get_mtow()
+        print('Plane parameters: {}'.format(optmizer_list))
 
-    print('Initial MTOW is {}'.format(mtow))
+        takeoff_analysis = Takeoff(plane, performance_data)
+        mtow = takeoff_analysis.get_mtow()
 
-    flight_stability = FlightStability(plane)
-    flight_stability.CM_plane_CG(plane.cg)
-    flight_stability.static_margin()
+        print('Initial MTOW is {}'.format(mtow))
 
-    power_analysis = Power(plane, performance_data)
+        flight_stability = FlightStability(plane)
+        flight_stability.CM_plane_CG(plane.cg)
+        flight_stability.static_margin()
 
-    trimm_range_checker = TrimmRangeChecker(plane)
-    trimm_range_checker.check()
+        power_analysis = Power(plane, performance_data)
 
-    sm_checker = StaticMarginChecker(plane)
-    sm_checker.check()
+        trimm_range_checker = TrimmRangeChecker(plane)
+        trimm_range_checker.check()
 
-    ruler = Ruler(plane)
-    ruler.measure()
+        sm_checker = StaticMarginChecker(plane)
+        sm_checker.check()
 
-    maybe_an_assassin = MaybeAnAssassin(plane)
-    maybe_an_assassin.score_or_kill()
+        ruler = Ruler(plane)
+        ruler.measure()
 
-    print('Final MTOW is {}'.format(plane.mtow))
+        maybe_an_assassin = MaybeAnAssassin(plane)
+        maybe_an_assassin.score_or_kill()
 
-    if plot == True:
-        plot_takeoff_data(takeoff_analysis, mtow)
-        plot_stability_data(flight_stability)
-        plot_power_curves(power_analysis)
-        plt.show()
+        print('Final MTOW is {}'.format(plane.mtow))
 
-    return plane.score,
+        if plot == True:
+            plot_takeoff_data(takeoff_analysis, mtow)
+            plot_stability_data(flight_stability)
+            plot_power_curves(power_analysis)
+            plt.show()
+
+        return plane.score,
+
+    except Exception as e:
+        logging.error(traceback.format_exc())
+        print("-----------------------------------Error-----------------------------------")
+        return 0,
 
 if __name__ == "__main__":
     plot = True
     plane_data = parameters.plane_data()
-    adr_analyser([1,1,1,1])
+    adr_analyser([0.3114032999735177, 0.9984532502609877, 0.9770092892443677, 0.4586660405383568])

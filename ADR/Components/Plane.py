@@ -127,6 +127,7 @@ class Plane:
         self.V_stall = 0
         self.V_min = 0
         self.V_max = 0
+        self.V_takeoff = 0
         self.mtow = 5
         self.alpha_min = 0
         self.alpha_max = 0

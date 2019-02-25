@@ -15,5 +15,5 @@ class MaybeAnAssassin:
             print('Plane is alive and scored {}'.format(self.plane.score))
         else:
             self.plane.dead = True
-            self.plane.score = -1000
+            self.plane.score = 0
             print('Plane is dead')
