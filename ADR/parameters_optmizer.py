@@ -14,10 +14,12 @@ def enter_parameters(bounds):
     cg_x = - wing_chord/4 - 0.1*bounds[7]
     tpr_x = cg_x - 0.1*bounds[8]
 
-    motor_x = 0.2
-    hs_x = -(3.68 - wing_span - motor_x - hs_chord)
+    y_max = max(wing_span, hs_span)
 
-    total_dimension = wing_span + motor_x + hs_chord - hs_x
+    motor_x = 0.2
+    hs_x = -(3.70 - y_max - motor_x - hs_chord)
+
+    total_dimension = y_max + motor_x + hs_chord - hs_x
 
     print()
     print('---------------------------------------')
