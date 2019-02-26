@@ -69,8 +69,3 @@ def adr_analyser(optmizer_list):
         logging.error(traceback.format_exc())
         print("--------------------------------sefsdfdsf---Error-----------------------------------")
         return 0,
-
-if __name__ == "__main__":
-    plot = True
-    plane_data = parameters.plane_data()
-    adr_analyser([0.13871328223159263, 0.7440855281071194, 0.5122958759754443, 0.1770265953909208, 0.3423403831822237, 0.32601107216390657, 0.04757035250450403, 0.739722623828638, 0.45727374696035916])
