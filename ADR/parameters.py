@@ -6,7 +6,7 @@
 def plane_data():
 
     plane_data = {
-        "plane_type": 'monoplane',
+        "plane_type": 'biplane',
 
         "wing1_x": 0,
         "wing1_y": 0,
@@ -89,8 +89,10 @@ def plane_data():
         "tpr_z": -0.2,
 
         "Iyy_TPR": 0.2,
-        "CD_tp": 0.02,
-        "CD_fus": 0.02,
+        "CD_tp": 0.8,
+        "S_tp": 0.001,
+        "CD_fus": 0.6,
+        "S_fus": 0.02,
         "u_k": 0.05
     }
 
@@ -99,8 +101,8 @@ def plane_data():
 def performance_data():
 
     takeoff_parameters = {
-        "rho_air": 1.225, # Densidade do ar [kg/m^3]
-        "dist_max": 60, # Distancia maxima de decolagem pelo regulamento [m]
+        "rho_air": 1.1, # Densidade do ar [kg/m^3]
+        "dist_max": 55, # Distancia maxima de decolagem pelo regulamento [m]
         "offset_pilot": 5 # Distancia antes do fim da pista em que o piloto aciona o profundor [m]
     }
 

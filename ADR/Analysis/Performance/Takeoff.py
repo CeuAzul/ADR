@@ -95,8 +95,8 @@ class Takeoff:
                 if self.plane.plane_type == 'biplane':
                     D_w2 = self.plane.wing2.drag(self.rho_air, V_x, alpha_w2)
                 D_hs = self.plane.hs.drag(self.rho_air, V_x, alpha_hs)
-                D_tp = drag(self.rho_air, V_x, S_w1, self.plane.CD_tp)
-                D_fus = drag(self.rho_air, V_x, S_w1, self.plane.CD_fus)
+                D_tp = drag(self.rho_air, V_x, self.plane.S_tp, self.plane.CD_tp)
+                D_fus = drag(self.rho_air, V_x, self.plane.S_fus, self.plane.CD_fus)
                 D = D_w1 + D_w2 + D_hs + D_tp + D_fus
 
                 F_at = self.plane.u_k*N
