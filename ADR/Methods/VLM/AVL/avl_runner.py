@@ -7,7 +7,7 @@ from ADR.Methods.VLM.AVL.io_avl import get_value, set_dimensions, get_clmax
 
 def change_dimensions(data):
 
-    surface_name = data.get("surface_name")
+    surface_name = 'wing'
     airfoil1_name = data.get("airfoil1_name")
     airfoil2_name = data.get("airfoil2_name")
     airfoil3_name = data.get("airfoil3_name")
