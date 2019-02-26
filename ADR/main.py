@@ -72,7 +72,7 @@ def adr_analyser(optmizer_list):
 
     except Exception as e:
         logging.error(traceback.format_exc())
-        print("--------------------------------sefsdfdsf---Error-----------------------------------")
+        print("-----------------------------------Error-----------------------------------")
         return 0,
 
 if __name__ == "__main__":
