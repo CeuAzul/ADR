@@ -65,12 +65,7 @@ def adr_analyser(optmizer_list):
         if plot == True:
             plot_takeoff_data(takeoff_analysis, mtow)
             plot_stability_data(flight_stability)
-            plot_power_curves(power_analysis)
-            plt.show()
-
-        return plane.score,
-
-    except Exception as e:
+            plot_power_
         logging.error(traceback.format_exc())
         print("--------------------------------sefsdfdsf---Error-----------------------------------")
         return 0,
