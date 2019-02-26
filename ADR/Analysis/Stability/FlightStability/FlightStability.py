@@ -127,8 +127,8 @@ class FlightStability:
         self.plane.tail_trimm = self.tail_trimm_df
 
         if tail_trimm:
-            self.plane.alpha_trimm_min = min(tail_trimm, key=tail_trimm.get) - 1 # This sums are here because the CM_alpha does not
-            self.plane.alpha_trimm_max = max(tail_trimm, key=tail_trimm.get) + 1 # extend till the last incidence trimm
+            self.plane.alpha_trimm_min = min(tail_trimm, key=tail_trimm.get)
+            self.plane.alpha_trimm_max = max(tail_trimm, key=tail_trimm.get)
         else:
             self.plane.alpha_trimm_min = 0
             self.plane.alpha_trimm_max = 0
