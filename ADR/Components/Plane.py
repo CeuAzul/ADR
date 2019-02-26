@@ -113,7 +113,9 @@ class Plane:
 
         self.Iyy_TPR = data.get("Iyy_TPR")
         self.CD_tp = data.get("CD_tp")
+        self.S_tp = data.get("S_tp")
         self.CD_fus = data.get("CD_fus")
+        self.S_fus = data.get("S_fus")
         self.u_k = data.get("u_k")
 
         self.wing1 = Wing(wing1_data)

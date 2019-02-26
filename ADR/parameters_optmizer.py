@@ -125,8 +125,10 @@ def plane_data(data):
         "tpr_z": -0.2,
 
         "Iyy_TPR": 0.2,
-        "CD_tp": 0.02,
-        "CD_fus": 0.02,
+        "CD_tp": 0.8,
+        "S_tp": 0.001,
+        "CD_fus": 0.6,
+        "S_fus": 0.02,
         "u_k": 0.05
     }
 

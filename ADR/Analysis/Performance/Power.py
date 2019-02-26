@@ -4,6 +4,8 @@ import numpy as np
 from ADR.Core.data_manipulation import dict_to_dataframe
 from ADR.Core.data_manipulation import find_df_roots
 
+from ADR.Methods.FundamentalEquations import drag
+
 class Power:
     def __init__(self, plane, performance_parameters):
 
@@ -60,7 +62,8 @@ class Power:
                 else:
                     alpha_nivel = alpha
 
-            thrust_required = (0.5 * self.rho * velocity**2 * self.area_ref * (self.plane.CD_tp + self.plane.CD_fus)) + \
+            thrust_required = drag(self.rho, velocity, self.plane.S_tp, self.plane.CD_tp) + \
+                              drag(self.rho, velocity, self.plane.S_fus, self.plane.CD_fus) + \
                               self.wing1.drag(self.rho, velocity, alpha_nivel) + \
                               self.wing2.drag(self.rho, velocity, alpha_nivel) + \
                               self.hs.drag(self.rho, velocity, alpha_nivel)
