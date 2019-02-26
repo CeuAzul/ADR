@@ -138,6 +138,7 @@ class Plane:
         self.tail_trimm = 0
 
         self.SM_alpha = None
+        self.alpha_velocity_df = None
 
         self.trimm_for_low_angles = False
         self.trimm_for_high_angles = False

@@ -82,6 +82,8 @@ class Power:
         self.thrust_required_df = dict_to_dataframe(thrust_required_dict, 'Thrust required', 'Velocity')
         self.power_required_df = dict_to_dataframe(power_required_dict, 'Power required', 'Velocity')
 
+        self.plane.alpha_velocity_df = self.alpha_df
+
         return self.alpha_df, self.thrust_required_df, self.power_required_df
 
     def power_available(self):
