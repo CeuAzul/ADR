@@ -22,6 +22,7 @@ def plot_stability_data(flight_stability):
     ax1.set_title("Momentum coeficients on CG")
 
     ax1.plot(flight_stability.wing1.CM_alpha_CG, label="Wing1")
+    ax1.plot(flight_stability.plane.motor.CM_alpha_CG, label="Motor")
     if flight_stability.plane.plane_type == 'biplane':
         ax1.plot(flight_stability.wing2.CM_alpha_CG, label="Wing2")
     for hs_incidence in flight_stability.hs.incidence_range:

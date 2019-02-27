@@ -42,11 +42,12 @@ def adr_analyser(optmizer_list):
 
         print('Initial MTOW is {}'.format(mtow))
 
+        power_analysis = Power(plane, performance_data)
+
         flight_stability = FlightStability(plane)
         flight_stability.CM_plane_CG(plane.cg)
         flight_stability.static_margin()
 
-        power_analysis = Power(plane, performance_data)
 
         trimm_range_checker = TrimmRangeChecker(plane)
         trimm_range_checker.check()

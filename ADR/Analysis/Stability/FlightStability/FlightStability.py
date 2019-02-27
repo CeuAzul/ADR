@@ -20,6 +20,7 @@ class FlightStability:
         self.wing1 = self.plane.wing1
         self.wing2 = self.plane.wing2  # wing2 equals wing 1 for now (monoplane)
         self.hs = self.plane.hs
+        self.rho = 1.1
 
         if self.plane.plane_type != "monoplane" and self.plane.plane_type != "biplane":
             print("Incapable of analysing FlightStability of this plane type")
@@ -48,13 +49,17 @@ class FlightStability:
         CM_alpha_CG_wing2 = {}
         CM_alpha_CG_wings = {}
         CM_alpha_CG_plane = {}
+        CM_alpha_CG_motor = {}
         self.CM_alpha_CG_plane_each_hs_incidence = {}
 
         for alpha_plane in self.plane.alpha_range:
 
             self.wing1.update_alpha(float(alpha_plane))
             self.wing2.update_alpha(float(alpha_plane))
+            
+            velocity = np.interp(alpha_plane, self.plane.alpha_velocity_df['Alpha'].values, self.plane.alpha_velocity_df.index.values)
 
+            CM_alpha_CG_motor[alpha_plane] = - (self.plane.motor.thrust(velocity)*(self.plane.motor.z - self.plane.cg.z))/(0.5*self.rho*velocity**2*self.plane.wing1.area*self.plane.wing1.MAC)
             # Getting CM_alpha of wing1
             CM_alpha_CG_wing1[alpha_plane] = self.wing1.moment_on_CG(self.wing1, self.plane.cg, alpha_plane)
 
@@ -74,7 +79,7 @@ class FlightStability:
                     CM_alpha_CG_tail[alpha_plane] = self.hs.moment_on_CG(self.wing1, self.plane.cg, alpha_plane)
                     # Summing CM of tail with CM of wing per each alpha
                     # Getting CM_alpha of plane
-                    CM_alpha_CG_plane[alpha_plane] = CM_alpha_CG_wings[alpha_plane] + CM_alpha_CG_tail[alpha_plane]
+                    CM_alpha_CG_plane[alpha_plane] = CM_alpha_CG_wings[alpha_plane] + CM_alpha_CG_tail[alpha_plane] + CM_alpha_CG_motor[alpha_plane]
                 else:
                     CM_alpha_CG_tail[alpha_plane] = None
                     CM_alpha_CG_plane[alpha_plane] = None
@@ -91,6 +96,7 @@ class FlightStability:
         self.wing1.CM_alpha_CG = dict_to_dataframe(CM_alpha_CG_wing1, 'CM', 'alpha')
         self.wing2.CM_alpha_CG = dict_to_dataframe(CM_alpha_CG_wing2, 'CM', 'alpha')
         self.hs.CM_alpha_CG = dict_to_dataframe(CM_alpha_CG_tail, 'CM', 'alpha')
+        self.plane.motor.CM_alpha_CG = dict_to_dataframe(CM_alpha_CG_motor, 'CM', 'alpha')
 
         return self.CM_alpha_CG_plane_each_hs_incidence
 

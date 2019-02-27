@@ -6,6 +6,7 @@ class Motor(Component):
 
         self.static_thrust = data.get("static_thrust")
         self.linear_decay_coefficient = data.get("linear_decay_coefficient")
+        self.CM_alpha_CG = None
 
     def thrust(self, velocity):
         thrust = self.static_thrust - self.linear_decay_coefficient*velocity
