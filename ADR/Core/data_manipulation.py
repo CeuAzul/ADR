@@ -23,3 +23,8 @@ def find_df_roots(df, column_name):
         if element == 1:
             roots.append(index_array[index])
     return roots
+
+def replace_forced_parameters(original_parameters, forced_parameters):
+
+    mixed_parameters = {key: forced_parameters.get(key, value) for key, value in original_parameters.items()}
+    return mixed_parameters

@@ -3,9 +3,11 @@
 # this example). If you don't use some of it, just give
 # dummy data (zeros or anything).
 
-def plane_data():
+from Core.data_manipulation import replace_forced_parameters
 
-    plane_data = {
+def plane_parameters(forced_plane_parameters):
+
+    original_plane_parameters = {
         "plane_type": 'biplane',
 
         "wing1_x": 0,
@@ -96,14 +98,18 @@ def plane_data():
         "u_k": 0.05
     }
 
-    return plane_data
+    mixed_plane_parameters = replace_forced_parameters(original_plane_parameters, forced_plane_parameters)
+    return mixed_plane_parameters
 
-def performance_data():
+def performance_parameters(forced_performance_parameters):
 
-    takeoff_parameters = {
+    original_performance_parameters = {
         "rho_air": 1.1, # Densidade do ar [kg/m^3]
         "dist_max": 55, # Distancia maxima de decolagem pelo regulamento [m]
         "offset_pilot": 5 # Distancia antes do fim da pista em que o piloto aciona o profundor [m]
     }
 
-    return takeoff_parameters
+    mixed_performance_parameters = replace_forced_parameters(original_performance_parameters, forced_performance_parameters)
+    return mixed_performance_parameters
+
+
