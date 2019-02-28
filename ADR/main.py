@@ -1,5 +1,5 @@
-from ADR import parameters
-from ADR import parameters_optmizer
+from ADR import parameters, my_own_parameters
+from ADR.Core.insert_genes import generate_forced_parameters
 from ADR.Components.Plane import Plane
 from ADR.Analysis.Performance.Takeoff import Takeoff
 from ADR.Analysis.Performance.test_Takeoff import plot_takeoff_data
@@ -19,23 +19,24 @@ import numpy as np
 import traceback
 import logging
 
-plot = False
-
-def adr_analyser(optmizer_list):
+def adr_analyser(plot, use_own_parameters, use_genes, genes):
 
     try:
-        if len(optmizer_list) != 0:
-            airplane_var_data = parameters_optmizer.enter_parameters(optmizer_list)
-            plane_data = parameters_optmizer.plane_data(airplane_var_data)
-            performance_data = parameters_optmizer.performance_data()
+
+        if use_genes:
+            forced_parameters = generate_forced_parameters(genes)
         else:
-            plane_data = parameters.plane_data()
-            performance_data = parameters.performance_data()
+            forced_parameters = {}
 
-        plane = Plane(plane_data)
+        if use_own_parameters:
+            plane_parameters = my_own_parameters.plane_parameters(forced_parameters)
+            performance_data = my_own_parameters.performance_parameters(forced_parameters)
+        else:
+            plane_parameters = parameters.plane_parameters(forced_parameters)
+            performance_data = parameters.performance_parameters(forced_parameters)
+
+        plane = Plane(plane_parameters)
         plane.show_plane()
-
-        print('Plane parameters: {}'.format(optmizer_list))
 
         takeoff_analysis = Takeoff(plane, performance_data)
         mtow = takeoff_analysis.get_mtow()
@@ -77,5 +78,4 @@ def adr_analyser(optmizer_list):
 
 if __name__ == "__main__":
     plot = True
-    plane_data = parameters.plane_data()
-    adr_analyser([0.13871328223159263, 0.7440855281071194, 0.5122958759754443, 0.1770265953909208, 0.3423403831822237, 0.32601107216390657, 0.04757035250450403, 0.739722623828638, 0.45727374696035916])
+    adr_analyser(plot=True, use_own_parameters=False, use_genes=True, genes=[0.14, 0.74, 0.51, 0.18, 0.34, 0.33, 0.05, 0.74, 0.46])
