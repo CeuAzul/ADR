@@ -3,7 +3,7 @@
 # this example). If you don't use some of it, just give
 # dummy data (zeros or anything).
 
-from Core.data_manipulation import replace_forced_parameters
+from ADR.Core.data_manipulation import replace_forced_parameters
 
 def plane_parameters(forced_plane_parameters):
 
@@ -81,11 +81,11 @@ def plane_parameters(forced_plane_parameters):
 
         "motor_x": 0.25,
         "motor_z": 0,
-        "static_thrust": 38,
-        "linear_decay_coefficient": 0.9,
+        "static_thrust": 45,
+        "linear_decay_coefficient": 1.1,
 
         "cg_x": -0.103,
-        "cg_z": -0.07,
+        "cg_z": -0.1,
 
         "tpr_x": -0.153,
         "tpr_z": -0.2,
@@ -105,7 +105,7 @@ def performance_parameters(forced_performance_parameters):
 
     original_performance_parameters = {
         "rho_air": 1.1, # Densidade do ar [kg/m^3]
-        "dist_max": 55, # Distancia maxima de decolagem pelo regulamento [m]
+        "dist_max": 45, # Distancia maxima de decolagem pelo regulamento [m]
         "offset_pilot": 5 # Distancia antes do fim da pista em que o piloto aciona o profundor [m]
     }
 

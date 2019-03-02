@@ -19,7 +19,7 @@ import numpy as np
 import traceback
 import logging
 
-def adr_analyser(plot, use_own_parameters, use_genes, genes):
+def adr_analyser(genes, plot=False, use_own_parameters=True, use_genes=True):
 
     try:
 
@@ -78,4 +78,4 @@ def adr_analyser(plot, use_own_parameters, use_genes, genes):
 
 if __name__ == "__main__":
     plot = True
-    adr_analyser(plot=True, use_own_parameters=False, use_genes=True, genes=[0.14, 0.74, 0.51, 0.18, 0.34, 0.33, 0.05, 0.74, 0.46])
+    adr_analyser(plot=True, use_own_parameters=False, use_genes=True, genes=[0.636, 0.496, 0.491, 0.868, 0.383, 0.709, 0.0, 0.770, 0.037])
