@@ -7,6 +7,7 @@ from ADR.Analysis.Performance.Power import Power
 from ADR.Analysis.Performance.test_Power import plot_power_curves
 from ADR.Analysis.Stability.FlightStability.FlightStability import FlightStability
 from ADR.Analysis.Stability.FlightStability.test_FlightStability import plot_stability_data
+from ADR.Analysis.Aerodynamics.AerodynamicPlots import plot_aerodynamic_data
 
 from ADR.Checkers.TrimmRange import TrimmRangeChecker
 from ADR.Checkers.StaticMargin import StaticMarginChecker
@@ -67,6 +68,7 @@ def adr_analyser(genes, plot=False, use_own_parameters=True, use_genes=True):
             plot_takeoff_data(takeoff_analysis, mtow)
             plot_stability_data(flight_stability)
             plot_power_curves(power_analysis)
+            plot_aerodynamic_data(plane)
             plt.show()
 
         return plane.score,
