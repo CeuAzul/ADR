@@ -152,6 +152,7 @@ class Plane:
         self.dead = False
 
         self.get_CL_alpha_plane()
+        self.get_CD_alpha_plane()
         self.set_alpha_range()
         self.hs.set_incidence_range(self.stall_min, self.stall_max)
 
@@ -188,6 +189,16 @@ class Plane:
             CL_alpha_plane[alpha] = numerator / self.wing1.area
         self.CL_alpha = dict_to_dataframe(CL_alpha_plane, 'CL', 'alpha')
         return self.CL_alpha
+
+    def get_CD_alpha_plane(self):
+        CD_alpha_plane = {}
+        for alpha in np.arange(-20, 21, 0.1):
+            numerator = self.wing1.get_CD(alpha) * self.wing1.area - self.hs.get_CD(alpha) * self.hs.area
+            if self.plane_type == 'biplane':
+                numerator += self.wing2.get_CD(alpha) * self.wing2.area
+            CD_alpha_plane[alpha] = numerator / self.wing1.area
+        self.CD_alpha = dict_to_dataframe(CD_alpha_plane, 'CD', 'alpha')
+        return self.CD_alpha
 
     def get_V_stall(self, rho):
         self.CL_max = self.CL_alpha.max()[0]
