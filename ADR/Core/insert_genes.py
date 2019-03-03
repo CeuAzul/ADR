@@ -11,6 +11,8 @@ def generate_forced_parameters(genes):
     wing2_height_bounds  =   [0.35, 1.00]
     hs_z_bounds          =   [0.00, 1.00]
     motor_z_bounds       =   [0.00, 0.50]
+    cg_x_bounds          =   [0, 0.1]
+    tpr_x_bounds         =   [0, 0.1]
 
     wing_span            =   interp(genes[0], genes_bounds, wing_span_bounds)
     wing_chord           =   interp(genes[1], genes_bounds, wing_chord_bounds)
@@ -19,12 +21,8 @@ def generate_forced_parameters(genes):
     wing2_height         =   interp(genes[4], genes_bounds, wing2_height_bounds)
     hs_z                 =   interp(genes[5], genes_bounds, hs_z_bounds)
     motor_z              =   interp(genes[6], genes_bounds, motor_z_bounds)
-
-    cg_x_bounds          =   [wing_chord/4, wing_chord/4 + 0.2]
-    cg_x                 =   interp(genes[7], genes_bounds, cg_x_bounds)
-
-    tpr_x_bounds          =   [cg_x, cg_x + 0.2]
-    tpr_x                 =   interp(genes[8], genes_bounds, tpr_x_bounds)
+    cg_x                 =  -interp(genes[7], genes_bounds, cg_x_bounds) - wing_chord/4
+    tpr_x                =  -interp(genes[8], genes_bounds, tpr_x_bounds) + cg_x
 
     motor_x = 0.2
     y_max = max(wing_span, hs_span)
@@ -60,5 +58,10 @@ def generate_forced_parameters(genes):
         'motor_x' : motor_x,
         'hs_x' : hs_x,
     }
+
+    print('-----------------------------------------')
+    for key, value in forced_parameters.items():
+        print('{} : {:.3f}'.format(key, value))
+    print('-----------------------------------------')
 
     return forced_parameters
