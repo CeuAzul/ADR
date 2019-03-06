@@ -1,4 +1,5 @@
-from ADR import parameters
+from ADR import parameters, my_own_parameters
+from ADR.Core.insert_genes import generate_forced_parameters
 from ADR.Components.Plane import Plane
 from ADR.Analysis.Performance.Takeoff import Takeoff
 from matplotlib import pyplot as plt
@@ -43,15 +44,29 @@ def plot_takeoff_data(takeoff_analysis, mtow):
     ax6.grid()
     ax6.legend()
 
-if __name__ == "__main__":
-    plane_data = parameters.plane_data()
-    performance_data = parameters.performance_data()
+def takeoff(genes, plot=True, use_own_parameters=False, use_genes=True):
+    if use_genes:
+        forced_parameters = generate_forced_parameters(genes)
+    else:
+        forced_parameters = {}
 
-    plane = Plane(plane_data)
+    if use_own_parameters:
+        plane_parameters = my_own_parameters.plane_parameters(forced_parameters)
+        performance_data = my_own_parameters.performance_parameters(forced_parameters)
+    else:
+        plane_parameters = parameters.plane_parameters(forced_parameters)
+        performance_data = parameters.performance_parameters(forced_parameters)
+
+    plane = Plane(plane_parameters)
     takeoff_analysis = Takeoff(plane, performance_data)
     mtow = takeoff_analysis.get_mtow()
 
     print('Final MTOW is {}'.format(mtow))
-    plot_takeoff_data(takeoff_analysis, mtow)
+    print('V_takeoff : ', plane.V_takeoff)
 
-    plt.show()
+    if plot == True:
+        plot_takeoff_data(takeoff_analysis, mtow)
+        plt.show()
+
+if __name__ == "__main__":
+    takeoff(genes=[0.6368717909213074, 0.49634100006739956, 0.4916183010303584, 0.8680241758171354, 0.38362358047862344, 0.7093876027664122, 0.0, 0.7708603646630342, 0.03795404093558552])
