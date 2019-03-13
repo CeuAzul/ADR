@@ -266,5 +266,5 @@ class Aerodynamic_surface(Component):
         return drag
 
     def moment(self, air_density, velocity, alpha):
-        moment = 0.5 * air_density * velocity ** 2 * self.area * self.get_CM()
+        moment = 0.5 * air_density * velocity ** 2 * self.area* self.MAC * self.get_CM()
         return moment
