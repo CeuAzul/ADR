@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import csv
+import os
 
 def dict_to_dataframe(dict, column_name, index_name):
     dataframe = pd.DataFrame.from_dict(dict, orient="index", columns=[column_name])
@@ -28,3 +30,24 @@ def replace_forced_parameters(original_parameters, forced_parameters):
 
     mixed_parameters = {key: forced_parameters.get(key, value) for key, value in original_parameters.items()}
     return mixed_parameters
+
+def save_dict(plane_params, perf_params, mtow, state):
+    dir = 'saved_planes'
+    filename = 'plane_mtow_'
+    filepath = dir + '/' + filename + str(round(mtow)) + '_' + state + '-'
+
+    i = 0
+    if os.path.isfile(filepath + str(i) + '.csv'):
+        already_exist = True
+        while already_exist:
+            i += 1
+            if not os.path.isfile(filepath + str(i) + '.csv'):
+                already_exist = False
+
+    filepath = filepath + str(i) + '.csv'
+    with open(filepath, 'a', newline='') as f:
+        w = csv.writer(f)
+        for key, val in plane_params.items():
+            w.writerow([key, val])
+        for key, val in perf_params.items():
+            w.writerow([key, val])

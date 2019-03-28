@@ -1,5 +1,6 @@
-from ADR import parameters, my_own_parameters
+from ADR import parameters
 from ADR.Core.insert_genes import generate_forced_parameters
+from ADR.Core.data_manipulation import save_dict
 from ADR.Components.Plane import Plane
 from ADR.Analysis.Performance.Takeoff import Takeoff
 from ADR.Analysis.Performance.test_Takeoff import plot_takeoff_data
@@ -20,21 +21,16 @@ import numpy as np
 import traceback
 import logging
 
-def adr_analyser(genes, plot=False, use_own_parameters=True, use_genes=True):
+def adr_optmizer(genes):
+    forced_parameters = generate_forced_parameters(parameters.original_plane_parameters, genes)
+    score = adr_analyser(forced_parameters=forced_parameters)
+    return score
+
+def adr_analyser(plot=False, use_ready_airplane=False, forced_parameters={}):
 
     try:
-
-        if use_genes:
-            forced_parameters = generate_forced_parameters(genes)
-        else:
-            forced_parameters = {}
-
-        if use_own_parameters:
-            plane_parameters = my_own_parameters.plane_parameters(forced_parameters)
-            performance_data = my_own_parameters.performance_parameters(forced_parameters)
-        else:
-            plane_parameters = parameters.plane_parameters(forced_parameters)
-            performance_data = parameters.performance_parameters(forced_parameters)
+        plane_parameters = parameters.plane_parameters(forced_parameters)
+        performance_data = parameters.performance_parameters(forced_parameters)
 
         plane = Plane(plane_parameters)
         plane.show_plane()
@@ -71,6 +67,10 @@ def adr_analyser(genes, plot=False, use_own_parameters=True, use_genes=True):
             plot_aerodynamic_data(plane)
             plt.show()
 
+        if plane.dead == True:
+            save_dict(plane_parameters, performance_data, mtow, 'dead')
+        else:
+            save_dict(plane_parameters, performance_data, mtow, 'alive')
         return plane.score,
 
     except Exception as e:
@@ -80,4 +80,4 @@ def adr_analyser(genes, plot=False, use_own_parameters=True, use_genes=True):
 
 if __name__ == "__main__":
     plot = True
-    adr_analyser(plot=True, use_own_parameters=False, use_genes=True, genes=[0.636, 0.496, 0.491, 0.868, 0.383, 0.709, 0.0, 0.770, 0.037])
+    adr_analyser(plot=True)
