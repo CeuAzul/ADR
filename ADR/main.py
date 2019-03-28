@@ -1,5 +1,6 @@
 from ADR import parameters
 from ADR.Core.insert_genes import generate_forced_parameters
+from ADR.Core.data_manipulation import save_dict
 from ADR.Components.Plane import Plane
 from ADR.Analysis.Performance.Takeoff import Takeoff
 from ADR.Analysis.Performance.test_Takeoff import plot_takeoff_data
@@ -66,6 +67,10 @@ def adr_analyser(plot=False, use_ready_airplane=False, forced_parameters={}):
             plot_aerodynamic_data(plane)
             plt.show()
 
+        if plane.dead == True:
+            save_dict(plane_parameters, performance_data, mtow, 'dead')
+        else:
+            save_dict(plane_parameters, performance_data, mtow, 'alive')
         return plane.score,
 
     except Exception as e:
