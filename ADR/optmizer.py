@@ -9,17 +9,20 @@ from deap import tools
 
 import random
 
-from ADR.main import adr_analyser
+from ADR.main import adr_optmizer
+from ADR.Core.insert_genes import num_opt_params
+
+N = num_opt_params()
 
 creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 creator.create("Individual", list, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
 toolbox.register("attr_bool", random.uniform, 0, 1)
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=9)
+toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, n=N)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
-toolbox.register("evaluate", adr_analyser)
+toolbox.register("evaluate", adr_optmizer)
 
 toolbox.register("mate", tools.cxTwoPoint)
 toolbox.register("mutate", tools.mutFlipBit, indpb=0.10)

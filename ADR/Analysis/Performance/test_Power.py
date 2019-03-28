@@ -1,4 +1,4 @@
-from ADR import parameters, my_own_parameters
+from ADR import parameters
 from ADR.Core.insert_genes import generate_forced_parameters
 from ADR.Components.Plane import Plane
 from ADR.Analysis.Performance.Power import Power
@@ -28,18 +28,9 @@ def plot_power_curves(power_analysis):
     ax4.grid()
     ax4.legend()
 
-def power_curves(mtow, genes, plot=True, use_own_parameters=False, use_genes=True):
-    if use_genes:
-        forced_parameters = generate_forced_parameters(genes)
-    else:
-        forced_parameters = {}
-
-    if use_own_parameters:
-        plane_parameters = my_own_parameters.plane_parameters(forced_parameters)
-        performance_data = my_own_parameters.performance_parameters(forced_parameters)
-    else:
-        plane_parameters = parameters.plane_parameters(forced_parameters)
-        performance_data = parameters.performance_parameters(forced_parameters)
+def power_curves(mtow, plot=True, forced_parameters={}):
+    plane_parameters = parameters.plane_parameters(forced_parameters)
+    performance_data = parameters.performance_parameters(forced_parameters)
 
     plane = Plane(plane_parameters)
     plane.mtow = mtow
@@ -53,4 +44,4 @@ def power_curves(mtow, genes, plot=True, use_own_parameters=False, use_genes=Tru
         plt.show()
 
 if __name__ == "__main__":
-    power_curves(mtow=18.299999999999994, genes=[0.6368717909213074, 0.49634100006739956, 0.4916183010303584, 0.8680241758171354, 0.38362358047862344, 0.7093876027664122, 0.0, 0.7708603646630342, 0.03795404093558552])
+    power_curves(mtow=18.299999999999994)
