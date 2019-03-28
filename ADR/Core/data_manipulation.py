@@ -32,9 +32,11 @@ def replace_forced_parameters(original_parameters, forced_parameters):
     return mixed_parameters
 
 def save_dict(plane_params, perf_params, mtow, state):
-    dir = 'saved_planes'
+    dir_name = 'saved_planes'
+    dir_path = os.path.dirname(os.path.abspath(__file__)).replace('Core', '') + dir_name
+    print(dir_path)
     filename = 'plane_mtow_'
-    filepath = dir + '/' + filename + str(round(mtow)) + '_' + state + '-'
+    filepath = dir_path + '/' + filename + str(round(mtow)) + '_' + state + '-'
 
     i = 0
     if os.path.isfile(filepath + str(i) + '.csv'):
