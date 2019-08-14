@@ -160,8 +160,8 @@ class Plane:
         return self.__class__.__name__
 
     def set_alpha_range(self):
-        wings_stall_min = min(self.wing1.stall_min, self.wing2.stall_min, key=abs)
-        wings_stall_max = min(self.wing1.stall_max, self.wing2.stall_max, key=abs)
+        wings_stall_min = max(self.wing1.stall_min, self.wing2.stall_min)
+        wings_stall_max = min(self.wing1.stall_max, self.wing2.stall_max)
 
         # incidence_min = min(self.wing1.incidence, self.wing2.incidence)
         # incidence_max = max(self.wing1.incidence, self.wing2.incidence)
