@@ -40,6 +40,8 @@ def get_aero_coef(Cl_max_airfoil):
     dir_name = os.path.dirname(os.path.abspath(__file__))
     config_file = os.path.join(dir_name, 'configs.avl')
     outputs_path = os.path.join(dir_name, 'outputs')
+    output_file = os.path.join(outputs_path, 'cx.txt')
+    output2_file = os.path.join(outputs_path, 'cx_span.txt')
     if platform.system() == 'Linux':
         avl_file = os.path.join(dir_name, 'avl')
     elif platform.system() == 'Windows':
