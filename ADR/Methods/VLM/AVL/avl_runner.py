@@ -1,5 +1,6 @@
 from subprocess import Popen, PIPE, STDOUT, DEVNULL
 import os
+import platform
 from math import radians
 import numpy as np
 import pandas as pd
@@ -39,9 +40,12 @@ def get_aero_coef(Cl_max_airfoil):
     dir_name = os.path.dirname(os.path.abspath(__file__))
     config_file = os.path.join(dir_name, 'configs.avl')
     outputs_path = os.path.join(dir_name, 'outputs')
-    output_file = os.path.join(outputs_path, 'coefs.txt')
-    output2_file = os.path.join(outputs_path, 'coefs_span.txt')
-    avl_file = os.path.join(dir_name, 'avl.exe')
+    if platform.system() == 'Linux':
+        avl_file = os.path.join(dir_name, 'avl')
+    elif platform.system() == 'Windows':
+        avl_file = os.path.join(dir_name, 'avl.exe')
+    else:
+        raise Exception('Currently only Windows and Linux are supported.')
 
     alpha_range = np.arange(-10, 26, 1)
 
