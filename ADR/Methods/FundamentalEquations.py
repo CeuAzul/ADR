@@ -9,3 +9,4 @@ def drag(air_density, velocity, area, drag_coefficient):
 def moment(air_density, velocity, area, moment_coefficient):
     moment = 0.5*air_density*velocity**2*area*moment_coefficient
     return moment
+    
