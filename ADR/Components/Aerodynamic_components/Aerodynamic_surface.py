@@ -3,7 +3,6 @@ from ADR.Components.Aerodynamic_components.Aerodynamic_section import Aerodynami
 from ADR.Components.Aerodynamic_components.Airfoil import Airfoil
 from ADR.Components.Component import Component
 from ADR.Methods.VLM.AVL.avl_runner import get_aero_coef, change_dimensions
-from ADR.Methods.VLM.pyVLM.pyvlm.vlm import PyVLM
 from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
@@ -67,7 +66,7 @@ class Aerodynamic_surface(Component):
             "z": 0,
             "surface_x": self.x,
             "surface_z": self.z,
-            })
+        })
 
     def __str__(self):
         return self.__class__.__name__
@@ -80,130 +79,13 @@ class Aerodynamic_surface(Component):
 
         if self.vlm == 'AVL':
             change_dimensions(self.data)
-            a, b, c, self.CL_alpha, self.CD_alpha, self.Cm_alpha = get_aero_coef(self.airfoil_clmax)
+            a, b, c, self.CL_alpha, self.CD_alpha, self.Cm_alpha = get_aero_coef(
+                self.airfoil_clmax)
 
             self.CM_ca = self.Cm_alpha['Cm'].mean()
 
             self.stall_min = self.CL_alpha.index.min()
             self.stall_max = self.CL_alpha.index.max()
-
-        elif self.vlm == 'pyVLM':
-            Aerodynamic_calculator = PyVLM()
-
-            if self.__str__() == "Wing":
-                self.CM_ca = -0.32
-            elif self.__str__() == "HS":
-                self.CM_ca = 0.092
-            else:
-                self.CM_ca = 0
-
-            self.stall_min = -10.0
-            self.stall_max = +15.0
-
-            # GEOMETRY DEFINITION #
-            # Section 2
-            c1 = self.section2.chord1
-            c2 = self.section2.chord2
-            b1 = self.section1.span
-            b2 = self.section2.span
-            camber = self.section2.airfoil1.Camber_line
-            n = 2  # number of panels (chordwise)
-            m = 2  # number of panels (spanwise) (For each wing)
-
-            # Left wing
-            A = np.array([0, -b1 - b2])
-            B = np.array([0, -b1])
-            leading_edges_coord_lw = [A, B]
-            chord_lengths_lw = [c2, c1]
-            Aerodynamic_calculator.add_geometry(leading_edges_coord_lw, chord_lengths_lw, n, m, 1, camber)
-
-            # Section 1
-            c1 = self.section1.chord1
-            c2 = self.section1.chord2
-            b1 = self.section1.span
-            camber = self.section1.airfoil1.Camber_line
-
-            # Left wing
-            A = np.array([0, -b1])
-            B = np.array([0, 0])
-            leading_edges_coord_lw = [A, B]
-            chord_lengths_lw = [c2, c1]
-            Aerodynamic_calculator.add_geometry(leading_edges_coord_lw, chord_lengths_lw, n, m, 1, camber)
-
-            # Right wing
-            C = np.array([0, 0])
-            D = np.array([0, b1])
-            leading_edges_coord_rw = [C, D]
-            chord_lengths_rw = [c1, c2]
-            Aerodynamic_calculator.add_geometry(leading_edges_coord_rw, chord_lengths_rw, n, m, 1, camber)
-
-            # Section 2
-            c1 = self.section2.chord1
-            c2 = self.section2.chord2
-            b2 = self.section2.span
-            camber = self.section2.airfoil1.Camber_line
-
-            # Right wing
-            C = np.array([0, b1])
-            D = np.array([0, b1 + b2])
-            leading_edges_coord_rw = [C, D]
-            chord_lengths_rw = [c1, c2]
-            Aerodynamic_calculator.add_geometry(leading_edges_coord_rw, chord_lengths_rw, n, m, 1, camber)
-
-            # Aerodynamic_calculator.check_mesh()
-
-            # SIMULATION
-            # Flight condition parameters
-            V = 12
-            rho = 1.225  # Value applied internally in the code
-            alpha_length = self.stall_max - self.stall_min + 1
-            alpha2 = np.linspace(self.stall_min, self.stall_max, alpha_length)
-            alpha_rad = alpha2 * np.pi / 180
-            alpha = []
-            cl = []
-            cd = []
-            cm = []
-            cm2 = []
-            Xcp = []
-            clc_max = 2.2 #TODO: pegar do perfil
-            q = rho*(V**2)/2
-            for i in range(alpha_length):
-                L, D, M, y, clc = Aerodynamic_calculator.vlm(V, alpha_rad[i], self.airfoil1_name) #TODO: COLOCAR AIRFOIL CERTO
-                cp = -M/(L*self.MAC) #TODO: Corda 1 apenas?
-                if max(clc) > clc_max:
-                    break
-                alpha.append(alpha2[i])
-                cd.append(D/(q*self.area))
-                cl.append(L/(q*self.area))
-                cm.append(-(cp-0.25)*L/(q*self.area)) #TODO: Multiplica por 0?
-
-            self.CL_alpha = pd.DataFrame({'CL': cl, 'alpha': alpha})
-            self.CL_alpha.set_index('alpha', inplace=True)
-
-            CL_alpha0 = self.CL_alpha.at[0.0, 'CL']
-            CL_alpha_ang_coeff = self.CL_alpha.at[1.0, 'CL']-self.CL_alpha.at[0.0, 'CL']
-            alpha_CL0 = -CL_alpha0/CL_alpha_ang_coeff
-
-            alpha_transpose = -11.5-alpha_CL0
-
-            correct_alpha_CL0 = -11.5
-            correct_CL_alpha0 = -correct_alpha_CL0*CL_alpha_ang_coeff
-
-            transposed_CL = {}
-            for i, row in self.CL_alpha.iterrows():
-                transposed_CL[i] = correct_CL_alpha0 + CL_alpha_ang_coeff*i
-
-
-            self.CL_alpha_transposed = pd.DataFrame.from_dict(transposed_CL, orient='index', columns=['CL'])
-            self.CL_alpha_transposed.index.name = 'alpha'
-
-            self.CL_alpha = self.CL_alpha_transposed
-
-            self.CD_alpha = pd.DataFrame({'CD': cd, 'alpha': alpha})
-            self.CD_alpha.set_index('alpha', inplace=True)
-
-            self.CM_alpha = pd.DataFrame({'CM': cm, 'alpha': alpha})
-            self.CM_alpha.set_index('alpha', inplace=True)
 
         self.dCL_dalpha = self.CL_alpha.diff()
         self.dCD_dalpha = self.CD_alpha.diff()
@@ -234,7 +116,8 @@ class Aerodynamic_surface(Component):
         elif self.__str__() == "HS":
             resultant = - item1 + item2 + item3 + item4
 
-        CM = (self.CM_ca * self.MAC / reference_surface.MAC + resultant) * self.area / reference_surface.area
+        CM = (self.CM_ca * self.MAC / reference_surface.MAC +
+              resultant) * self.area / reference_surface.area
         return CM
 
     def get_alpha_range(self):
@@ -243,7 +126,8 @@ class Aerodynamic_surface(Component):
 
     def calc_MAC(self):
         MAC = self.section1.MAC * (self.section1.area/(self.section1.area + self.section2.area)) \
-            + self.section2.MAC * (self.section2.area/(self.section1.area + self.section2.area))
+            + self.section2.MAC * (self.section2.area /
+                                   (self.section1.area + self.section2.area))
         return MAC
 
     def get_CL(self, alpha):
@@ -258,13 +142,16 @@ class Aerodynamic_surface(Component):
         return self.CM_ca
 
     def lift(self, air_density, velocity, alpha):
-        lift = 0.5 * air_density * velocity ** 2 * self.area * self.get_CL(alpha)
+        lift = 0.5 * air_density * velocity ** 2 * \
+            self.area * self.get_CL(alpha)
         return lift
 
     def drag(self, air_density, velocity, alpha):
-        drag = 0.5 * air_density * velocity ** 2 * self.area * self.get_CD(alpha)
+        drag = 0.5 * air_density * velocity ** 2 * \
+            self.area * self.get_CD(alpha)
         return drag
 
     def moment(self, air_density, velocity, alpha):
-        moment = 0.5 * air_density * velocity ** 2 * self.area* self.MAC * self.get_CM()
+        moment = 0.5 * air_density * velocity ** 2 * \
+            self.area * self.MAC * self.get_CM()
         return moment
