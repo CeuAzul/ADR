@@ -1,3 +1,2 @@
-class Constants:
-    def __init__(self):
-        self.gravity = 9.831
+def get_gravity_constant():
+    return 9.7925
