@@ -3,11 +3,11 @@ from ADR.Core.insert_genes import generate_forced_parameters
 from ADR.Core.data_manipulation import save_dict
 from ADR.Components.Plane import Plane
 from ADR.Analysis.Performance.Takeoff import Takeoff
-from ADR.Analysis.Performance.test_Takeoff import plot_takeoff_data
+from ADR.Analysis.Performance.run_Takeoff import plot_takeoff_data
 from ADR.Analysis.Performance.Power import Power
-from ADR.Analysis.Performance.test_Power import plot_power_curves
+from ADR.Analysis.Performance.run_Power import plot_power_curves
 from ADR.Analysis.Stability.FlightStability.FlightStability import FlightStability
-from ADR.Analysis.Stability.FlightStability.test_FlightStability import plot_stability_data
+from ADR.Analysis.Stability.FlightStability.run_FlightStability import plot_stability_data
 from ADR.Analysis.Aerodynamics.AerodynamicPlots import plot_aerodynamic_data
 
 from ADR.Checkers.TrimmRange import TrimmRangeChecker
