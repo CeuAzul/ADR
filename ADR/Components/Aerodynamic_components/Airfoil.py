@@ -1,8 +1,6 @@
-import os
 import pandas as pd
 import numpy as np
-import pkg_resources
-import ADR
+
 
 from ADR.Core.import_functions import (
     import_airfoil_aerodynamic_data,
@@ -50,12 +48,13 @@ class Airfoil:
         )  # número de elementos do vetor de coordenadas horizontais
         self.minpos = np.argmin(
             self.airfoil_x_coords
-        )  # posição do menor valor no vetor de coordenadas horizontais, determina a posição do bordo de ataque
+        )  # posição do menor valor no vetor de coordenadas horizontais,
+        # determina a posição do bordo de ataque
         self.airfoil_x_coords_ext = np.flip(
-            self.airfoil_x_coords[0 : self.minpos]
+            self.airfoil_x_coords[0: self.minpos]
         )  # coordenadas horizontais do extradorso
         self.airfoil_y_coords_ext = np.flip(
-            self.airfoil_y_coords[0 : self.minpos]
+            self.airfoil_y_coords[0: self.minpos]
         )  # coordenadas verticais do extradorso
         self.n_ext = (
             self.airfoil_x_coords_ext.size
@@ -64,10 +63,10 @@ class Airfoil:
     def generate_inner_surface_coordinates(self):
 
         self.airfoil_x_coords_int = self.airfoil_x_coords[
-            self.minpos : self.n - 1
+            self.minpos: self.n - 1
         ]  # coordenadas horizontais do intradorso
         self.airfoil_y_coords_int = self.airfoil_y_coords[
-            self.minpos : self.n - 1
+            self.minpos: self.n - 1
         ]  # coordenadas verticais do intradorso
         self.n_int = (
             self.airfoil_x_coords_int.size
@@ -83,8 +82,10 @@ class Airfoil:
         )  # vetor contando as parcelas de perimetro do intradorso
         for i in range(0, self.n_ext - 2):
             delta_perimeter_i_ext = (
-                (self.airfoil_x_coords_ext[i + 1] - self.airfoil_x_coords_ext[i]) ** 2
-                + (self.airfoil_y_coords_ext[i + 1] - self.airfoil_y_coords_ext[i]) ** 2
+                (self.airfoil_x_coords_ext[i + 1] -
+                 self.airfoil_x_coords_ext[i]) ** 2
+                + (self.airfoil_y_coords_ext[i + 1] -
+                   self.airfoil_y_coords_ext[i]) ** 2
             ) ** 0.5
             self.delta_perimeter_array_ext[i] = delta_perimeter_i_ext
         perimeter_ext = np.sum(
@@ -92,8 +93,10 @@ class Airfoil:
         )  # perímetro do extradorso do perfil
         for i in range(0, self.n_int - 2):
             delta_perimeter_i_int = (
-                (self.airfoil_x_coords_int[i + 1] - self.airfoil_x_coords_int[i]) ** 2
-                + (self.airfoil_y_coords_int[i + 1] - self.airfoil_y_coords_int[i]) ** 2
+                (self.airfoil_x_coords_int[i + 1] -
+                 self.airfoil_x_coords_int[i]) ** 2
+                + (self.airfoil_y_coords_int[i + 1] -
+                   self.airfoil_y_coords_int[i]) ** 2
             ) ** 0.5
             self.delta_perimeter_array_int[i] = delta_perimeter_i_int
         perimeter_int = np.sum(
@@ -127,7 +130,8 @@ class Airfoil:
         )  # vetor contando as parcelas de área determinadas pelo intradordo e a linha de corda
         for i in range(0, self.n_ext - 2):
             delta_area_ext_i = (
-                (self.airfoil_y_coords_ext[i] + self.airfoil_y_coords_ext[i + 1])
+                (self.airfoil_y_coords_ext[i] +
+                 self.airfoil_y_coords_ext[i + 1])
                 * (self.airfoil_x_coords_ext[i + 1] - self.airfoil_x_coords_ext[i])
                 * 0.5
             )
@@ -137,7 +141,8 @@ class Airfoil:
         )  # área determinada pelo extradordo e a linha de corda
         for i in range(0, self.n_int - 2):
             delta_area_int_i = (
-                (self.airfoil_y_coords_int[i] + self.airfoil_y_coords_int[i + 1])
+                (self.airfoil_y_coords_int[i] +
+                 self.airfoil_y_coords_int[i + 1])
                 * (self.airfoil_x_coords_int[i + 1] - self.airfoil_x_coords_int[i])
                 * 0.5
             )
@@ -155,18 +160,20 @@ class Airfoil:
             np_array_x
         )  # posição do menor valor no vetor de coordenadas horizontais, determina a posição do bordo de ataque
         n = np_array_x.size  # número de elementos do vetor de coordenadas horizontais
-        np_array_x_ext = np_array_x[0:minpos]  # coordenadas horizontais do extradorso
+        # coordenadas horizontais do extradorso
+        np_array_x_ext = np_array_x[0:minpos]
         np_array_x_ext = np.flip(np_array_x_ext)
         n_ext = (
             np_array_x_ext.size
         )  # número de elementos do vetor de coordenadas horizontais do extradorso
         np_array_x_int = np_array_x[
-            minpos : n - 1
+            minpos: n - 1
         ]  # coordenadas horizontais do intradorso
         np_array_y_int = np_array_y[
-            minpos : n - 1
+            minpos: n - 1
         ]  # coordenadas verticais do intradorso
-        np_array_y_ext = np_array_y[0:minpos]  # coordenadas verticais do extradorso
+        # coordenadas verticais do extradorso
+        np_array_y_ext = np_array_y[0:minpos]
         np_array_y_ext = np.flip(np_array_y_ext)
         y_interp_ext = np.interp(x_interp, np_array_x_ext, np_array_y_ext)
         y_interp_int = np.interp(x_interp, np_array_x_int, np_array_y_int)
