@@ -13,7 +13,6 @@ class TrimmRangeChecker:
             self.alpha_min_trimm
         ):
             self.plane.trimm_for_low_angles = True
-            # print('This aircraft does trimm for low angles!')
         else:
             self.plane.trimm_for_low_angles = False
             print("This aircraft does *not* trimm for low angles!")
@@ -22,7 +21,6 @@ class TrimmRangeChecker:
             self.alpha_max_trimm
         ):
             self.plane.trimm_for_high_angles = True
-            # print('This aircraft does trimm for high angles!')
         else:
             self.plane.trimm_for_high_angles = False
             print("This aircraft does *not* trimm for high angles!")
