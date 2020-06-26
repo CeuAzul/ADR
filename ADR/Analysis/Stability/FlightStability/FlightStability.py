@@ -62,26 +62,32 @@ class FlightStability:
                     # Summing CM of tail with CM of wing per each alpha
                     # Getting CM_alpha of plane
                     CM_alpha_CG_plane[alpha_plane] = (
-                        CM_alpha_CG_wings[alpha_plane] + CM_alpha_CG_tail[alpha_plane]
+                        CM_alpha_CG_wings[alpha_plane] +
+                        CM_alpha_CG_tail[alpha_plane]
                     )
                 else:
                     CM_alpha_CG_tail[alpha_plane] = None
                     CM_alpha_CG_plane[alpha_plane] = None
 
-            CM_alpha_CG_plane_df = dict_to_dataframe(CM_alpha_CG_plane, "CM", "alpha")
+            CM_alpha_CG_plane_df = dict_to_dataframe(
+                CM_alpha_CG_plane, "CM", "alpha")
             self.CM_alpha_CG_plane_each_hs_incidence[
                 hs_incidence
             ] = CM_alpha_CG_plane_df
 
         self.trimm()
 
-        dCM_dalpha_plane_df = self.CM_alpha_CG_plane_each_hs_incidence[0].diff()
+        dCM_dalpha_plane_df = self.CM_alpha_CG_plane_each_hs_incidence[0].diff(
+        )
         dCM_dalpha_plane_df.fillna(method="bfill", inplace=True)
         self.plane.dCM_dalpha = dCM_dalpha_plane_df
 
-        self.wing1.CM_alpha_CG = dict_to_dataframe(CM_alpha_CG_wing1, "CM", "alpha")
-        self.wing2.CM_alpha_CG = dict_to_dataframe(CM_alpha_CG_wing2, "CM", "alpha")
-        self.hs.CM_alpha_CG = dict_to_dataframe(CM_alpha_CG_tail, "CM", "alpha")
+        self.wing1.CM_alpha_CG = dict_to_dataframe(
+            CM_alpha_CG_wing1, "CM", "alpha")
+        self.wing2.CM_alpha_CG = dict_to_dataframe(
+            CM_alpha_CG_wing2, "CM", "alpha")
+        self.hs.CM_alpha_CG = dict_to_dataframe(
+            CM_alpha_CG_tail, "CM", "alpha")
 
         return self.CM_alpha_CG_plane_each_hs_incidence
 
@@ -120,7 +126,8 @@ class FlightStability:
                 tail_trimm[alpha_trimm] = hs_incidence
 
         self.tail_trimm = tail_trimm
-        self.tail_trimm_df = dict_to_dataframe(tail_trimm, "hs_incidence", "alpha")
+        self.tail_trimm_df = dict_to_dataframe(
+            tail_trimm, "hs_incidence", "alpha")
         self.plane.tail_trimm = self.tail_trimm_df
 
         if tail_trimm:
