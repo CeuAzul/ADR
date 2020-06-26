@@ -6,8 +6,7 @@
 from ADR.Core.data_manipulation import replace_forced_parameters
 
 original_plane_parameters = {
-    "plane_type": 'biplane',
-
+    "plane_type": "biplane",
     "wing1_x": 0,
     "wing1_y": 0,
     "wing1_z": 0,
@@ -24,7 +23,6 @@ original_plane_parameters = {
     "wing1_twist2": 0,
     "wing1_twist3": 0,
     "wing1_incidence": 0,
-
     "wing2_x": 0,
     "wing2_y": 0,
     "wing2_z": 0.6,
@@ -41,7 +39,6 @@ original_plane_parameters = {
     "wing2_twist2": 0,
     "wing2_twist3": 0,
     "wing2_incidence": 0,
-
     "hs_x": -0.5928,
     "hs_y": 0,
     "hs_z": 0.1,
@@ -58,8 +55,6 @@ original_plane_parameters = {
     "hs_twist2": 0,
     "hs_twist3": 0,
     "hs_incidence": 0,
-
-
     "vs_x": -0.7,
     "vs_y": 0,
     "vs_z": 0,
@@ -76,38 +71,38 @@ original_plane_parameters = {
     "vs_twist2": 0,
     "vs_twist3": 0,
     "vs_incidence": 0,
-
     "motor_x": 0.25,
     "motor_z": 0,
     "static_thrust": 45,
     "linear_decay_coefficient": 1.1,
-
     "cg_x": -0.103,
     "cg_z": -0.1,
-
     "tpr_x": -0.153,
     "tpr_z": -0.2,
-
     "Iyy_TPR": 0.2,
     "CD_tp": 0.8,
     "S_tp": 0.001,
     "CD_fus": 0.6,
     "S_fus": 0.02,
-    "u_k": 0.05
+    "u_k": 0.05,
 }
 
 original_performance_parameters = {
-    "rho_air": 1.1, # Densidade do ar [kg/m^3]
-    "dist_max": 45, # Distancia maxima de decolagem pelo regulamento [m]
-    "offset_pilot": 5 # Distancia antes do fim da pista em que o piloto aciona o profundor [m]
+    "rho_air": 1.1,  # Densidade do ar [kg/m^3]
+    "dist_max": 45,  # Distancia maxima de decolagem pelo regulamento [m]
+    "offset_pilot": 5,  # Distancia antes do fim da pista em que o piloto aciona o profundor [m]
 }
 
+
 def plane_parameters(forced_plane_parameters):
-    mixed_plane_parameters = replace_forced_parameters(original_plane_parameters, forced_plane_parameters)
+    mixed_plane_parameters = replace_forced_parameters(
+        original_plane_parameters, forced_plane_parameters
+    )
     return mixed_plane_parameters
 
+
 def performance_parameters(forced_performance_parameters):
-    mixed_performance_parameters = replace_forced_parameters(original_performance_parameters, forced_performance_parameters)
+    mixed_performance_parameters = replace_forced_parameters(
+        original_performance_parameters, forced_performance_parameters
+    )
     return mixed_performance_parameters
-
-

@@ -27,7 +27,6 @@ class FlightStability:
         self.CM_plane_CG(plane.cg)
         self.static_margin()
 
-
     # def vary_CG(self, cg_x_range, cg_z_range):
     #     CM_plane_changing_CG = {}
     #     SM_plane_changing_CG = {}
@@ -56,12 +55,16 @@ class FlightStability:
             self.wing2.update_alpha(float(alpha_plane))
 
             # Getting CM_alpha of wing1
-            CM_alpha_CG_wing1[alpha_plane] = self.wing1.moment_on_CG(self.wing1, self.plane.cg, alpha_plane)
+            CM_alpha_CG_wing1[alpha_plane] = self.wing1.moment_on_CG(
+                self.wing1, self.plane.cg, alpha_plane
+            )
 
             CM_alpha_CG_wings[alpha_plane] = CM_alpha_CG_wing1[alpha_plane]
 
             if self.plane.plane_type == "biplane":
-                CM_alpha_CG_wing2[alpha_plane] = self.wing2.moment_on_CG(self.wing1, self.plane.cg, alpha_plane)
+                CM_alpha_CG_wing2[alpha_plane] = self.wing2.moment_on_CG(
+                    self.wing1, self.plane.cg, alpha_plane
+                )
                 CM_alpha_CG_wings[alpha_plane] += CM_alpha_CG_wing2[alpha_plane]
 
         for hs_incidence in self.hs.incidence_range:
@@ -71,16 +74,22 @@ class FlightStability:
 
                 if self.hs.attack_angle in self.hs.get_alpha_range():
                     # Getting CM_alpha of tail
-                    CM_alpha_CG_tail[alpha_plane] = self.hs.moment_on_CG(self.wing1, self.plane.cg, alpha_plane)
+                    CM_alpha_CG_tail[alpha_plane] = self.hs.moment_on_CG(
+                        self.wing1, self.plane.cg, alpha_plane
+                    )
                     # Summing CM of tail with CM of wing per each alpha
                     # Getting CM_alpha of plane
-                    CM_alpha_CG_plane[alpha_plane] = CM_alpha_CG_wings[alpha_plane] + CM_alpha_CG_tail[alpha_plane]
+                    CM_alpha_CG_plane[alpha_plane] = (
+                        CM_alpha_CG_wings[alpha_plane] + CM_alpha_CG_tail[alpha_plane]
+                    )
                 else:
                     CM_alpha_CG_tail[alpha_plane] = None
                     CM_alpha_CG_plane[alpha_plane] = None
 
-            CM_alpha_CG_plane_df = dict_to_dataframe(CM_alpha_CG_plane, 'CM', 'alpha')
-            self.CM_alpha_CG_plane_each_hs_incidence[hs_incidence] = CM_alpha_CG_plane_df
+            CM_alpha_CG_plane_df = dict_to_dataframe(CM_alpha_CG_plane, "CM", "alpha")
+            self.CM_alpha_CG_plane_each_hs_incidence[
+                hs_incidence
+            ] = CM_alpha_CG_plane_df
 
         self.trimm()
 
@@ -88,9 +97,9 @@ class FlightStability:
         dCM_dalpha_plane_df.fillna(method="bfill", inplace=True)
         self.plane.dCM_dalpha = dCM_dalpha_plane_df
 
-        self.wing1.CM_alpha_CG = dict_to_dataframe(CM_alpha_CG_wing1, 'CM', 'alpha')
-        self.wing2.CM_alpha_CG = dict_to_dataframe(CM_alpha_CG_wing2, 'CM', 'alpha')
-        self.hs.CM_alpha_CG = dict_to_dataframe(CM_alpha_CG_tail, 'CM', 'alpha')
+        self.wing1.CM_alpha_CG = dict_to_dataframe(CM_alpha_CG_wing1, "CM", "alpha")
+        self.wing2.CM_alpha_CG = dict_to_dataframe(CM_alpha_CG_wing2, "CM", "alpha")
+        self.hs.CM_alpha_CG = dict_to_dataframe(CM_alpha_CG_tail, "CM", "alpha")
 
         return self.CM_alpha_CG_plane_each_hs_incidence
 
@@ -104,26 +113,32 @@ class FlightStability:
 
             if self.hs.attack_angle in self.hs.get_alpha_range():
                 # Calculating Static Margin for each alpha
-                self.sm = SM(self.plane.plane_type,
-                            self.wing1, self.wing2, self.hs,
-                            alpha_plane,
-                            self.plane.dCM_dalpha.at[alpha_plane, 'CM']) #TODO: We should pass the entire plane into SM analysys
+                self.sm = SM(
+                    self.plane.plane_type,
+                    self.wing1,
+                    self.wing2,
+                    self.hs,
+                    alpha_plane,
+                    self.plane.dCM_dalpha.at[alpha_plane, "CM"],
+                )  # TODO: We should pass the entire plane into SM analysys
                 SM_alpha[alpha_plane] = self.sm.SM
 
-        self.SM_alpha_df = dict_to_dataframe(SM_alpha, 'SM', 'alpha')
+        self.SM_alpha_df = dict_to_dataframe(SM_alpha, "SM", "alpha")
         self.plane.SM_alpha = self.SM_alpha_df
         return self.SM_alpha_df
 
     def trimm(self):
         tail_trimm = {}
         for hs_incidence in self.hs.incidence_range:
-            root = find_df_roots(self.CM_alpha_CG_plane_each_hs_incidence[hs_incidence], 'CM')
+            root = find_df_roots(
+                self.CM_alpha_CG_plane_each_hs_incidence[hs_incidence], "CM"
+            )
             if len(root) != 0:
                 alpha_trimm = root[0]
                 tail_trimm[alpha_trimm] = hs_incidence
 
         self.tail_trimm = tail_trimm
-        self.tail_trimm_df = dict_to_dataframe(tail_trimm, 'hs_incidence', 'alpha')
+        self.tail_trimm_df = dict_to_dataframe(tail_trimm, "hs_incidence", "alpha")
         self.plane.tail_trimm = self.tail_trimm_df
 
         if tail_trimm:

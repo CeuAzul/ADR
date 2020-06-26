@@ -24,7 +24,13 @@ opt_halloffame = 2
 if not run_optmizer:
     adr_analyser(plot, use_ready_airplane)
 else:
-    pop, log, hof = main(opt_population, opt_generations, opt_crossover, opt_mutation, opt_halloffame)
+    pop, log, hof = main(
+        opt_population, opt_generations, opt_crossover, opt_mutation, opt_halloffame
+    )
 
     for i, individual in enumerate(hof):
-        print("Individual #{} is: {}\nwith fitness: {}".format(i+1, individual, individual.fitness))
+        print(
+            "Individual #{} is: {}\nwith fitness: {}".format(
+                i + 1, individual, individual.fitness
+            )
+        )

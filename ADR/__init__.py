@@ -1,3 +1,3 @@
-name = 'ADR'
+name = "ADR"
 
-print('ADR suscefully imported')
+print("ADR suscefully imported")

@@ -90,7 +90,7 @@ class Plane:
             "twist1": data.get("vs_twist1"),
             "twist2": data.get("vs_twist2"),
             "twist3": data.get("vs_twist3"),
-            "incidence": data.get("vs_incidence")
+            "incidence": data.get("vs_incidence"),
         }
 
         motor_data = {
@@ -98,18 +98,12 @@ class Plane:
             "y": data.get("motor_y"),
             "z": data.get("motor_z"),
             "static_thrust": data.get("static_thrust"),
-            "linear_decay_coefficient": data.get("linear_decay_coefficient")
+            "linear_decay_coefficient": data.get("linear_decay_coefficient"),
         }
 
-        cg_data = {
-            "x": data.get("cg_x"),
-            "z": data.get("cg_z")
-        }
+        cg_data = {"x": data.get("cg_x"), "z": data.get("cg_z")}
 
-        tpr_data = {
-            "x": data.get("tpr_x"),
-            "z": data.get("tpr_z")
-        }
+        tpr_data = {"x": data.get("tpr_x"), "z": data.get("tpr_z")}
 
         self.Iyy_TPR = data.get("Iyy_TPR")
         self.CD_tp = data.get("CD_tp")
@@ -121,7 +115,7 @@ class Plane:
         self.wing1 = Wing(wing1_data)
         self.wing2 = Wing(wing2_data)
         self.hs = HS(hs_data)
-        #self.vs = VS(vs_data)
+        # self.vs = VS(vs_data)
         self.motor = Motor(motor_data)
         self.cg = CG(cg_data)
         self.tpr = TPR(tpr_data)
@@ -165,7 +159,7 @@ class Plane:
 
         # incidence_min = min(self.wing1.incidence, self.wing2.incidence)
         # incidence_max = max(self.wing1.incidence, self.wing2.incidence)
-        #TODO: Incidence for now is fixed on 0 and should be better implemented
+        # TODO: Incidence for now is fixed on 0 and should be better implemented
 
         self.stall_min = wings_stall_min
         self.stall_max = wings_stall_max
@@ -174,40 +168,54 @@ class Plane:
 
     def set_alpha_trimmed(self, alpha_airplane):
         self.wing1.update_alpha(alpha_airplane)
-        if self.plane_type == 'biplane':
+        if self.plane_type == "biplane":
             self.wing2.update_alpha(alpha_airplane)
-        hs_incidence = np.interp(alpha_airplane, self.tail_trimm.index.values, self.tail_trimm['hs_incidence'])
+        hs_incidence = np.interp(
+            alpha_airplane,
+            self.tail_trimm.index.values,
+            self.tail_trimm["hs_incidence"],
+        )
         self.hs.incidence = hs_incidence
         self.hs.update_alpha(alpha_airplane)
 
     def get_CL_alpha_plane(self):
         CL_alpha_plane = {}
         for alpha in np.arange(-20, 21, 0.1):
-            numerator = self.wing1.get_CL(alpha) * self.wing1.area - self.hs.get_CL(alpha) * self.hs.area
-            if self.plane_type == 'biplane':
+            numerator = (
+                self.wing1.get_CL(alpha) * self.wing1.area
+                - self.hs.get_CL(alpha) * self.hs.area
+            )
+            if self.plane_type == "biplane":
                 numerator += self.wing2.get_CL(alpha) * self.wing2.area
             CL_alpha_plane[alpha] = numerator / self.wing1.area
-        self.CL_alpha = dict_to_dataframe(CL_alpha_plane, 'CL', 'alpha')
+        self.CL_alpha = dict_to_dataframe(CL_alpha_plane, "CL", "alpha")
         return self.CL_alpha
 
     def get_CD_alpha_plane(self):
         CD_alpha_plane = {}
         for alpha in np.arange(-20, 21, 0.1):
-            numerator = self.wing1.get_CD(alpha) * self.wing1.area - self.hs.get_CD(alpha) * self.hs.area
-            if self.plane_type == 'biplane':
+            numerator = (
+                self.wing1.get_CD(alpha) * self.wing1.area
+                - self.hs.get_CD(alpha) * self.hs.area
+            )
+            if self.plane_type == "biplane":
                 numerator += self.wing2.get_CD(alpha) * self.wing2.area
             CD_alpha_plane[alpha] = numerator / self.wing1.area
-        self.CD_alpha = dict_to_dataframe(CD_alpha_plane, 'CD', 'alpha')
+        self.CD_alpha = dict_to_dataframe(CD_alpha_plane, "CD", "alpha")
         return self.CD_alpha
 
     def get_V_stall(self, rho):
         self.CL_max = self.CL_alpha.max()[0]
-        self.V_stall = ( (2*self.mtow*9.81)/(rho*self.wing1.area*self.CL_max) )**0.5
+        self.V_stall = (
+            (2 * self.mtow * 9.81) / (rho * self.wing1.area * self.CL_max)
+        ) ** 0.5
         return self.V_stall
 
     def get_V_CLmin(self, rho):
         self.CL_min = self.CL_alpha.min()[0]
-        self.V_CLmin = ( (2*self.mtow*9.81)/(rho*self.wing1.area*self.CL_min) )**0.5
+        self.V_CLmin = (
+            (2 * self.mtow * 9.81) / (rho * self.wing1.area * self.CL_min)
+        ) ** 0.5
         return self.V_CLmin
 
     def show_plane(self):
