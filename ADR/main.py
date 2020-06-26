@@ -7,7 +7,9 @@ from ADR.Analysis.Performance.run_Takeoff import plot_takeoff_data
 from ADR.Analysis.Performance.Power import Power
 from ADR.Analysis.Performance.run_Power import plot_power_curves
 from ADR.Analysis.Stability.FlightStability.FlightStability import FlightStability
-from ADR.Analysis.Stability.FlightStability.run_FlightStability import plot_stability_data
+from ADR.Analysis.Stability.FlightStability.run_FlightStability import (
+    plot_stability_data,
+)
 from ADR.Analysis.Aerodynamics.AerodynamicPlots import plot_aerodynamic_data
 
 from ADR.Checkers.TrimmRange import TrimmRangeChecker
@@ -21,10 +23,14 @@ import numpy as np
 import traceback
 import logging
 
+
 def adr_optmizer(genes):
-    forced_parameters = generate_forced_parameters(parameters.original_plane_parameters, genes)
+    forced_parameters = generate_forced_parameters(
+        parameters.original_plane_parameters, genes
+    )
     score = adr_analyser(forced_parameters=forced_parameters)
     return score
+
 
 def adr_analyser(plot=False, use_ready_airplane=False, forced_parameters={}):
 
@@ -38,7 +44,7 @@ def adr_analyser(plot=False, use_ready_airplane=False, forced_parameters={}):
         takeoff_analysis = Takeoff(plane, performance_data)
         mtow = takeoff_analysis.get_mtow()
 
-        print('Initial MTOW is {}'.format(mtow))
+        print("Initial MTOW is {}".format(mtow))
 
         flight_stability = FlightStability(plane)
         flight_stability.CM_plane_CG(plane.cg)
@@ -58,7 +64,7 @@ def adr_analyser(plot=False, use_ready_airplane=False, forced_parameters={}):
         maybe_an_assassin = MaybeAnAssassin(plane)
         maybe_an_assassin.score_or_kill()
 
-        print('Final MTOW is {}'.format(plane.mtow))
+        print("Final MTOW is {}".format(plane.mtow))
 
         if plot == True:
             plot_takeoff_data(takeoff_analysis, mtow)
@@ -68,15 +74,18 @@ def adr_analyser(plot=False, use_ready_airplane=False, forced_parameters={}):
             plt.show()
 
         if plane.dead == True:
-            save_dict(plane_parameters, performance_data, mtow, 'dead')
+            save_dict(plane_parameters, performance_data, mtow, "dead")
         else:
-            save_dict(plane_parameters, performance_data, mtow, 'alive')
-        return plane.score,
+            save_dict(plane_parameters, performance_data, mtow, "alive")
+        return (plane.score,)
 
     except Exception as e:
         logging.error(traceback.format_exc())
-        print("-----------------------------------Error-----------------------------------")
-        return 0,
+        print(
+            "-----------------------------------Error-----------------------------------"
+        )
+        return (0,)
+
 
 if __name__ == "__main__":
     plot = True

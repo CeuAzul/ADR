@@ -1,5 +1,7 @@
 from ADR.Components.Points.CA import CA
-from ADR.Components.Aerodynamic_components.Aerodynamic_section import Aerodynamic_section
+from ADR.Components.Aerodynamic_components.Aerodynamic_section import (
+    Aerodynamic_section,
+)
 from ADR.Components.Aerodynamic_components.Airfoil import Airfoil
 from ADR.Components.Component import Component
 from ADR.Methods.VLM.AVL.avl_runner import get_aero_coef, change_dimensions
@@ -39,7 +41,7 @@ class Aerodynamic_surface(Component):
             "chord1": self.chord1,
             "chord2": self.chord2,
             "twist1": self.twist1,
-            "twist2": self.twist2
+            "twist2": self.twist2,
         }
 
         data_section2 = {
@@ -49,7 +51,7 @@ class Aerodynamic_surface(Component):
             "chord1": self.chord2,
             "chord2": self.chord3,
             "twist1": self.twist2,
-            "twist2": self.twist3
+            "twist2": self.twist3,
         }
 
         self.section1 = Aerodynamic_section(data_section1)
@@ -58,15 +60,12 @@ class Aerodynamic_surface(Component):
         self.area = 2 * (self.section1.area + self.section2.area)
         self.MAC = self.calc_MAC()
 
-        self.vlm = 'AVL'
+        self.vlm = "AVL"
         self.calc_aerodynamic_data()
 
-        self.ca = CA({
-            "x": - self.MAC / 4,
-            "z": 0,
-            "surface_x": self.x,
-            "surface_z": self.z,
-        })
+        self.ca = CA(
+            {"x": -self.MAC / 4, "z": 0, "surface_x": self.x, "surface_z": self.z,}
+        )
 
     def __str__(self):
         return self.__class__.__name__
@@ -77,12 +76,13 @@ class Aerodynamic_surface(Component):
     def calc_aerodynamic_data(self):
         # This entire method is NOT bullshit\
 
-        if self.vlm == 'AVL':
+        if self.vlm == "AVL":
             change_dimensions(self.data)
             a, b, c, self.CL_alpha, self.CD_alpha, self.Cm_alpha = get_aero_coef(
-                self.airfoil_clmax)
+                self.airfoil_clmax
+            )
 
-            self.CM_ca = self.Cm_alpha['Cm'].mean()
+            self.CM_ca = self.Cm_alpha["Cm"].mean()
 
             self.stall_min = self.CL_alpha.index.min()
             self.stall_max = self.CL_alpha.index.max()
@@ -98,8 +98,8 @@ class Aerodynamic_surface(Component):
 
         resultant = 0
 
-        surface_CL = self.CL_alpha.at[self.attack_angle, 'CL']
-        surface_CD = self.CD_alpha.at[self.attack_angle, 'CD']
+        surface_CL = self.CL_alpha.at[self.attack_angle, "CL"]
+        surface_CD = self.CD_alpha.at[self.attack_angle, "CD"]
 
         sin_component = sin(radians(alpha_plane + self.incidence))
         cos_component = cos(radians(alpha_plane + self.incidence))
@@ -112,12 +112,15 @@ class Aerodynamic_surface(Component):
         item3 = surface_CD * sin_component * horizontal_distance / reference_surface.MAC
         item4 = surface_CD * cos_component * vertical_distance / reference_surface.MAC
         if self.__str__() == "Wing":
-            resultant = + item1 - item2 + item3 + item4
+            resultant = +item1 - item2 + item3 + item4
         elif self.__str__() == "HS":
-            resultant = - item1 + item2 + item3 + item4
+            resultant = -item1 + item2 + item3 + item4
 
-        CM = (self.CM_ca * self.MAC / reference_surface.MAC +
-              resultant) * self.area / reference_surface.area
+        CM = (
+            (self.CM_ca * self.MAC / reference_surface.MAC + resultant)
+            * self.area
+            / reference_surface.area
+        )
         return CM
 
     def get_alpha_range(self):
@@ -125,33 +128,34 @@ class Aerodynamic_surface(Component):
         return alpha_range
 
     def calc_MAC(self):
-        MAC = self.section1.MAC * (self.section1.area/(self.section1.area + self.section2.area)) \
-            + self.section2.MAC * (self.section2.area /
-                                   (self.section1.area + self.section2.area))
+        MAC = self.section1.MAC * (
+            self.section1.area / (self.section1.area + self.section2.area)
+        ) + self.section2.MAC * (
+            self.section2.area / (self.section1.area + self.section2.area)
+        )
         return MAC
 
     def get_CL(self, alpha):
-        CL = np.interp(alpha, self.CL_alpha.index.values, self.CL_alpha['CL'])
+        CL = np.interp(alpha, self.CL_alpha.index.values, self.CL_alpha["CL"])
         return CL
 
     def get_CD(self, alpha):
-        CD = np.interp(alpha, self.CD_alpha.index.values, self.CD_alpha['CD'])
+        CD = np.interp(alpha, self.CD_alpha.index.values, self.CD_alpha["CD"])
         return CD
 
     def get_CM(self):
         return self.CM_ca
 
     def lift(self, air_density, velocity, alpha):
-        lift = 0.5 * air_density * velocity ** 2 * \
-            self.area * self.get_CL(alpha)
+        lift = 0.5 * air_density * velocity ** 2 * self.area * self.get_CL(alpha)
         return lift
 
     def drag(self, air_density, velocity, alpha):
-        drag = 0.5 * air_density * velocity ** 2 * \
-            self.area * self.get_CD(alpha)
+        drag = 0.5 * air_density * velocity ** 2 * self.area * self.get_CD(alpha)
         return drag
 
     def moment(self, air_density, velocity, alpha):
-        moment = 0.5 * air_density * velocity ** 2 * \
-            self.area * self.MAC * self.get_CM()
+        moment = (
+            0.5 * air_density * velocity ** 2 * self.area * self.MAC * self.get_CM()
+        )
         return moment

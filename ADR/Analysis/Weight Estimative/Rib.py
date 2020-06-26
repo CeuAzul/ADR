@@ -1,4 +1,4 @@
-class Rib():
+class Rib:
     def __init__(self, data):
         self.chord = data.get("chord")
         self.perimeter = data.get("perimeter")

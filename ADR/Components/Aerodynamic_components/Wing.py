@@ -1,4 +1,7 @@
-from ADR.Components.Aerodynamic_components.Aerodynamic_surface import Aerodynamic_surface
+from ADR.Components.Aerodynamic_components.Aerodynamic_surface import (
+    Aerodynamic_surface,
+)
+
 
 class Wing(Aerodynamic_surface):
     def __init__(self, data):

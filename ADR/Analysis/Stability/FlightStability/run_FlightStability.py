@@ -1,5 +1,6 @@
 from matplotlib import pyplot as plt
 from scipy import interpolate
+
 # from scipy.optimize import root_scalar
 
 from ADR import parameters
@@ -13,6 +14,7 @@ import numpy as np
 #     data = root_scalar(intepolated, bracket=extremes, method="bisect")
 #     return data.root
 
+
 def plot_stability_data(flight_stability):
 
     fig1, ((ax1, ax2)) = plt.subplots(1, 2)
@@ -22,18 +24,21 @@ def plot_stability_data(flight_stability):
     ax1.set_title("Momentum coeficients on CG")
 
     ax1.plot(flight_stability.wing1.CM_alpha_CG, label="Wing1")
-    if flight_stability.plane.plane_type == 'biplane':
+    if flight_stability.plane.plane_type == "biplane":
         ax1.plot(flight_stability.wing2.CM_alpha_CG, label="Wing2")
     for hs_incidence in flight_stability.hs.incidence_range:
-        ax1.plot(flight_stability.CM_alpha_CG_plane_each_hs_incidence[hs_incidence])   # Ploting for cg in first position(cg1)
+        ax1.plot(
+            flight_stability.CM_alpha_CG_plane_each_hs_incidence[hs_incidence]
+        )  # Ploting for cg in first position(cg1)
     ax1.grid()
     ax1.legend()
 
     ax2.set_xlabel("Alpha")
     ax2.set_ylabel("SM")
     ax2.set_title("Static Margin")
-    ax2.plot(flight_stability.SM_alpha_df)     # Ploting for cg in first position(cg1)
+    ax2.plot(flight_stability.SM_alpha_df)  # Ploting for cg in first position(cg1)
     ax2.grid()
+
 
 if __name__ == "__main__":
     plane_data = parameters.plane_data()
@@ -48,7 +53,7 @@ if __name__ == "__main__":
     plot_stability_data(flight_stability)
     plt.show()
 
-    #flight_stability.plane.show_plane()
+    # flight_stability.plane.show_plane()
 
     # hs_incidence = 0
     # CM_plane_root = find_root(flight_stability.alpha_plane_range,
