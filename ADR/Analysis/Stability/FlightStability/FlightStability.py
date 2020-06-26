@@ -3,14 +3,8 @@ Origem: Bordo de ataque da asa raiz
 """
 
 # Descobre o intervalo aceitavel de posicionamento do CG
-import math
-from matplotlib import pyplot as plt
-import pandas as pd
-import numpy as np
-from scipy import interpolate
 
 from ADR.Components.References.Static_margin import SM
-from ADR.Components.Points.CG import CG
 from ADR.Core.data_manipulation import dict_to_dataframe, find_df_roots
 
 
