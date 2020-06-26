@@ -12,7 +12,8 @@ class FlightStability:
     def __init__(self, plane):
         self.plane = plane
         self.wing1 = self.plane.wing1
-        self.wing2 = self.plane.wing2  # wing2 equals wing 1 for now (monoplane)
+        # wing2 equals wing 1 for now (monoplane)
+        self.wing2 = self.plane.wing2
         self.hs = self.plane.hs
 
         if self.plane.plane_type != "monoplane" and self.plane.plane_type != "biplane":
