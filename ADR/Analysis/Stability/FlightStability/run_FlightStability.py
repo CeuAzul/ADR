@@ -28,7 +28,8 @@ def plot_stability_data(flight_stability):
     ax2.set_xlabel("Alpha")
     ax2.set_ylabel("SM")
     ax2.set_title("Static Margin")
-    ax2.plot(flight_stability.SM_alpha_df)  # Ploting for cg in first position(cg1)
+    # Ploting for cg in first position(cg1)
+    ax2.plot(flight_stability.SM_alpha_df)
     ax2.grid()
 
 
