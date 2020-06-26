@@ -22,19 +22,6 @@ class FlightStability:
         self.CM_plane_CG(plane.cg)
         self.static_margin()
 
-    # def vary_CG(self, cg_x_range, cg_z_range):
-    #     CM_plane_changing_CG = {}
-    #     SM_plane_changing_CG = {}
-    #     name = 1
-    #     for cg_x in cg_x_range:
-    #         for cg_z in cg_z_range:
-    #             cg = CG({"x": cg_x, "z": cg_z})
-    #             cg.tag = "cg" + str(name)
-    #             CM_plane_changing_CG[cg.tag] = self.CM_plane_CG(cg)
-    #             SM_plane_changing_CG[cg.tag] = self.static_margin()
-    #             name += 1
-    #     return CM_plane_changing_CG, SM_plane_changing_CG
-
     def CM_plane_CG(self, cg):
 
         CM_alpha_CG_tail = {}
