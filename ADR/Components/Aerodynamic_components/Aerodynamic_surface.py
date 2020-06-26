@@ -2,12 +2,9 @@ from ADR.Components.Points.CA import CA
 from ADR.Components.Aerodynamic_components.Aerodynamic_section import (
     Aerodynamic_section,
 )
-from ADR.Components.Aerodynamic_components.Airfoil import Airfoil
 from ADR.Components.Component import Component
 from ADR.Methods.VLM.AVL.avl_runner import get_aero_coef, change_dimensions
-from matplotlib import pyplot as plt
 import numpy as np
-import pandas as pd
 from math import radians, cos, sin
 
 
@@ -64,7 +61,7 @@ class Aerodynamic_surface(Component):
         self.calc_aerodynamic_data()
 
         self.ca = CA(
-            {"x": -self.MAC / 4, "z": 0, "surface_x": self.x, "surface_z": self.z,}
+            {"x": -self.MAC / 4, "z": 0, "surface_x": self.x, "surface_z": self.z}
         )
 
     def __str__(self):
@@ -147,11 +144,13 @@ class Aerodynamic_surface(Component):
         return self.CM_ca
 
     def lift(self, air_density, velocity, alpha):
-        lift = 0.5 * air_density * velocity ** 2 * self.area * self.get_CL(alpha)
+        lift = 0.5 * air_density * velocity ** 2 * \
+            self.area * self.get_CL(alpha)
         return lift
 
     def drag(self, air_density, velocity, alpha):
-        drag = 0.5 * air_density * velocity ** 2 * self.area * self.get_CD(alpha)
+        drag = 0.5 * air_density * velocity ** 2 * \
+            self.area * self.get_CD(alpha)
         return drag
 
     def moment(self, air_density, velocity, alpha):
