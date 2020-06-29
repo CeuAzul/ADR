@@ -21,3 +21,9 @@ pip install -e ./
 ## Usage
 
 To run an analysis modify the inputs on *parameters.py* as needed and run *main.py*.
+
+### Contributors
+
+This project exists thanks to all the people who contribute.
+
+[![Contributors](https://contributors-img.web.app/image?repo=CeuAzul/ADR)](https://github.com/CeuAzul/ADR/graphs/contributors)
