@@ -1,31 +1,29 @@
 # ADR
-This is Aircraft Design Resources
+Aircraft Design Resources aims to help engineers on conceptual design analysis, giving them the tools necessary to easily simulate different aircraft designs.
 
-## Usage
-
-You can install ADR on your computer by either using pip editable mode (explained on Contribution) or regular pip installation, where you follow the same steps but remove the `-e` from the pip command:
-
-```sudo pip install ./```
-
-## Contribution:
-
-1. Create a folder on your computer (i.e. "ADR_git")
-
-2.  Linux:
+## Installation
+### Regular usage
 ```
 git clone https://github.com/CeuAzul/ADR.git
 cd ADR
-sudo pip install setuptools
-sudo pip install -e ./
+pip install setuptools
+pip install ./
 ```
 
-2. Windows (CMD with administrator rights):
+### Development
 ```
 git clone https://github.com/CeuAzul/ADR.git
 cd ADR
 pip install setuptools
 pip install -e ./
 ```
-\
 
-From this point you will have ADR installed on your computer and will be able to edit and/or execute it from anywhere.
+## Usage
+
+To run an analysis modify the inputs on *parameters.py* as needed and run *main.py*.
+
+### Contributors
+
+This project exists thanks to all the people who contribute.
+
+[![Contributors](https://contributors-img.web.app/image?repo=CeuAzul/ADR)](https://github.com/CeuAzul/ADR/graphs/contributors)
