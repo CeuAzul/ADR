@@ -3,7 +3,7 @@ from ADR.Components.Aerodynamic_components.Aerodynamic_section import (
     Aerodynamic_section,
 )
 from ADR.Components.Component import Component
-from ADR.Methods.VLM.AVL.avl_runner import get_aero_coef, change_dimensions
+from ADR.Methods.VLM.AVL.avlwrapper_io import get_aero_coefs
 import numpy as np
 from math import radians, cos, sin
 
@@ -74,10 +74,8 @@ class Aerodynamic_surface(Component):
         # This entire method is NOT bullshit\
 
         if self.vlm == "AVL":
-            change_dimensions(self.data)
-            a, b, c, self.CL_alpha, self.CD_alpha, self.Cm_alpha = get_aero_coef(
-                self.airfoil_clmax
-            )
+            a, b, c, self.CL_alpha, self.CD_alpha, self.Cm_alpha = get_aero_coefs(
+                self.data, self.airfoil_clmax)
 
             self.CM_ca = self.Cm_alpha["Cm"].mean()
 
