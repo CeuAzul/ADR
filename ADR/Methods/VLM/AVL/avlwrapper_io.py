@@ -1,94 +1,134 @@
-from subprocess import Popen, PIPE, STDOUT, DEVNULL
-import os
-import platform
-from math import radians
-import numpy as np
 import pandas as pd
-from ADR.Methods.VLM.AVL.io_avl import get_value, set_dimensions, get_clmax
+import avlwrapper as avl
+import os
 
 
-def change_dimensions(data):
+def get_aero_coefs(data, airfoil_clmax):
+    filedir = os.path.dirname(os.path.abspath(__file__))
 
-    surface_name = "wing"
-    airfoil1_name = data.get("airfoil1_name")
-    airfoil2_name = data.get("airfoil2_name")
-    airfoil3_name = data.get("airfoil3_name")
-    span1 = data.get("span1")
-    span2 = data.get("span2")
-    chord1 = data.get("chord1")
-    chord2 = data.get("chord2")
-    chord3 = data.get("chord3")
-    twist1 = data.get("twist1")
-    twist2 = data.get("twist2")
-    twist3 = data.get("twist3")
-    incidence = data.get("incidence")
+    airfoil1_filename = data['airfoil1_name'] + '.dat'
+    airfoil1_filepath = filedir + '/' + airfoil1_filename
 
-    dir_name = os.path.dirname(os.path.abspath(__file__))
-    airfoils_path = os.path.join(dir_name, "airfoils")
+    airfoil2_filename = data['airfoil2_name'] + '.dat'
+    airfoil2_filepath = filedir + '/' + airfoil2_filename
 
-    config_file = os.path.join(dir_name, "configs.avl")
+    airfoil3_filename = data['airfoil3_name'] + '.dat'
+    airfoil3_filepath = filedir + '/' + airfoil3_filename
 
-    airfoil1_file = os.path.join(airfoils_path, airfoil1_name + ".dat")
-    airfoil2_file = os.path.join(airfoils_path, airfoil2_name + ".dat")
-    airfoil3_file = os.path.join(airfoils_path, airfoil3_name + ".dat")
+    c1 = data['chord1']
+    c2 = data['chord2']
+    c3 = data['chord3']
+    x1 = 0
+    x2 = 0
+    x3 = 0
+    y1 = 0
+    y2 = data['span1']
+    y3 = data['span1'] + data['span2']
+    z1 = 0
+    z2 = 0
+    z3 = 0
 
-    set_dimensions(
-        config_file,
-        airfoil1_file,
-        airfoil2_file,
-        airfoil3_file,
-        surface_name,
-        0,
-        0,
-        span1,
-        span1 + span2,
-        0,
-        chord1,
-        chord2,
-        chord3,
-        incidence,
-        twist1,
-        twist2,
-        twist3,
+    aerosurface_root_chord = data['chord1']
+    aerosurface_mid_chord = data['chord2']
+    aerosurface_tip_chord = data['chord3']
+
+    aerosurface_root_le_pnt = avl.Point(x=x1,
+                                        y=y1,
+                                        z=z1)
+    aerosurface_mid_le_pnt = avl.Point(x=x2,
+                                       y=y2,
+                                       z=z2)
+    aerosurface_tip_le_pnt = avl.Point(x=x3,
+                                       y=y3,
+                                       z=z3)
+
+    root_section = avl.Section(leading_edge_point=aerosurface_root_le_pnt,
+                               chord=aerosurface_root_chord,
+                               airfoil=avl.FileAirfoil(airfoil1_filepath))
+    mid_section = avl.Section(leading_edge_point=aerosurface_mid_le_pnt,
+                              chord=aerosurface_mid_chord,
+                              airfoil=avl.FileAirfoil(airfoil2_filepath))
+    tip_section = avl.Section(leading_edge_point=aerosurface_tip_le_pnt,
+                              chord=aerosurface_tip_chord,
+                              airfoil=avl.FileAirfoil(airfoil3_filepath))
+
+    # y_duplicate=0.0 duplicates the wing over a XZ-plane at Y=0.0
+    aerosurface = avl.Surface(name='aerosurface',
+                              n_chordwise=8,
+                              chord_spacing=avl.Spacing.cosine,
+                              n_spanwise=12,
+                              span_spacing=avl.Spacing.cosine,
+                              y_duplicate=0.0,
+                              sections=[root_section, mid_section, tip_section])
+
+    mach = 0.01
+
+    area_section1 = (c1 + c2) * (y2 - y1) * 0.5
+    area_section2 = (c2 + c3) * (y3 - y2) * 0.5
+
+    aerosurface_area = 2 * (area_section1 + area_section2)
+
+    MAC_section1 = c1 - (2 * (c1 - c2) * (0.5 * c1 + c2) / (3 * (c1 + c2)))
+
+    MAC_section2 = c2 - (2 * (c2 - c3) * (0.5 * c2 + c3) / (3 * (c2 + c3)))
+
+    aerosurface_mac = (
+        MAC_section1 * area_section1 / (area_section1 + area_section2)
+        + MAC_section2 * area_section2 / (area_section1 + area_section2)
     )
 
+    aerosurface_span = 2 * (y3 - y1)
 
-def get_aero_coef(Cl_max_airfoil):
-    dir_name = os.path.dirname(os.path.abspath(__file__))
-    config_file = os.path.join(dir_name, "configs.avl")
-    outputs_path = os.path.join(dir_name, "outputs")
-    output_file = os.path.join(outputs_path, "cx.txt")
-    output2_file = os.path.join(outputs_path, "cx_span.txt")
-    if platform.system() == "Linux":
-        avl_file = os.path.join(dir_name, "avl")
-    elif platform.system() == "Windows":
-        avl_file = os.path.join(dir_name, "avl.exe")
-    else:
-        raise Exception("Currently only Windows and Linux are supported.")
+    # calculate the m.a.c. leading edge location
 
-    alpha_range = np.arange(-10, 26, 1)
+    # not really sure if this point is correct for the three section surface
 
+    def mac_le_pnt(root_chord, tip_chord, root_pnt, tip_pnt):
+        pnt = ((2*root_chord*root_pnt[dim] +
+                root_chord*tip_pnt[dim] +
+                tip_chord*root_pnt[dim] +
+                2*tip_chord*tip_pnt[dim]) /
+               (3*(root_chord+tip_chord))
+               for dim in range(3))
+        return avl.Point(*pnt)
+
+    le_pnt = mac_le_pnt(aerosurface_root_chord, aerosurface_tip_chord,
+                        aerosurface_root_le_pnt, aerosurface_tip_le_pnt)
+
+    ref_pnt = avl.Point(x=le_pnt.x + 0.25*aerosurface_mac,
+                        y=le_pnt.y, z=le_pnt.z)
+
+    aircraft = avl.Geometry(name='aircraft',
+                            reference_area=aerosurface_area,
+                            reference_chord=aerosurface_mac,
+                            reference_span=aerosurface_span,
+                            reference_point=ref_pnt,
+                            mach=mach,
+                            surfaces=[aerosurface])
+
+    alphas = list(range(-10, 26, 1))
+    results = {}
     CL_dict = {}
     CD_dict = {}
     Cm_dict = {}
+    for alpha in alphas:
+        case = avl.Case(name='sweep',
+                        alpha=alpha)
+        session = avl.Session(geometry=aircraft, cases=[case])
+        results[alpha] = session.run_all_cases()['sweep']
 
-    open(output_file, "a").close()
-    open(output2_file, "a").close()
-
-    for alpha in alpha_range:
-        os.remove(output_file)
-        os.remove(output2_file)
-        comm_string = "load {}\n oper\n a\n a\n {}\n x\n ft\n{}\nfs\n{}\n".format(
-            config_file, alpha, output_file, output2_file
-        )
-        Process = Popen([avl_file], stdin=PIPE, stdout=DEVNULL, stderr=STDOUT)
-        Process.communicate(bytes(comm_string, encoding="utf8"))
-        if get_clmax(output2_file) > Cl_max_airfoil:
+        if (max(results[alpha]['StripForces']['aerosurface']['cl']) > airfoil_clmax):
             break
         else:
-            CL_dict[float(alpha)] = get_value(output_file, "CLtot")
-            CD_dict[float(alpha)] = get_value(output_file, "CDtot")
-            Cm_dict[float(alpha)] = get_value(output_file, "Cmtot")
+            CL_dict[float(alpha)] = (
+                results[alpha]['SurfaceForces']['aerosurface']['CL']
+            )
+            CD_dict[float(alpha)] = (
+                results[alpha]['SurfaceForces']['aerosurface']['CD']
+            )
+            Cm_dict[float(alpha)] = (
+                results[alpha]['SurfaceForces']['aerosurface']['Cm']
+            )
 
     CL_df = pd.DataFrame.from_dict(CL_dict, orient="index", columns=["CL"])
     CL_df.index.name = "alpha"
