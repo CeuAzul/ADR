@@ -7,8 +7,8 @@ import sys
 def get_aero_coefs(data, airfoil_clmax):
     filedir = os.path.dirname(os.path.abspath(__file__))
 
-    # append avlwrapper_io directory to path so avl executables can be found
-    sys.path.append(filedir)
+    # append avlwrapper_io directory to PATH so AVL executables can be found
+    os.environ["PATH"] += os.pathsep + filedir
 
     airfoil1_filename = data['airfoil1_name'] + '.dat'
     airfoil1_filepath = filedir + '/' + airfoil1_filename
