@@ -1,10 +1,14 @@
 import pandas as pd
 import avlwrapper as avl
 import os
+import sys
 
 
 def get_aero_coefs(data, airfoil_clmax):
     filedir = os.path.dirname(os.path.abspath(__file__))
+
+    # append avlwrapper_io directory to path so avl executables can be found
+    sys.path.append(filedir)
 
     airfoil1_filename = data['airfoil1_name'] + '.dat'
     airfoil1_filepath = filedir + '/' + airfoil1_filename
