@@ -8,3 +8,4 @@ install:
   - pip install -e ./
 script:
   - pytest
+  - python ADR/main.py
