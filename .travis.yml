@@ -6,6 +6,10 @@ before_install:
   - sudo apt-get -y install libgfortran3
 install:
   - pip install -e ./
+before_script:
+  - pip install coveralls
 script:
-  - pytest
   - python ADR/main.py
+  - coverage run --source=ADR -m pytest
+after_script:
+  - coveralls
