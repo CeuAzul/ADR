@@ -4,6 +4,10 @@ python:
 before_install:
   - sudo apt-get update
   - sudo apt-get install gcc gfortran libx11-dev
+  - git clone https://gitlab.com/relmendorp/avl.git
+  - cd avl
+  - make
+  - cd ..
 install:
   - pip install -e ./
 before_script:
