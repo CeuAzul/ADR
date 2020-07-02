@@ -1,4 +1,7 @@
 # ADR
+[![Build Status](https://travis-ci.com/CeuAzul/ADR.svg?branch=master)](https://travis-ci.com/CeuAzul/ADR)
+
+
 Aircraft Design Resources aims to help engineers on conceptual design analysis, giving them the tools necessary to easily simulate different aircraft designs.
 
 ## Installation
