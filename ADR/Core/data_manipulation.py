@@ -5,7 +5,8 @@ import os
 
 
 def dict_to_dataframe(dict, column_name, index_name):
-    dataframe = pd.DataFrame.from_dict(dict, orient="index", columns=[column_name])
+    dataframe = pd.DataFrame.from_dict(
+        dict, orient="index", columns=[column_name])
     dataframe.index.name = index_name
     return dataframe
 
@@ -29,18 +30,10 @@ def find_df_roots(df, column_name):
     return roots
 
 
-def replace_forced_parameters(original_parameters, forced_parameters):
-
-    mixed_parameters = {
-        key: forced_parameters.get(key, value)
-        for key, value in original_parameters.items()
-    }
-    return mixed_parameters
-
-
 def save_dict(plane_params, perf_params, mtow, state):
     dir_name = "saved_planes"
-    dir_path = os.path.dirname(os.path.abspath(__file__)).replace("Core", "") + dir_name
+    dir_path = os.path.dirname(os.path.abspath(
+        __file__)).replace("Core", "") + dir_name
     print(dir_path)
     filename = "plane_mtow_"
     filepath = dir_path + "/" + filename + str(round(mtow)) + "_" + state + "-"

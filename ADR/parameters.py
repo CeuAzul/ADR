@@ -1,11 +1,6 @@
-# Generate dictionary with plane and takeoff data
-# Ideally you should give all data (like on
-# this example). If you don't use some of it, just give
-# dummy data (zeros or anything).
+# Generates dictionary with plane and takeoff data
 
-from ADR.Core.data_manipulation import replace_forced_parameters
-
-original_plane_parameters = {
+plane_parameters = {
     "plane_type": "biplane",
     "wing1_x": 0,
     "wing1_y": 0,
@@ -87,22 +82,17 @@ original_plane_parameters = {
     "u_k": 0.05,
 }
 
-original_performance_parameters = {
+performance_parameters = {
     "rho_air": 1.1,  # Densidade do ar [kg/m^3]
     "dist_max": 45,  # Distancia maxima de decolagem pelo regulamento [m]
-    "offset_pilot": 5,  # Distancia antes do fim da pista em que o piloto aciona o profundor [m]
+    # Distancia antes do fim da pista em que o piloto aciona o profundor [m]
+    "offset_pilot": 5,
 }
 
 
-def plane_parameters(forced_plane_parameters):
-    mixed_plane_parameters = replace_forced_parameters(
-        original_plane_parameters, forced_plane_parameters
-    )
-    return mixed_plane_parameters
+def get_plane_parameters():
+    return plane_parameters
 
 
-def performance_parameters(forced_performance_parameters):
-    mixed_performance_parameters = replace_forced_parameters(
-        original_performance_parameters, forced_performance_parameters
-    )
-    return mixed_performance_parameters
+def get_performance_parameters():
+    return performance_parameters

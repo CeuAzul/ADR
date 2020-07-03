@@ -1,5 +1,4 @@
 from ADR import parameters
-from ADR.Core.insert_genes import generate_forced_parameters
 from ADR.Components.Plane import Plane
 from ADR.Analysis.Performance.Power import Power
 
@@ -30,9 +29,9 @@ def plot_power_curves(power_analysis):
     ax4.legend()
 
 
-def power_curves(mtow, plot=True, forced_parameters={}):
-    plane_parameters = parameters.plane_parameters(forced_parameters)
-    performance_data = parameters.performance_parameters(forced_parameters)
+def power_curves(mtow, plot=True):
+    plane_parameters = parameters.get_plane_parameters()
+    performance_data = parameters.get_performance_parameters()
 
     plane = Plane(plane_parameters)
     plane.mtow = mtow
