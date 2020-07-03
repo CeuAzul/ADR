@@ -7,7 +7,7 @@ class StaticMarginChecker:
         positive_alphas = self.SM_alpha[(self.SM_alpha.index > 0)]
         positive_sm = positive_alphas["SM"] > 0
 
-        if positive_sm.all() is True:
+        if positive_sm.all() == True:
             self.plane.positive_sm_for_positive_alphas = True
         else:
             self.plane.positive_sm_for_positive_alphas = False
