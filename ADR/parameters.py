@@ -41,7 +41,7 @@ plane_parameters = {
     "hs_airfoil1_name": "sd7037",
     "hs_airfoil2_name": "sd7037",
     "hs_airfoil3_name": "sd7037",
-    "hs_span1": 0.5,
+    "hs_span1": 0.8,
     "hs_span2": 0.5,
     "hs_chord1": 0.16,
     "hs_chord2": 0.14,
