@@ -4,8 +4,8 @@ python:
 before_install:
   - sudo apt-get update
   - sudo apt-get install gcc gfortran libx11-dev
-  - git clone https://gitlab.com/relmendorp/avl.git
-  - cd avl
+  - git clone https://gitlab.com/relmendorp/avl.git avl_repo
+  - cd avl_repo
   - make
   - cd bin
   - export PATH=$PATH:$(pwd)
