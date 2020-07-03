@@ -1,6 +1,5 @@
 from ADR.Components.Aerodynamic_components.Wing import Wing
 from ADR.Components.Aerodynamic_components.HS import HS
-from ADR.Components.Aerodynamic_components.VS import VS
 from ADR.Components.Propulsion.Motor import Motor
 from ADR.Components.Points.CG import CG
 from ADR.Components.Points.TPR import TPR
@@ -72,25 +71,6 @@ class Plane:
             "twist3": data.get("hs_twist3"),
             "incidence": data.get("hs_incidence"),
             "CM_ca": data.get("hs_CM_ca"),
-        }
-
-        vs_data = {
-            "x": data.get("vs_x"),
-            "y": data.get("vs_y"),
-            "z": data.get("vs_z"),
-            "airfoil_clmax": data.get("vs_clmax_airfoil"),
-            "airfoil1_name": data.get("vs_airfoil1_name"),
-            "airfoil2_name": data.get("vs_airfoil2_name"),
-            "airfoil3_name": data.get("vs_airfoil3_name"),
-            "span1": data.get("vs_span1"),
-            "span2": data.get("vs_span2"),
-            "chord1": data.get("vs_chord1"),
-            "chord2": data.get("vs_chord2"),
-            "chord3": data.get("vs_chord3"),
-            "twist1": data.get("vs_twist1"),
-            "twist2": data.get("vs_twist2"),
-            "twist3": data.get("vs_twist3"),
-            "incidence": data.get("vs_incidence"),
         }
 
         motor_data = {

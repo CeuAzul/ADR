@@ -1,5 +1,3 @@
-from matplotlib import pyplot as plt
-import pandas as pd
 import numpy as np
 from ADR.Core.data_manipulation import dict_to_dataframe
 from ADR.Core.data_manipulation import find_df_roots
@@ -21,7 +19,8 @@ class Power:
     def checks_and_update_mtow(self):
         self.plane.get_V_stall(self.rho)
         self.plane.get_V_CLmin(self.rho)
-        self.velocity_range = np.arange(self.plane.V_stall, self.plane.V_CLmin, 0.1)
+        self.velocity_range = np.arange(
+            self.plane.V_stall, self.plane.V_CLmin, 0.1)
 
         self.power_available()
         self.power_required()
@@ -33,7 +32,8 @@ class Power:
         while has_power_excess == False and self.plane.mtow != 0:
             positive_power = self.power_excess_df["Power excess"] > 0
             has_power_excess = positive_power.any()
-            self.plane.mtow -= 1  # TODO: This is a big reduce-step. We should get this down by getting the power analysis time down.
+            # TODO: This is a big reduce-step. We should get this down by getting the power analysis time down.
+            self.plane.mtow -= 1
             print("New MTOW: {}".format(self.plane.mtow))
             if self.plane.mtow > 0:
                 self.power_available()

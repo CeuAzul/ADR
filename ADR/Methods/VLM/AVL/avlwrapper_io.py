@@ -1,7 +1,6 @@
 import pandas as pd
 import avlwrapper as avl
 import os
-import sys
 
 
 def get_aero_coefs(data, airfoil_clmax):
