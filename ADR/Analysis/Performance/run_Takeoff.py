@@ -1,5 +1,4 @@
 from ADR import parameters
-from ADR.Core.insert_genes import generate_forced_parameters
 from ADR.Components.Plane import Plane
 from ADR.Analysis.Performance.Takeoff import Takeoff
 from matplotlib import pyplot as plt
@@ -35,7 +34,8 @@ def plot_takeoff_data(takeoff_analysis, mtow):
     ax4.grid()
     ax4.legend()
 
-    ax5.plot(takeoff_analysis.mass_dict[mtow]["incidence_hs"], label="HS incidence")
+    ax5.plot(takeoff_analysis.mass_dict[mtow]
+             ["incidence_hs"], label="HS incidence")
     ax5.plot(takeoff_analysis.mass_dict[mtow]["theta"], label="Theta")
     ax5.grid()
     ax5.legend()
@@ -46,9 +46,9 @@ def plot_takeoff_data(takeoff_analysis, mtow):
     ax6.legend()
 
 
-def takeoff(plot=True, forced_parameters={}):
-    plane_parameters = parameters.plane_parameters(forced_parameters)
-    performance_data = parameters.performance_parameters(forced_parameters)
+def takeoff(plot=True):
+    plane_parameters = parameters.get_plane_parameters()
+    performance_data = parameters.get_performance_parameters()
 
     plane = Plane(plane_parameters)
     takeoff_analysis = Takeoff(plane, performance_data)

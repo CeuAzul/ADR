@@ -14,7 +14,7 @@ setuptools.setup(
     include_package_data=True,
     setup_requires=['wheel'],
     install_requires=['avlwrapper', 'numpy',
-                      'matplotlib', 'pandas', 'deap', 'scipy'],
+                      'matplotlib', 'pandas', 'scipy'],
     tests_requires=['pytest'],
     classifiers=[
         "Programming Language :: Python :: 3",

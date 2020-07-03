@@ -1,5 +1,4 @@
 from ADR import parameters
-from ADR.Core.insert_genes import generate_forced_parameters
 from ADR.Core.data_manipulation import save_dict
 from ADR.Components.Plane import Plane
 from ADR.Analysis.Performance.Takeoff import Takeoff
@@ -24,19 +23,11 @@ import traceback
 import logging
 
 
-def adr_optmizer(genes):
-    forced_parameters = generate_forced_parameters(
-        parameters.original_plane_parameters, genes
-    )
-    score = adr_analyser(forced_parameters=forced_parameters)
-    return score
-
-
-def adr_analyser(plot=False, use_ready_airplane=False, forced_parameters={}):
+def adr_analyser(plot=False):
 
     try:
-        plane_parameters = parameters.plane_parameters(forced_parameters)
-        performance_data = parameters.performance_parameters(forced_parameters)
+        plane_parameters = parameters.get_plane_parameters()
+        performance_data = parameters.get_performance_parameters()
 
         plane = Plane(plane_parameters)
         plane.show_plane()
