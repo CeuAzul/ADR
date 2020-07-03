@@ -1,7 +1,7 @@
 from math import sin, cos, radians, degrees
 import pandas as pd
 
-from ADR.Methods.FundamentalEquations import lift, drag, moment
+from ADR.Methods.FundamentalEquations import drag
 
 
 class Takeoff:
@@ -31,14 +31,13 @@ class Takeoff:
 
         m = 1  # Massa total inicial do aviao [kg]
         g = 9.81  # Constante gravitacional [m/s^2]
-        S_w1 = self.plane.wing1.area
-        S_w2 = self.plane.wing2.area
 
         dt = 0.01  # Incremento discreto de tempo [s]
         dm = 0.1  # Incremento de massa [kg]
 
         incidence_active_hs = (
-            10  # Angulo de incidencia adicionado no profundor ao ser acionado [deg]
+            # Angulo de incidencia adicionado no profundor ao ser acionado [deg]
+            10
         )
 
         takeoff_failed = False
@@ -51,7 +50,6 @@ class Takeoff:
 
             theta_airplane_deg = 0  # Angulo do aviao com a pista [°]
             V_x = 0  # Velocidade inicial do aviao no eixo X [m/s]
-            V_y = 0  # Velocidade inicial do aviao no eixo Y [m/s]
             pilot_triggered = False  # O piloto acionou o profundor?
 
             dist_x = 0  # Distancia percorrida em X [m]
@@ -98,8 +96,10 @@ class Takeoff:
                 if self.plane.plane_type == "biplane":
                     D_w2 = self.plane.wing2.drag(self.rho_air, V_x, alpha_w2)
                 D_hs = self.plane.hs.drag(self.rho_air, V_x, alpha_hs)
-                D_tp = drag(self.rho_air, V_x, self.plane.S_tp, self.plane.CD_tp)
-                D_fus = drag(self.rho_air, V_x, self.plane.S_fus, self.plane.CD_fus)
+                D_tp = drag(self.rho_air, V_x,
+                            self.plane.S_tp, self.plane.CD_tp)
+                D_fus = drag(self.rho_air, V_x,
+                             self.plane.S_fus, self.plane.CD_fus)
                 D = D_w1 + D_w2 + D_hs + D_tp + D_fus
 
                 F_at = self.plane.u_k * N

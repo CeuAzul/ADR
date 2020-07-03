@@ -17,7 +17,6 @@ from ADR.Checkers.Scoreboard import MaybeAnAssassin
 from ADR.Checkers.Dimensions import Ruler
 
 from matplotlib import pyplot as plt
-import numpy as np
 
 import traceback
 import logging
@@ -70,7 +69,7 @@ def adr_analyser(plot=False):
             save_dict(plane_parameters, performance_data, mtow, "alive")
         return (plane.score,)
 
-    except Exception as e:
+    except Exception:
         logging.error(traceback.format_exc())
         print(
             "-----------------------------------Error-----------------------------------"

@@ -37,7 +37,8 @@ def import_airfoil_coordinates(airfoil_name):
     )
 
     file1 = open(airfoil_coordinates_filepath, "r")
-    file2 = open(airfoil_coordinates_filepath.replace(".dat", "_edited.dat"), "wt")
+    file2 = open(airfoil_coordinates_filepath.replace(
+        ".dat", "_edited.dat"), "wt")
     file2.write("x y \n")
     for line in file1:
         file2.write(" ".join(line.split()) + "\n")
@@ -60,23 +61,3 @@ def import_airfoil_coordinates(airfoil_name):
         df_array_x.values,
         df_array_y.values,
     )  # vetores de coordenadas horizontais e verticais
-
-
-def import_x5_aerodynamic_data(folder, filename):
-    orig_filepath = get_filepath(folder, filename)
-    edited_filepath = orig_filepath.replace(".txt", "_edited.txt")
-
-    # processando arquivos de dados do x5
-    file1 = open(orig_filepath, "r")
-    file2 = open(edited_filepath, "wt")
-    for line in file1:
-        file2.write(" ".join(line.split()) + "\n")
-    file1.close()
-    file2.close()
-
-    aerodynamic_df = pd.read_csv(edited_filepath, skiprows=7, index_col=0, sep=" ")
-    CL_alpha = aerodynamic_df[["CL"]]
-    CD_alpha = aerodynamic_df[["CD"]]
-    CM_alpha = aerodynamic_df[["Cm"]]
-
-    return CL_alpha, CD_alpha, CM_alpha
