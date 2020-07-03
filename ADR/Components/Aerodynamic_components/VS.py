@@ -7,8 +7,6 @@ class VS(Aerodynamic_surface):
     def __init__(self, data):
         super().__init__(data)
 
-        self.utilidade_do_EV = "Nenhuma irmao, sai dessa vida!"
-
         self.calc_area()
 
     def calc_area(self):
