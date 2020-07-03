@@ -7,6 +7,9 @@ before_install:
   - git clone https://gitlab.com/relmendorp/avl.git
   - cd avl
   - make
+  - cd bin
+  - export PATH=$PATH:$(pwd)
+  - cd ..
   - cd ..
 install:
   - pip install -e ./
