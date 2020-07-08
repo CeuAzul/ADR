@@ -160,7 +160,7 @@ class Plane:
 
     def get_CL_alpha_plane(self):
         CL_alpha_plane = {}
-        for alpha in np.arange(-20, 21, 0.1):
+        for alpha in np.arange(-10, 21, 1.0):
             numerator = (
                 self.wing1.get_CL(alpha) * self.wing1.area
                 - self.hs.get_CL(alpha) * self.hs.area
@@ -173,7 +173,7 @@ class Plane:
 
     def get_CD_alpha_plane(self):
         CD_alpha_plane = {}
-        for alpha in np.arange(-20, 21, 0.1):
+        for alpha in np.arange(-10, 21, 1.0):
             numerator = (
                 self.wing1.get_CD(alpha) * self.wing1.area
                 - self.hs.get_CD(alpha) * self.hs.area
