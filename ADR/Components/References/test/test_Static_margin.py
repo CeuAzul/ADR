@@ -2,6 +2,7 @@ from ADR.Components.References.Static_margin import SM
 from ADR.Components.Aerodynamic_components.Aerodynamic_surface import (
     Aerodynamic_surface,
 )
+import numpy.testing as npt
 
 
 def test_Static_margin():
@@ -42,7 +43,7 @@ def test_Static_margin():
     }
 
     hs_parameters = {
-        "airfoil_clmax": 0.7,
+        "airfoil_clmax": 1.5,
         "airfoil1_name": "sd7037",
         "airfoil2_name": "sd7037",
         "airfoil3_name": "sd7037",
@@ -68,7 +69,4 @@ def test_Static_margin():
     hs.update_alpha(7.0)
 
     static_margin = SM(plane_type, wing1, wing2, hs, 7.0, 0.4)
-    print(static_margin.SM)
-
-
-test_Static_margin()
+    npt.assert_almost_equal(static_margin.SM, -2.0514, decimal=4)
