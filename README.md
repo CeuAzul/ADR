@@ -6,28 +6,28 @@
 Aircraft Design Resources aims to help engineers on conceptual design analysis, giving them the tools necessary to easily simulate different aircraft designs.
 
 ## Installation
-### Regular usage
 ```
-git clone https://github.com/CeuAzul/ADR.git
-cd ADR
-pip install setuptools
-pip install ./
-```
-
-### Development
-```
-git clone https://github.com/CeuAzul/ADR.git
-cd ADR
-pip install setuptools
-pip install -e ./
+pip install adr.ca
 ```
 
 ## Usage
+For information on how to use ADR, [check our docs](https://CeuAzul.github.io/ADR).
+We try to make it as easy to follow as possible, but if you have any issue or 
+question, or suggestions regarding the library or the docs, please 
+[post an issue](https://github.com/CeuAzul/ADR/issues) so we can help you out.
 
-To run an analysis modify the inputs on *parameters.py* as needed and run *main.py*.
+## Development
+ADR uses [Poetry](https://python-poetry.org/) for dependency management. You can
+install poetry [with this single command](https://python-poetry.org/docs/#installation).
+Poetry ensures you are developing on a separated environment and with the same
+dependencies as the other developers. Once poetry is installed, follow those steps:
+```
+git clone https://github.com/CeuAzul/ADR.git
+cd ADR
+poetry install
+```
 
-### Contributors
-
+## Contributors
 This project exists thanks to all the people who contribute.
 
 [![Contributors](https://contributors-img.web.app/image?repo=CeuAzul/ADR)](https://github.com/CeuAzul/ADR/graphs/contributors)
