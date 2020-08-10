@@ -1,4 +1,4 @@
-from ADR.Components.Aerodynamic_components.HS import HS
+from ADR.Components.Aerodynamic_components.VS import VS
 import numpy.testing as npt
 import pytest
 
@@ -22,11 +22,11 @@ def aerodynamic_surface():
         "x": 1,
         "z": 1,
     }
-    aerodynamic_surface = HS(aerodynamic_surface_parameters)
+    aerodynamic_surface = VS(aerodynamic_surface_parameters)
     return aerodynamic_surface
 
 
 def test_calc_area(aerodynamic_surface):
     aerodynamic_surface.calc_area()
     new_area = aerodynamic_surface.area
-    npt.assert_almost_equal(new_area, 2.375, decimal=3)
+    npt.assert_almost_equal(new_area, 1.1875, decimal=3)
