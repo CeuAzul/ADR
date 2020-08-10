@@ -1,16 +1,2 @@
-# Ignore build folder
-adr.ca.egg-info/*
-
-# Ignore Python runtime files
 *.pyc
-
-ADR/\.vscode/
-
-\.vscode/
-
-ADR/Methods/VLM/AVL/configs\.avl
-
-ADR/Methods/VLM/AVL/outputs/
-
-ADR/saved_planes/*
-!ADR/saved_planes/.gitkeep
+*adr.ca.egg-info
