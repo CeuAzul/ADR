@@ -11,8 +11,10 @@ before_install:
   - export PATH=$PATH:$(pwd)
   - cd ..
   - cd ..
+  - curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+  - source $HOME/.poetry/env
 install:
-  - pip install -e ./
+  - poetry install
 before_script:
   - pip install coveralls
 script:
