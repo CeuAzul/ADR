@@ -1,6 +1,6 @@
 language: python
 python:
-  - "3.7"
+  - "3.8"
 before_install:
   - sudo apt-get update
   - sudo apt-get install gcc gfortran libx11-dev
@@ -18,7 +18,6 @@ install:
 before_script:
   - pip install coveralls
 script:
-  - python ADR/main.py
-  - coverage run --source=ADR -m pytest
+  - coverage run -m pytest
 after_script:
   - coveralls
