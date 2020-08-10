@@ -1,6 +1,2 @@
-# Ignore build folder
-adr.ca.egg-info/*
-
-# Ignore Python runtime files
 *.pyc
 
