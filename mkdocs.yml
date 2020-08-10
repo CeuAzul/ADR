@@ -1,0 +1,27 @@
+site_name: ADR docs
+nav:
+    - Home: index.md
+    - About: about.md
+    - Usage:
+        Components:
+            BaseComponent: Components/BaseComponent.md
+            FreeBody: Components/FreeBody.md
+            AttachedComponent: Components/AttachedComponent.md
+        World:
+            Ambient: World/Ambient.md
+            constants: World/constants.md
+        helper funtions:
+            algebric: helper functions/algebric.md
+        
+theme:
+    name: material
+    icon:
+        repo: fontawesome/brands/github
+markdown_extensions:
+    - admonition
+    - codehilite:
+        guess_lang: false
+    - toc:
+        permalink: true
+repo_name: CeuAzul/ADR
+repo_url: https://github.com/CeuAzul/ADR
