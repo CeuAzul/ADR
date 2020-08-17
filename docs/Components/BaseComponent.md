@@ -27,4 +27,10 @@ This method is responsible for adding a child to a component
 ``` python
 child_component = BaseComponent("wing1", "wing", 1.1)
 base_component.append_child(child_component)
+
+print(base_component.children)
+>>> {'wing1': BaseComponent(name='wing1', type='wing', mass=1.1, children={}, external_forces={}, external_moments={})}
+
+print(base_component.wing1)
+>>> BaseComponent(name='wing1', type='wing', mass=1.1, children={}, external_forces={}, external_moments={})
 ```
