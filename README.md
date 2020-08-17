@@ -26,7 +26,7 @@ git clone https://github.com/CeuAzul/ADR.git
 cd ADR
 poetry install
 ```
-
+After that you will need to use the Python virtualenv created by Poetry while developing for ADR. For instructions on how to set the virtualenv on VSCode [you can take a look at our wiki](https://github.com/CeuAzul/ADR/wiki/Use-Poetry-with-Visual-Studio-Code).
 ## Contributors
 This project exists thanks to all the people who contribute.
 
