@@ -35,3 +35,7 @@ def test_states(freebody):
     assert(freebody.angle == math.radians(15))
     assert(freebody.velocity == Vector2(12.1, 0.7))
     assert(freebody.rot_velocity == 14)
+
+
+def test_gravitational_center(freebody):
+    assert(freebody.gravitational_center == Vector2(-0.2, 0.02))
