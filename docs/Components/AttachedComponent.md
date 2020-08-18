@@ -1,0 +1,62 @@
+# AttachedComponent
+
+AttachedComponent is the class where all the other components on ADR inherit from.
+Together with the FreeBody class it allows one to create a complex network of components that interact to calculate their states.
+
+An AttachedComponent will have properties that identify its parent component and its position and angle relative to this parent.
+
+By definition an AttachedComponent should always have a parent component, as its states will be calculated using it (eg.: ```self.angle = self.parent.angle + self.relative_angle```). This parent component can be another AttachedComponent or a FreeBody. On the top of the component's network there should always be a FreeBody, where the main states (*position*, *angle*, *velocity* and *ambient*) will be set.
+
+The AttachedComponent class implements three properties and a state, being those *parent*, *relative_position*, *relative_angle*, *velocity* and *actuation_angle*.
+
+## Instantiation
+To instantiate a AttacheComponent one needs to pass the arguments of its parent class (*name*, *type* and *mass*) and also its own (*relative_position* and *relative_angle*). The *parent* property is set with the special method *set_parent* afterwards.
+
+The *relative_position* property should be a 2D vector (using vec.Vector2 class) that represents the position of the component's origin relative to its parent origin (both origins being arbitrary and defined by the user).
+
+The *relative_angle* property should be a float representing the angle of the component relative to its parent, in radians and clockwise.
+
+``` python
+from adr.Components import FreeBody, AttachedComponent
+from adr.World import Ambient
+from vec import Vector2
+import math
+
+env = Ambient()
+plane = FreeBody(
+    name='plane',
+    type='vehicle',
+    mass=2.0,
+    position_cg=Vector2(x=-0.05, y=0),
+    pitch_rot_inertia=30.0,
+    ambient=env
+)
+
+wing = AttachedComponent(
+    name='wing',
+    type='wing',
+    mass=0.3,
+    relative_position=Vector2(x=-0.15, y=0.2),
+    relative_angle=math.radians(6),
+)
+
+aileron = AttachedComponent(
+    name='left_aileron',
+    type='aileron',
+    mass=0.02,
+    relative_position=Vector2(x=-0.3, y=0),
+    relative_angle=math.radians(4),
+)
+
+wing.set_parent(plane)
+aileron.set_parent(wing)
+
+print(math.degrees(wing.angle))
+>>> 6.0
+print(math.degrees(aileron.angle))
+>>> 10.0
+
+plane.angle = math.radians(5)
+print(math.degrees(aileron.angle))
+>>> 14.99999999999
+```
