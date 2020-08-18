@@ -33,3 +33,10 @@ plane = FreeBody(
 print(plane.ambient.air_density)
 >>> 1.2920513674462337
 ```
+
+## *gravitational_center* property
+This property returns the freebody gravitational center position
+``` python
+print(plane.gravitational_center)
+>>> Vector2 (-0.05, 0)
+```
