@@ -21,3 +21,16 @@ print(base_component)
 ```
 
 The other attributes (children, external_forces and external_moments) should not be passed during instantiation, but with specific methods.
+
+## append_child method
+This method is responsible for adding a child to a component
+``` python
+child_component = BaseComponent("wing1", "wing", 1.1)
+base_component.append_child(child_component)
+
+print(base_component.children)
+>>> {'wing1': BaseComponent(name='wing1', type='wing', mass=1.1, children={}, external_forces={}, external_moments={})}
+
+print(base_component.wing1)
+>>> BaseComponent(name='wing1', type='wing', mass=1.1, children={}, external_forces={}, external_moments={})
+```
