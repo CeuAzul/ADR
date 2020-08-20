@@ -34,3 +34,32 @@ print(base_component.children)
 print(base_component.wing1)
 >>> BaseComponent(name='wing1', type='wing', mass=1.1, children={}, external_forces={}, external_moments={})
 ```
+## angle_of_attack property
+This property calculates the angle of attack of the plane
+```python
+freebody_component = FreeBody(
+    name='component',
+    type='generic_component',
+    mass=3.4,
+    position_cg=Vector2(-0.7, 0.2),
+    pitch_rot_inertia=30.0,
+    ambient=Ambient()
+)
+
+attached_component = AttachedComponent(
+    name='attached_component',
+    type='generic_attached_component',
+    mass=1.4,
+    relative_position=Vector2(-0.4, 0.1),
+    relative_angle=math.radians(9)
+)
+
+attached_component.set_parent(freebody_component)
+freebody_component.velocity = Vector2(r=12, theta=math.radians(5))
+
+print(math.degrees(freebody_component.angle_of_attack))
+>>> -5.0
+
+print(math.degrees(attached_component.angle_of_attack))
+>>> 4.0
+```
