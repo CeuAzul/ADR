@@ -45,8 +45,10 @@ def test_position(freebody_component, attached_component):
     attached_component.set_parent(freebody_component)
     assert(attached_component.position == Vector2(-0.4, 0.1))
     freebody_component.angle = 10
-    assert(attached_component.position == Vector2(
-        0.390030722719518, 0.13370129144810267))
+    freebody_component.position = Vector2(-0.5, 0.2)
+    assert(attached_component.position ==
+           Vector2(-0.109969277280482, 0.3337012914481027))
     freebody_component.angle = -10
+    freebody_component.position = Vector2(0.3, -0.5)
     assert(attached_component.position == Vector2(
-        0.281226500541644, -0.30151559726339316))
+        0.5812265005416439, -0.8015155972633932))
