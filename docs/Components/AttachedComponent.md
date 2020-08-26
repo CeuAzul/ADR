@@ -61,7 +61,7 @@ print(math.degrees(aileron.angle))
 >>> 14.99999999999
 ```
 ## position property
-This property returns a position vector of the child component considering the position of the parent component
+This property returns the position vector of the component's origin in relation to its parent's origin
 ```python
 wing.set_parent(plane)
 plane.angle = 8
