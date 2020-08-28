@@ -41,6 +41,18 @@ def attached_component():
     return attached_component
 
 
+@pytest.fixture
+def payload():
+    payload = AttachedComponent(
+        name='payload_generic',
+        type='payload',
+        mass=3.0,
+        relative_position=Vector2(-0.6, 0.08),
+        relative_angle=math.radians(9)
+    )
+    return payload
+
+
 def test_instantiation(base_component):
     assert(base_component.name == 'component')
     assert(base_component.type == 'generic_component')
@@ -61,3 +73,12 @@ def test_angle_of_attack(freebody_component, attached_component):
         math.degrees(freebody_component.angle_of_attack), -5.0, decimal=1)
     npt.testing.assert_almost_equal(
         math.degrees(attached_component.angle_of_attack), 4.0, decimal=1)
+
+
+def test_empty_mass(freebody_component, base_component, attached_component, payload):
+    freebody_component.append_child(attached_component)
+    base_component.append_child(attached_component)
+    base_component.append_child(payload)
+    assert(base_component.empty_mass == 4.8)
+    assert(freebody_component.empty_mass == 4.8)
+    assert(attached_component.empty_mass == 1.4)
