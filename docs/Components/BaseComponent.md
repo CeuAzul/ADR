@@ -63,3 +63,10 @@ print(math.degrees(freebody_component.angle_of_attack))
 print(math.degrees(attached_component.angle_of_attack))
 >>> 4.0
 ```
+
+## empty_mass property
+This property returns the total mass of the nested components, excluding payload components
+```python
+print(base_component.empty_mass)
+>>> 4.5
+```
