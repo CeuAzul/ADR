@@ -77,3 +77,8 @@ def test_set_parent(attached_component, base_component, extra_base_component):
     assert(attached_component.parent == base_component)
     with pytest.raises(Exception):
         assert attached_component.set_parent(extra_base_component)
+
+
+def test_ambient(attached_component, freebody_component):
+    attached_component.set_parent(freebody_component)
+    assert(attached_component.ambient == freebody_component.ambient)
