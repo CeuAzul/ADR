@@ -165,3 +165,16 @@ def test_force_and_moment_at_component_origin(freebody_component, attached_compo
     npt.testing.assert_almost_equal(force.x, -0.131, decimal=3)
     npt.testing.assert_almost_equal(force.y, 2.04, decimal=3)
     npt.testing.assert_almost_equal(moment, 30.807, decimal=3)
+
+
+def test_nested_components(base_component, attached_component):
+    base_component.append_child(attached_component)
+    assert(base_component.nested_components["component"] == base_component)
+    assert(
+        base_component.nested_components["attached_component"] == attached_component)
+    assert(
+        attached_component.nested_components["attached_component"] == attached_component)
+    assert(base_component.nested_components == {
+           'component': base_component, 'attached_component': attached_component})
+    assert(attached_component.nested_components == {
+           'attached_component': attached_component})
