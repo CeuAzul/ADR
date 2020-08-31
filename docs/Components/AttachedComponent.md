@@ -60,7 +60,12 @@ plane.angle = math.radians(5)
 print(math.degrees(aileron.angle))
 >>> 14.99999999999
 ```
-
+## ambient property
+This property returns the environment in which the component is located
+```python
+print(wing.ambient)
+>>> adr.World.Ambient.Ambient object at 0x000001E4F70128E0
+```
 ## *reset_state* method
 The *reset_state* method will reset all the component state variables (actuation_angle), and call BaseComponent's *reset_state* after, which will reset the state of all child components.
 ``` python
