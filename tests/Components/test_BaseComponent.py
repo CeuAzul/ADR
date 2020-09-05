@@ -82,3 +82,11 @@ def test_empty_mass(freebody_component, base_component, attached_component, payl
     assert(base_component.empty_mass == 4.8)
     assert(freebody_component.empty_mass == 4.8)
     assert(attached_component.empty_mass == 1.4)
+
+def test_total_mass(freebody_component, base_component, attached_component, payload):
+    freebody_component.append_child(attached_component)
+    base_component.append_child(attached_component)
+    base_component.append_child(payload)
+    assert base_component.total_mass == 7.8
+    assert freebody_component.total_mass == 4.8
+    assert attached_component.total_mass == 1.4
