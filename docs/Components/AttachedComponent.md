@@ -107,3 +107,14 @@ aileron.set_parent(wing)
 print(math.degrees(aileron.angle))
 >>> 19.2
 ```
+
+## Set_parent
+The *set_parent* has already been used in the example above, but to give a further explanation, what the function does is to set a parent to the current component.
+
+Note that if we try to set a parent to a component that has already a parent assigned it will return an error. In the example above, the aileron parent is the wing, see what happens if we try to set the plane as the aileron parent:
+
+``` python 
+
+aileron.set_parent(plane)
+>>> raise Exception('Component already has a parent: wing')
+```
