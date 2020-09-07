@@ -60,7 +60,17 @@ plane.angle = math.radians(5)
 print(math.degrees(aileron.angle))
 >>> 14.99999999999
 ```
-##Angle:
+
+## *reset_state* method
+The *reset_state* method will reset all the component state variables (actuation_angle), and call BaseComponent's *reset_state* after, which will reset the state of all child components.
+``` python
+plane.angle = math.radians(8)
+print(math.degrees(plane.angle))
+>>> 8.0
+plane.reset_state()
+print(math.degrees(plane.angle))
+>>> 0.0
+```##Angle:
 The property angle will return to you the angle that the given component is set.
 
 Let's say we have a component 'Wing' attached to the body of the plane, that is set as a FreeBody Component called 'Plane'. The property angle will take in count the plane angle and the relative angle of the wing, just as shown in the example below:
