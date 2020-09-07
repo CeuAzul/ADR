@@ -60,3 +60,50 @@ plane.angle = math.radians(5)
 print(math.degrees(aileron.angle))
 >>> 14.99999999999
 ```
+##Angle:
+The property angle will return to you the angle that the given component is set.
+
+Let's say we have a component 'Wing' attached to the body of the plane, that is set as a FreeBody Component called 'Plane'. The property angle will take in count the plane angle and the relative angle of the wing, just as shown in the example below:
+
+``` python
+env = Ambient()
+plane = FreeBody(
+    name='plane',
+    type='vehicle',
+    mass=2.0,
+    angle = math.radians(3.2),
+    position_cg=Vector2(x=-0.05, y=0),
+    pitch_rot_inertia=30.0,
+    ambient=env
+)
+
+wing = AttachedComponent(
+    name='wing',
+    type='wing',
+    mass=0.3,
+    relative_position=Vector2(x=-0.15, y=0.2),
+    relative_angle = math.radians(1)
+)
+
+print(math.degrees(wing.angle))
+>>> 4.2
+```
+
+If the given component has an actuation angle, the property will return the angle with the maximum actuation angle as well. 
+
+Let's use another example to demonstrate that: an aileron is attached to the wing, with an actuation angle of 15 degrees and a relative angle of 0 degrees.
+
+``` python
+aileron = AttachedComponent(
+    name='left_aileron',
+    type='aileron',
+    mass=0.02,
+    relative_position=Vector2(x=-0.3, y=0),
+    relative_angle=math.radians(0),
+)
+
+aileron.actuation_angle(math.radians(15))
+aileron.set_parent(wing)
+print(math.degrees(aileron.angle))
+>>> 19.2
+```
