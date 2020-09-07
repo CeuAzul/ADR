@@ -1,4 +1,4 @@
-from adr.Components import FreeBody
+from adr.Components import FreeBody, AttachedComponent
 from adr.World import Ambient
 from vec import Vector2
 import math
@@ -18,6 +18,18 @@ def freebody():
         ambient=env,
     )
     return freebody
+
+
+@pytest.fixture
+def attached_component():
+    attached_component = AttachedComponent(
+        name='attached_component',
+        type='generic_attached_component',
+        mass=1.4,
+        relative_position=Vector2(-0.4, 0.1),
+        relative_angle=math.radians(9)
+    )
+    return attached_component
 
 
 def test_instantiation(freebody):
@@ -62,3 +74,22 @@ def test_get_total_weight(freebody):
     npt.assert_almost_equal(weight.r, 229.47, decimal=2)
     npt.assert_almost_equal(weight.theta, math.radians(-105), decimal=2)
     assert weight_point == Vector2(-0.2, 0.02)
+
+
+def test_force_and_moment_at_cg(freebody, attached_component):
+    def ext_force_function1():
+        return Vector2(-0.9, 0.5), Vector2(0.6, 2.0)
+
+    def ext_force_function2():
+        return Vector2(1, 1.4), Vector2(-0.5, -0.1)
+
+    attached_component.set_parent(freebody)
+    freebody.external_forces.pop('weight')
+    freebody.external_forces['force1'] = ext_force_function1
+    freebody.external_moments['moment1'] = lambda: 10.0
+    attached_component.external_forces['force2'] = ext_force_function2
+    attached_component.external_moments['moment2'] = lambda: 20.0
+    force, moment = freebody.force_and_moment_at_cg()
+    npt.assert_almost_equal(force.x, -0.131, decimal=3)
+    npt.assert_almost_equal(force.y, 2.04, decimal=3)
+    npt.assert_almost_equal(moment, 31.212, decimal=3)

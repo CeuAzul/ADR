@@ -106,3 +106,62 @@ def test_total_mass(freebody_component, base_component, attached_component, payl
     assert base_component.total_mass == 7.8
     assert freebody_component.total_mass == 4.8
     assert attached_component.total_mass == 1.4
+
+
+def test_moment_from_external_moments(freebody_component, attached_component):
+    attached_component.set_parent(freebody_component)
+    freebody_component.external_moments['moment1'] = lambda: 10.0
+    attached_component.external_moments['moment2'] = lambda: 20.0
+    assert(freebody_component.moment_from_external_moments() == 10.0)
+
+
+def test_force_and_moment_from_external_forces(freebody_component, attached_component):
+    def ext_force_function1():
+        return Vector2(-0.9, 0.5), Vector2(0.6, 2.0)
+
+    def ext_force_function2():
+        return Vector2(1, 1.4), Vector2(-0.5, -0.1)
+
+    freebody_component.angle = math.radians(15)
+    attached_component.set_parent(freebody_component)
+    freebody_component.external_forces['force1'] = ext_force_function1
+    attached_component.external_forces['force2'] = ext_force_function2
+    freebody_component.external_forces.pop('weight')
+    force, moment = freebody_component.force_and_moment_from_external_forces()
+    npt.testing.assert_almost_equal(force.x, -0.9, decimal=3)
+    npt.testing.assert_almost_equal(force.y, 0.5, decimal=3)
+    npt.testing.assert_almost_equal(moment, 2.1, decimal=3)
+
+
+def test_force_and_moment_from_children(freebody_component, attached_component):
+    def ext_force_function1():
+        return Vector2(-0.9, 0.5), Vector2(0.6, 2.0)
+
+    def ext_force_function2():
+        return Vector2(1, 1.4), Vector2(-0.5, -0.1)
+
+    attached_component.set_parent(freebody_component)
+    freebody_component.external_forces['force1'] = ext_force_function1
+    attached_component.external_forces['force2'] = ext_force_function2
+    force, moment = freebody_component.force_and_moment_from_children()
+    npt.testing.assert_almost_equal(force.x, 0.7686, decimal=3)
+    npt.testing.assert_almost_equal(force.y, 1.5391, decimal=3)
+    npt.testing.assert_almost_equal(moment, -1.292, decimal=3)
+
+
+def test_force_and_moment_at_component_origin(freebody_component, attached_component):
+    def ext_force_function1():
+        return Vector2(-0.9, 0.5), Vector2(0.6, 2.0)
+
+    def ext_force_function2():
+        return Vector2(1, 1.4), Vector2(-0.5, -0.1)
+    attached_component.set_parent(freebody_component)
+    freebody_component.external_forces.pop('weight')
+    freebody_component.external_forces['force1'] = ext_force_function1
+    freebody_component.external_moments['moment1'] = lambda: 10.0
+    attached_component.external_forces['force2'] = ext_force_function2
+    attached_component.external_moments['moment2'] = lambda: 20.0
+    force, moment = freebody_component.force_and_moment_at_component_origin()
+    npt.testing.assert_almost_equal(force.x, -0.131, decimal=3)
+    npt.testing.assert_almost_equal(force.y, 2.04, decimal=3)
+    npt.testing.assert_almost_equal(moment, 30.807, decimal=3)

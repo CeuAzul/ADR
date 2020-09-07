@@ -73,7 +73,8 @@ class BaseComponent:
             _force, _moment = component.force_and_moment_at_component_origin()
             force += _force.rotated(component.relative_angle)
             moment += _moment
-            moment += component.relative_position.cross(_force)
+            moment += component.relative_position.cross(
+                _force.rotated(component.relative_angle))
         return force, moment
 
     @property
