@@ -1,4 +1,4 @@
-from adr.Components import AttachedComponent, FreeBody
+from adr.Components import AttachedComponent, FreeBody, BaseComponent
 from adr.World import Ambient
 from vec import Vector2
 import math
@@ -30,11 +30,28 @@ def freebody_component():
     )
     return freebody_component
 
+@pytest.fixture
+def base_component():
+    base_component = BaseComponent(
+        name='component',
+        type='generic_component',
+        mass=3.4,
+    )
+    return base_component
+
+@pytest.fixture
+def extra_base_component():
+    base_component = BaseComponent(
+        name='component',
+        type='generic_component',
+        mass=3.4,
+    )
+    return extra_base_component
+
 def test_instantiation(attached_component):
     assert(attached_component.relative_position.x == -0.4)
     assert(attached_component.relative_position.y == 0.1)
     assert(attached_component.relative_angle == math.radians(9))
-
 
 def test_states(attached_component):
     attached_component.actuation_angle = math.radians(3)
@@ -47,3 +64,9 @@ def test_angle(attached_component, freebody_component):
     attached_component.actuation_angle = math.radians(10)
     angle = math.degrees(attached_component.angle)
     npt.assert_almost_equal(angle, 24, decimal = 0)
+
+def test_set_parent(attached_component, base_component, extra_base_component):
+    attached_component.set_parent(base_component)
+    assert(attached_component.parent == base_component)
+    with pytest.raises(Exception):
+        assert attached_component.set_parent(extra_base_component)
