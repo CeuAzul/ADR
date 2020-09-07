@@ -66,6 +66,17 @@ This property returns the environment in which the component is located
 print(wing.ambient)
 >>> adr.World.Ambient.Ambient object at 0x000001E4F70128E0
 ```
+
+## velocity property
+This property returns the speed of the component based on the speed of the parent component
+```python
+wing.set_parent(plane)
+plane.velocity = Vector2(10, 20)
+
+print(wing.velocity)
+>>> Vector2 (10, 20)
+```
+
 ## *reset_state* method
 The *reset_state* method will reset all the component state variables (actuation_angle), and call BaseComponent's *reset_state* after, which will reset the state of all child components.
 ``` python
