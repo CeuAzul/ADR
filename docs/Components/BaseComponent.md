@@ -22,6 +22,13 @@ print(base_component)
 
 The other attributes (children, external_forces and external_moments) should not be passed during instantiation, but with specific methods.
 
+## *reset_state* method
+The *reset_state* method will call the *reset_children_state* method.
+It exists so the classes inheriting from BaseComponent can always call it's superclass *reset_state* method, ultimately calling the *reset_children_state* method, which will reset all nested components.
+
+## *reset_children_state* method
+The *reset_children_state* method will call the *reset_state* method of all the components listed on the children dictionary.
+
 ## append_child method
 This method is responsible for adding a child to a component
 ``` python
