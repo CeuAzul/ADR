@@ -19,6 +19,7 @@ The *ambient* property should be a instance of the Ambient class and which will 
 from adr.Components import FreeBody
 from adr.World import Ambient
 from vec import Vector2
+import math
 
 env = Ambient()
 plane = FreeBody(
@@ -32,6 +33,17 @@ plane = FreeBody(
 
 print(plane.ambient.air_density)
 >>> 1.2920513674462337
+```
+
+## *reset_state* method
+The *reset_state* method will reset all the component state variables (position, angle, velocity and rot_velocity), and call BaseComponent's *reset_state* after, which will reset the state of all child components.
+``` python
+plane.angle = math.radians(8)
+print(math.degrees(plane.angle))
+>>> 8.0
+plane.reset_state()
+print(math.degrees(plane.angle))
+>>> 0.0
 ```
 
 ## *gravitational_center* property
