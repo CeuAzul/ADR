@@ -59,6 +59,22 @@ def test_instantiation(base_component):
     assert(base_component.mass == 3.4)
 
 
+def test_reset_state(mocker, base_component):
+    spy = mocker.spy(base_component, 'reset_children_state')
+    base_component.reset_state()
+    spy.assert_called_once()
+
+
+def test_reset_children_state(mocker, base_component):
+    child_component_mock = BaseComponent
+    child_component_mock.reset_state = mocker.Mock()
+    base_component.children = {'mock_component': child_component_mock}
+    spy = mocker.spy(child_component_mock, 'reset_state')
+
+    base_component.reset_children_state()
+    spy.assert_called_once()
+
+
 def test_append_child(base_component):
     child_component = BaseComponent("wing1", "wing", 1.1)
     base_component.append_child(child_component)
