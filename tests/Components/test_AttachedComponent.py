@@ -82,3 +82,13 @@ def test_set_parent(attached_component, base_component, extra_base_component):
 def test_ambient(attached_component, freebody_component):
     attached_component.set_parent(freebody_component)
     assert(attached_component.ambient == freebody_component.ambient)
+
+
+def test_velocity(attached_component, freebody_component):
+    attached_component.set_parent(freebody_component)
+    freebody_component.velocity = Vector2(20, 10)
+    assert(attached_component.velocity == Vector2(20, 10))
+    freebody_component.velocity = Vector2(-5, 0)
+    assert(attached_component.velocity == Vector2(-5, 0))
+    freebody_component.velocity = Vector2(-15, -20)
+    assert(attached_component.velocity == Vector2(-15, -20))
