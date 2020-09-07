@@ -1,6 +1,8 @@
-from adr.Components import AttachedComponent
+from adr.Components import AttachedComponent, FreeBody
+from adr.World import Ambient
 from vec import Vector2
 import math
+import numpy.testing as npt
 import pytest
 
 
@@ -15,6 +17,18 @@ def attached_component():
     )
     return attached_component
 
+@pytest.fixture
+def freebody_component():
+    freebody_component = FreeBody(
+        name='component',
+        type='generic_component',
+        mass=3.4,
+        angle=math.radians(5),
+        position_cg=Vector2(-0.7, 0.2),
+        pitch_rot_inertia=30.0,
+        ambient=Ambient()
+    )
+    return freebody_component
 
 def test_instantiation(attached_component):
     assert(attached_component.relative_position.x == -0.4)
@@ -25,3 +39,11 @@ def test_instantiation(attached_component):
 def test_states(attached_component):
     attached_component.actuation_angle = math.radians(3)
     assert(attached_component.actuation_angle == math.radians(3))
+
+def test_angle(attached_component, freebody_component):
+    attached_component.set_parent(freebody_component)
+    angle = math.degrees(attached_component.angle)
+    assert(angle == 14)
+    attached_component.actuation_angle = math.radians(10)
+    angle = math.degrees(attached_component.angle)
+    npt.assert_almost_equal(angle, 24, decimal = 0)
