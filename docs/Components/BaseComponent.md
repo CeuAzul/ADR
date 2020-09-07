@@ -77,3 +77,9 @@ This property returns the total mass of the nested components, excluding payload
 print(base_component.empty_mass)
 >>> 4.5
 ```
+## nested_components property
+This property returns a dictionary with the hierarchical relationship of each component
+```python
+print(base_component.nested_components)
+>>> {'component': BaseComponent(name='component', type='generic_component', mass=3.4, children={'wing1': BaseComponent(name='wing1', type='wing', mass=1.1, children={}, external_forces={}, external_moments={})}, external_forces={}, external_moments={}), 'wing1': BaseComponent(name='wing1', type='wing', mass=1.1, children={}, external_forces={}, external_moments={})}
+```
