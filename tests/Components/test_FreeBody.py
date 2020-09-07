@@ -27,6 +27,20 @@ def test_instantiation(freebody):
     assert(freebody.ambient.temperature == 273.15)
 
 
+def test_reset_state(freebody):
+    freebody.position = Vector2(2, 4)
+    freebody.angle = 3
+    freebody.velocity = Vector2(7, 2)
+    freebody.rot_velocity = 6
+
+    freebody.reset_state()
+
+    assert (freebody.position == Vector2(0, 0))
+    assert (freebody.angle == 0)
+    assert (freebody.velocity == Vector2(0.00001, 0.00001))
+    assert (freebody.rot_velocity == 0)
+
+
 def test_states(freebody):
     freebody.position = Vector2(15.1, 1.2)
     freebody.angle = math.radians(15)
