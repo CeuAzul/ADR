@@ -53,6 +53,13 @@ def test_instantiation(attached_component):
     assert(attached_component.relative_position.y == 0.1)
     assert(attached_component.relative_angle == math.radians(9))
 
+
+def test_reset_state(attached_component):
+    attached_component.actuation_angle = math.radians(-7)
+    attached_component.reset_state()
+    assert (attached_component.actuation_angle == 0)
+
+
 def test_states(attached_component):
     attached_component.actuation_angle = math.radians(3)
     assert(attached_component.actuation_angle == math.radians(3))
