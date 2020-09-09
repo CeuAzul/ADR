@@ -90,3 +90,7 @@ print(math.degrees(plane.angle))
 Notice that the quality of the output depends on the quality of the input. If
 the force and moment functions are not representative, the moving method won't
 deliver good results.
+
+## *force_and_moment_at_cg* method:
+Returns the resultant force and moment from itself and all the child components
+at its gravitational center.
