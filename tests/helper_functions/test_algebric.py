@@ -1,7 +1,9 @@
-from adr.helper_functions import transform, rotate, translate
+from adr.helper_functions import transform, rotate, translate, \
+    component_vector_in_absolute_frame, component_vector_coords_in_absolute_frame
 from vec import Vector2
 import math
 import numpy.testing as npt
+from adr.Components import BaseComponent
 
 
 def test_rotate():
@@ -46,3 +48,27 @@ def test_transform():
     npt.assert_almost_equal(v1_trans1.y, 1.2)
     npt.assert_almost_equal(v1_trans2.x, -0.1)
     npt.assert_almost_equal(v1_trans2.y, -0.2)
+
+
+def test_component_vector_in_absolute_frame(mocker):
+    component = mocker.Mock()
+    component.position = Vector2(1.4, 0.6)
+    component.angle = math.radians(24)
+    vector = Vector2(-0.4, 0.1)
+    new_vector = component_vector_in_absolute_frame(vector, component)
+    npt.assert_almost_equal(new_vector.x, 0.994, decimal=3)
+    npt.assert_almost_equal(new_vector.y, 0.53, decimal=3)
+
+
+def test_component_vector_coords_in_absolute_frame(mocker):
+    component = mocker.Mock()
+    component.position = Vector2(1.4, 0.6)
+    component.angle = math.radians(25)
+    vector_origin = Vector2(-0.4, 0.1)
+    vector = Vector2(0, 0.5)
+    x0, y0, x, y = component_vector_coords_in_absolute_frame(
+        vector_origin, vector, component)
+    npt.assert_almost_equal(x0, 0.994, decimal=3)
+    npt.assert_almost_equal(y0, 0.521, decimal=3)
+    npt.assert_almost_equal(x, 0.784, decimal=3)
+    npt.assert_almost_equal(y, 0.975, decimal=3)
