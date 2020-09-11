@@ -187,3 +187,7 @@ def test_nested_components(base_component, attached_component):
            'component': base_component, 'attached_component': attached_component})
     assert(attached_component.nested_components == {
            'attached_component': attached_component})
+
+def test_add_external_force_function(force1, base_component):
+    base_component.add_external_force_function('force1', force1)
+    assert(base_component.external_forces['force1'] == force1)
