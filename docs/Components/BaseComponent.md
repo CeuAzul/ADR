@@ -83,3 +83,18 @@ This property returns a dictionary with the hierarchical relationship of each co
 print(base_component.nested_components)
 >>> {'component': BaseComponent(name='component', type='generic_component', mass=3.4, children={'wing1': BaseComponent(name='wing1', type='wing', mass=1.1, children={}, external_forces={}, external_moments={})}, external_forces={}, external_moments={}), 'wing1': BaseComponent(name='wing1', type='wing', mass=1.1, children={}, external_forces={}, external_moments={})}
 ```
+## add_external_force_function
+This method is responsible for appending an external force function to the component. The force function returns a force vector and an application point.
+```python
+def force1():
+    mag = 10
+    ang = math.radians(45)
+    force_point = Vector2(-10, 0)
+    force1 = Vector2(r=mag, theta=ang)
+    return force1, force_point
+
+base_component.add_external_force_function('force1', force1)
+
+print(base_component.external_forces)
+>>> {'force1': <function force1 at 0x0000025EBCAA8D30>}
+```

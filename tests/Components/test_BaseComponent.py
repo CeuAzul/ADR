@@ -53,6 +53,15 @@ def payload():
     return payload
 
 
+@pytest.fixture
+def force1():
+    mag = 10
+    ang = math.radians(45)
+    force_point = Vector2(-10, 0)
+    force1 = Vector2(r=mag, theta=ang)
+    return force1, force_point
+
+
 def test_instantiation(base_component):
     assert(base_component.name == 'component')
     assert(base_component.type == 'generic_component')
@@ -178,3 +187,7 @@ def test_nested_components(base_component, attached_component):
            'component': base_component, 'attached_component': attached_component})
     assert(attached_component.nested_components == {
            'attached_component': attached_component})
+
+def test_add_external_force_function(force1, base_component):
+    base_component.add_external_force_function('force1', force1)
+    assert(base_component.external_forces['force1'] == force1)
