@@ -54,11 +54,8 @@ def payload():
 
 @pytest.fixture
 def moment1():
-    mag = 25
-    ang = math.radians(30)
-    moment_point = Vector2(-5,2)
-    moment1 = Vector2(r=mag,theta=ang)
-    return moment1, moment_point
+    moment1 = 25
+    return moment1
 
 
 @pytest.fixture
