@@ -52,6 +52,11 @@ def payload():
     )
     return payload
 
+@pytest.fixture
+def moment1():
+    moment1 = 25
+    return moment1
+
 
 @pytest.fixture
 def force1():
@@ -191,3 +196,7 @@ def test_nested_components(base_component, attached_component):
 def test_add_external_force_function(force1, base_component):
     base_component.add_external_force_function('force1', force1)
     assert(base_component.external_forces['force1'] == force1)
+           
+def test_add_external_moment_function(moment1, base_component):
+    base_component.add_external_force_function('moment1', moment1)
+    assert(base_component.external_forces['moment1'] == moment1)
