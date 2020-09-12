@@ -198,5 +198,5 @@ def test_add_external_force_function(force1, base_component):
     assert(base_component.external_forces['force1'] == force1)
            
 def test_add_external_moment_function(moment1, base_component):
-    base_component.add_external_force_function('moment1', moment1)
-    assert(base_component.external_forces['moment1'] == moment1)
+    base_component.add_external_moment_function('moment1', moment1)
+    assert(base_component.external_moments['moment1'] == moment1)
