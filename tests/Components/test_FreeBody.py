@@ -93,3 +93,30 @@ def test_force_and_moment_at_cg(freebody, attached_component):
     npt.assert_almost_equal(force.x, -0.131, decimal=3)
     npt.assert_almost_equal(force.y, 2.04, decimal=3)
     npt.assert_almost_equal(moment, 31.212, decimal=3)
+
+
+def test_move(monkeypatch, freebody):
+    freebody.mass = 2
+    freebody.pitch_rot_inertia = 3
+    freebody.rot_velocity = 2
+    freebody.angle = 1
+    freebody.velocity = Vector2(12, 3)
+    freebody.position = Vector2(5, 1)
+
+    def force_and_moment_at_cg_mock():
+        return Vector2(50, 10), 1.5
+
+    freebody.force_and_moment_at_cg = force_and_moment_at_cg_mock
+
+    total_force, moment_z = freebody.move(0.1)
+
+    npt.assert_almost_equal(freebody.rot_velocity, 2.05)
+    npt.assert_almost_equal(freebody.angle, 1.205)
+    npt.assert_almost_equal(freebody.velocity.x, 14.5)
+    npt.assert_almost_equal(freebody.velocity.y, 3.5)
+    npt.assert_almost_equal(freebody.position.x, 6.45)
+    npt.assert_almost_equal(freebody.position.y, 1.35)
+
+    npt.assert_almost_equal(total_force.x, 50)
+    npt.assert_almost_equal(total_force.y, 10)
+    npt.assert_almost_equal(moment_z, 1.5)
