@@ -92,3 +92,18 @@ def test_velocity(attached_component, freebody_component):
     assert(attached_component.velocity == Vector2(-5, 0))
     freebody_component.velocity = Vector2(-15, -20)
     assert(attached_component.velocity == Vector2(-15, -20))
+
+
+def test_position(freebody_component, attached_component):
+    attached_component.set_parent(freebody_component)
+    freebody_component.angle = math.radians(0)
+    freebody_component.position = Vector2(0, 0)
+    assert(attached_component.position == Vector2(-0.4, 0.1))
+    freebody_component.angle = math.radians(2)
+    freebody_component.position = Vector2(-0.5, 0.2)
+    assert(attached_component.position ==
+           Vector2(-0.9032462804778885, 0.2859792840209092))
+    freebody_component.angle = math.radians(-2)
+    freebody_component.position = Vector2(0.3, -0.5)
+    assert(attached_component.position ==
+           Vector2(-0.09626638113738828, -0.38610111861709))

@@ -60,6 +60,15 @@ plane.angle = math.radians(5)
 print(math.degrees(aileron.angle))
 >>> 14.99999999999
 ```
+## position property
+This property returns the absolute position vector of the component
+```python
+wing.set_parent(plane)
+plane.angle = 8
+
+print(wing.position)
+>>>Vector2 (-0.17604664425338434, -0.17750374375522998)
+```
 ## ambient property
 This property returns the environment in which the component is located
 ```python
