@@ -9,6 +9,6 @@ install:
 before_script:
   - pip install coveralls
 script:
-  - coverage run -m pytest
+  - coverage run --source adr -m pytest
 after_script:
   - coveralls
