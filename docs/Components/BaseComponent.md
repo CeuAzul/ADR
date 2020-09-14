@@ -98,3 +98,49 @@ base_component.add_external_force_function('force1', force1)
 print(base_component.external_forces)
 >>> {'force1': <function force1 at 0x0000025EBCAA8D30>}
 ```
+
+## *moment_from_external_moments* method:
+Returns the resultant pitch moment from the moment functions appended to the
+component. It does not include child's moments or moments from forces.
+```python
+def moment_from_drag():
+    return 2
+
+def moment_from_lift():
+    return 5
+
+freebody_component.add_external_moment_function('drag_moment', moment_from_drag)
+freebody_component.add_external_moment_function('lift_moment', moment_from_lift)
+
+print(freebody_component.external_moments)
+>>> {'drag_moment': <function moment_from_drag at 0x7fe44b2861f0>, 
+     'lift_moment': <function moment_from_lift at 0x7fe44af67550>}
+print(freebody_component.moment_from_external_moments())
+>>> 7.0
+```
+
+## *force_and_moment_from_external_forces* method:
+Similar to moment_from_external_moments, but it returns both the resultant force
+and the moment of the resultant force on a component (excluding children).
+```python
+def drag_force():
+    return Vector2(-5, 0), Vector2(3, 2)
+
+def lift_force():
+    return Vector2(0, 50), Vector2(3, 2)
+
+freebody_component.external_forces.pop('weight')
+freebody_component.add_external_force_function('drag_force', drag_force)
+freebody_component.add_external_force_function('lift_force', lift_force)
+
+print(freebody_component.external_forces)
+>>> {'drag_force': <function drag_force at 0x7f6fb6e561f0>,
+     'lift_force': <function lift_force at 0x7f6f9f7d3310>}
+print(freebody_component.force_and_moment_from_external_forces())
+>>> (<Vector2 (-4.99999, 50)>, 160.0)
+```
+## *force_and_moment_from_children* method:
+Returns the resultant force and moment from all the child components at its origin.
+
+## *force_and_moment_at_component_origin* method:
+Returns the resultant force and moment from itself and all the child components, at its origin.
