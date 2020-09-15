@@ -98,6 +98,18 @@ base_component.add_external_force_function('force1', force1)
 print(base_component.external_forces)
 >>> {'force1': <function force1 at 0x0000025EBCAA8D30>}
 ```
+## *add_external_moment_function*:
+This method is responsible for appending an external moment function to the component. The appended function should return a float representing the magnitude of the moment.
+```python
+def moment1():
+    moment1 = 13
+    return moment1
+
+base_component.add_external_moment_function('moment1', moment1)
+
+print(base_component.external_moments)
+>>> {'moment1': <function moment1 at 0x7ff87d8891f0>}
+```
 
 ## *moment_from_external_moments* method:
 Returns the resultant pitch moment from the moment functions appended to the
