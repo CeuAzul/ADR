@@ -25,10 +25,6 @@ class LandingGear(AttachedComponent):
     def floor_contact_point(self):
         return Vector2(0, -self.height)
 
-    @property
-    def gui_repr_vector(self) -> Vector2:
-        return Vector2(r=self.length, theta=math.radians(-90))
-
     def gear_reaction(self):
         displacement = self.height-self.position.y
         axial_velocity = self.velocity.y
