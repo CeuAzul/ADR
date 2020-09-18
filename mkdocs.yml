@@ -10,6 +10,8 @@ nav:
         World:
             Ambient: World/Ambient.md
             constants: World/constants.md
+            Aerodynamic:
+                coefficients_data: World/Aerodynamic/coefficients_data.md
         helper funtions:
             algebric: helper functions/algebric.md
         
