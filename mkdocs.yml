@@ -7,6 +7,8 @@ nav:
             BaseComponent: Components/BaseComponent.md
             FreeBody: Components/FreeBody.md
             AttachedComponent: Components/AttachedComponent.md
+            Auxiliary:
+                LandingGear: Components/Auxiliary/LandingGear.md
         World:
             Ambient: World/Ambient.md
             constants: World/constants.md
