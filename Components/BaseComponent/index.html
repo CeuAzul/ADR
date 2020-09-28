@@ -1,0 +1,911 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.0.1">
+    
+    
+      
+        <title>BaseComponent - ADR docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.38780c08.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.3f72e892.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+      
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#base-component" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../.." title="ADR docs" class="md-header-nav__button md-logo" aria-label="ADR docs">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            ADR docs
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              BaseComponent
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/CeuAzul/ADR/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CeuAzul/ADR
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="ADR docs" class="md-nav__button md-logo" aria-label="ADR docs">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    ADR docs
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/CeuAzul/ADR/" title="Go to repository" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    CeuAzul/ADR
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../about/" title="About" class="md-nav__link">
+      About
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      Usage
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Usage" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Usage
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1" checked>
+    
+    <label class="md-nav__link" for="nav-3-1">
+      Components
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Components" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-1">
+        <span class="md-nav__icon md-icon"></span>
+        Components
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        BaseComponent
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" title="BaseComponent" class="md-nav__link md-nav__link--active">
+      BaseComponent
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#instantiation" class="md-nav__link">
+    Instantiation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reset_state-method" class="md-nav__link">
+    reset_state method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reset_children_state-method" class="md-nav__link">
+    reset_children_state method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#append_child-method" class="md-nav__link">
+    append_child method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#angle_of_attack-property" class="md-nav__link">
+    angle_of_attack property
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#empty_mass-property" class="md-nav__link">
+    empty_mass property
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nested_components-property" class="md-nav__link">
+    nested_components property
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add_external_force_function" class="md-nav__link">
+    add_external_force_function
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add_external_moment_function" class="md-nav__link">
+    add_external_moment_function:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#moment_from_external_moments-method" class="md-nav__link">
+    moment_from_external_moments method:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#force_and_moment_from_external_forces-method" class="md-nav__link">
+    force_and_moment_from_external_forces method:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#force_and_moment_from_children-method" class="md-nav__link">
+    force_and_moment_from_children method:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#force_and_moment_at_component_origin-method" class="md-nav__link">
+    force_and_moment_at_component_origin method:
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../FreeBody/" title="FreeBody" class="md-nav__link">
+      FreeBody
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../AttachedComponent/" title="AttachedComponent" class="md-nav__link">
+      AttachedComponent
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-1-4" type="checkbox" id="nav-3-1-4">
+    
+    <label class="md-nav__link" for="nav-3-1-4">
+      Auxiliary
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Auxiliary" data-md-level="3">
+      <label class="md-nav__title" for="nav-3-1-4">
+        <span class="md-nav__icon md-icon"></span>
+        Auxiliary
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../Auxiliary/LandingGear/" title="LandingGear" class="md-nav__link">
+      LandingGear
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-2" type="checkbox" id="nav-3-2">
+    
+    <label class="md-nav__link" for="nav-3-2">
+      World
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="World" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-2">
+        <span class="md-nav__icon md-icon"></span>
+        World
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../World/Ambient/" title="Ambient" class="md-nav__link">
+      Ambient
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../World/constants/" title="constants" class="md-nav__link">
+      constants
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-3" type="checkbox" id="nav-3-3">
+    
+    <label class="md-nav__link" for="nav-3-3">
+      helper funtions
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="helper funtions" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-3">
+        <span class="md-nav__icon md-icon"></span>
+        helper funtions
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../helper%20functions/algebric/" title="algebric" class="md-nav__link">
+      algebric
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#instantiation" class="md-nav__link">
+    Instantiation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reset_state-method" class="md-nav__link">
+    reset_state method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reset_children_state-method" class="md-nav__link">
+    reset_children_state method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#append_child-method" class="md-nav__link">
+    append_child method
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#angle_of_attack-property" class="md-nav__link">
+    angle_of_attack property
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#empty_mass-property" class="md-nav__link">
+    empty_mass property
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nested_components-property" class="md-nav__link">
+    nested_components property
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add_external_force_function" class="md-nav__link">
+    add_external_force_function
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#add_external_moment_function" class="md-nav__link">
+    add_external_moment_function:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#moment_from_external_moments-method" class="md-nav__link">
+    moment_from_external_moments method:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#force_and_moment_from_external_forces-method" class="md-nav__link">
+    force_and_moment_from_external_forces method:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#force_and_moment_from_children-method" class="md-nav__link">
+    force_and_moment_from_children method:
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#force_and_moment_at_component_origin-method" class="md-nav__link">
+    force_and_moment_at_component_origin method:
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/CeuAzul/ADR/edit/master/docs/Components/BaseComponent.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="base-component">Base Component<a class="headerlink" href="#base-component" title="Permanent link">&para;</a></h1>
+<p>The base component is the fountain where ADR drinks from. Its idea is to provide
+several properties and methods that are necessary for both AttachedComponent and
+FreeBody. Usually the final user of ADR won't use BaseComponent directly, using instead the other two.</p>
+<p>BaseComponent implements the idea of child components (with the children dictionary), methods for dealing with its state and the state of its children, methods for calculating the forces and moments on any component based on the loads in the component itself and its children, among other things.</p>
+<h2 id="instantiation">Instantiation<a class="headerlink" href="#instantiation" title="Permanent link">&para;</a></h2>
+<p>One can instantiate a BaseComponent by passing three parameters: <em>name</em>, <em>type</em> and <em>mass</em>. Notice that all parameters should be passed as keyword arguments (eg.: name="plane").</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">adr.Components</span> <span class="kn">import</span> <span class="n">BaseComponent</span>
+
+<span class="n">base_component</span> <span class="o">=</span> <span class="n">BaseComponent</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;component&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;generic_component&#39;</span><span class="p">,</span>
+    <span class="n">mass</span><span class="o">=</span><span class="mf">3.4</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">base_component</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">BaseComponent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;component&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;generic_component&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">3.4</span><span class="p">,</span> <span class="n">children</span><span class="o">=</span><span class="p">{},</span> <span class="n">external_forces</span><span class="o">=</span><span class="p">{},</span> <span class="n">external_moments</span><span class="o">=</span><span class="p">{})</span>
+</code></pre></div>
+
+
+<p>The other attributes (children, external_forces and external_moments) should not be passed during instantiation, but with specific methods.</p>
+<h2 id="reset_state-method"><em>reset_state</em> method<a class="headerlink" href="#reset_state-method" title="Permanent link">&para;</a></h2>
+<p>The <em>reset_state</em> method will call the <em>reset_children_state</em> method.
+It exists so the classes inheriting from BaseComponent can always call it's superclass <em>reset_state</em> method, ultimately calling the <em>reset_children_state</em> method, which will reset all nested components.</p>
+<h2 id="reset_children_state-method"><em>reset_children_state</em> method<a class="headerlink" href="#reset_children_state-method" title="Permanent link">&para;</a></h2>
+<p>The <em>reset_children_state</em> method will call the <em>reset_state</em> method of all the components listed on the children dictionary.</p>
+<h2 id="append_child-method">append_child method<a class="headerlink" href="#append_child-method" title="Permanent link">&para;</a></h2>
+<p>This method is responsible for adding a child to a component</p>
+<div class="codehilite"><pre><span></span><code><span class="n">child_component</span> <span class="o">=</span> <span class="n">BaseComponent</span><span class="p">(</span><span class="s2">&quot;wing1&quot;</span><span class="p">,</span> <span class="s2">&quot;wing&quot;</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
+<span class="n">base_component</span><span class="o">.</span><span class="n">append_child</span><span class="p">(</span><span class="n">child_component</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">base_component</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="s1">&#39;wing1&#39;</span><span class="p">:</span> <span class="n">BaseComponent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;wing1&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;wing&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">children</span><span class="o">=</span><span class="p">{},</span> <span class="n">external_forces</span><span class="o">=</span><span class="p">{},</span> <span class="n">external_moments</span><span class="o">=</span><span class="p">{})}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">base_component</span><span class="o">.</span><span class="n">wing1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">BaseComponent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;wing1&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;wing&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">children</span><span class="o">=</span><span class="p">{},</span> <span class="n">external_forces</span><span class="o">=</span><span class="p">{},</span> <span class="n">external_moments</span><span class="o">=</span><span class="p">{})</span>
+</code></pre></div>
+
+
+<h2 id="angle_of_attack-property">angle_of_attack property<a class="headerlink" href="#angle_of_attack-property" title="Permanent link">&para;</a></h2>
+<p>This property calculates the angle of attack of the plane</p>
+<div class="codehilite"><pre><span></span><code><span class="n">freebody_component</span> <span class="o">=</span> <span class="n">FreeBody</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;component&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;generic_component&#39;</span><span class="p">,</span>
+    <span class="n">mass</span><span class="o">=</span><span class="mf">3.4</span><span class="p">,</span>
+    <span class="n">position_cg</span><span class="o">=</span><span class="n">Vector2</span><span class="p">(</span><span class="o">-</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span>
+    <span class="n">pitch_rot_inertia</span><span class="o">=</span><span class="mf">30.0</span><span class="p">,</span>
+    <span class="n">ambient</span><span class="o">=</span><span class="n">Ambient</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="n">attached_component</span> <span class="o">=</span> <span class="n">AttachedComponent</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">&#39;attached_component&#39;</span><span class="p">,</span>
+    <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;generic_attached_component&#39;</span><span class="p">,</span>
+    <span class="n">mass</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span>
+    <span class="n">relative_position</span><span class="o">=</span><span class="n">Vector2</span><span class="p">(</span><span class="o">-</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span>
+    <span class="n">relative_angle</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">attached_component</span><span class="o">.</span><span class="n">set_parent</span><span class="p">(</span><span class="n">freebody_component</span><span class="p">)</span>
+<span class="n">freebody_component</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="n">Vector2</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">freebody_component</span><span class="o">.</span><span class="n">angle_of_attack</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">-</span><span class="mf">5.0</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">attached_component</span><span class="o">.</span><span class="n">angle_of_attack</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">4.0</span>
+</code></pre></div>
+
+
+<h2 id="empty_mass-property">empty_mass property<a class="headerlink" href="#empty_mass-property" title="Permanent link">&para;</a></h2>
+<p>This property returns the total mass of the nested components, excluding payload components</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">base_component</span><span class="o">.</span><span class="n">empty_mass</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">4.5</span>
+</code></pre></div>
+
+
+<h2 id="nested_components-property">nested_components property<a class="headerlink" href="#nested_components-property" title="Permanent link">&para;</a></h2>
+<p>This property returns a dictionary with the hierarchical relationship of each component</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="n">base_component</span><span class="o">.</span><span class="n">nested_components</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="s1">&#39;component&#39;</span><span class="p">:</span> <span class="n">BaseComponent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;component&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;generic_component&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">3.4</span><span class="p">,</span> <span class="n">children</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;wing1&#39;</span><span class="p">:</span> <span class="n">BaseComponent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;wing1&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;wing&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">children</span><span class="o">=</span><span class="p">{},</span> <span class="n">external_forces</span><span class="o">=</span><span class="p">{},</span> <span class="n">external_moments</span><span class="o">=</span><span class="p">{})},</span> <span class="n">external_forces</span><span class="o">=</span><span class="p">{},</span> <span class="n">external_moments</span><span class="o">=</span><span class="p">{}),</span> <span class="s1">&#39;wing1&#39;</span><span class="p">:</span> <span class="n">BaseComponent</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;wing1&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;wing&#39;</span><span class="p">,</span> <span class="n">mass</span><span class="o">=</span><span class="mf">1.1</span><span class="p">,</span> <span class="n">children</span><span class="o">=</span><span class="p">{},</span> <span class="n">external_forces</span><span class="o">=</span><span class="p">{},</span> <span class="n">external_moments</span><span class="o">=</span><span class="p">{})}</span>
+</code></pre></div>
+
+
+<h2 id="add_external_force_function">add_external_force_function<a class="headerlink" href="#add_external_force_function" title="Permanent link">&para;</a></h2>
+<p>This method is responsible for appending an external force function to the component. The force function returns a force vector and an application point.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">force1</span><span class="p">():</span>
+    <span class="n">mag</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">ang</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span>
+    <span class="n">force_point</span> <span class="o">=</span> <span class="n">Vector2</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">force1</span> <span class="o">=</span> <span class="n">Vector2</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">mag</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">ang</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">force1</span><span class="p">,</span> <span class="n">force_point</span>
+
+<span class="n">base_component</span><span class="o">.</span><span class="n">add_external_force_function</span><span class="p">(</span><span class="s1">&#39;force1&#39;</span><span class="p">,</span> <span class="n">force1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">base_component</span><span class="o">.</span><span class="n">external_forces</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="s1">&#39;force1&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">force1</span> <span class="n">at</span> <span class="mh">0x0000025EBCAA8D30</span><span class="o">&gt;</span><span class="p">}</span>
+</code></pre></div>
+
+
+<h2 id="add_external_moment_function"><em>add_external_moment_function</em>:<a class="headerlink" href="#add_external_moment_function" title="Permanent link">&para;</a></h2>
+<p>This method is responsible for appending an external moment function to the component. The appended function should return a float representing the magnitude of the moment.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">moment1</span><span class="p">():</span>
+    <span class="n">moment1</span> <span class="o">=</span> <span class="mi">13</span>
+    <span class="k">return</span> <span class="n">moment1</span>
+
+<span class="n">base_component</span><span class="o">.</span><span class="n">add_external_moment_function</span><span class="p">(</span><span class="s1">&#39;moment1&#39;</span><span class="p">,</span> <span class="n">moment1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">base_component</span><span class="o">.</span><span class="n">external_moments</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="s1">&#39;moment1&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">moment1</span> <span class="n">at</span> <span class="mh">0x7ff87d8891f0</span><span class="o">&gt;</span><span class="p">}</span>
+</code></pre></div>
+
+
+<h2 id="moment_from_external_moments-method"><em>moment_from_external_moments</em> method:<a class="headerlink" href="#moment_from_external_moments-method" title="Permanent link">&para;</a></h2>
+<p>Returns the resultant pitch moment from the moment functions appended to the
+component. It does not include child's moments or moments from forces.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">moment_from_drag</span><span class="p">():</span>
+    <span class="k">return</span> <span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">moment_from_lift</span><span class="p">():</span>
+    <span class="k">return</span> <span class="mi">5</span>
+
+<span class="n">freebody_component</span><span class="o">.</span><span class="n">add_external_moment_function</span><span class="p">(</span><span class="s1">&#39;drag_moment&#39;</span><span class="p">,</span> <span class="n">moment_from_drag</span><span class="p">)</span>
+<span class="n">freebody_component</span><span class="o">.</span><span class="n">add_external_moment_function</span><span class="p">(</span><span class="s1">&#39;lift_moment&#39;</span><span class="p">,</span> <span class="n">moment_from_lift</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">freebody_component</span><span class="o">.</span><span class="n">external_moments</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="s1">&#39;drag_moment&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">moment_from_drag</span> <span class="n">at</span> <span class="mh">0x7fe44b2861f0</span><span class="o">&gt;</span><span class="p">,</span> 
+     <span class="s1">&#39;lift_moment&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">moment_from_lift</span> <span class="n">at</span> <span class="mh">0x7fe44af67550</span><span class="o">&gt;</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">freebody_component</span><span class="o">.</span><span class="n">moment_from_external_moments</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mf">7.0</span>
+</code></pre></div>
+
+
+<h2 id="force_and_moment_from_external_forces-method"><em>force_and_moment_from_external_forces</em> method:<a class="headerlink" href="#force_and_moment_from_external_forces-method" title="Permanent link">&para;</a></h2>
+<p>Similar to moment_from_external_moments, but it returns both the resultant force
+and the moment of the resultant force on a component (excluding children).</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">drag_force</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Vector2</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">Vector2</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">lift_force</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Vector2</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="n">Vector2</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">freebody_component</span><span class="o">.</span><span class="n">external_forces</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">)</span>
+<span class="n">freebody_component</span><span class="o">.</span><span class="n">add_external_force_function</span><span class="p">(</span><span class="s1">&#39;drag_force&#39;</span><span class="p">,</span> <span class="n">drag_force</span><span class="p">)</span>
+<span class="n">freebody_component</span><span class="o">.</span><span class="n">add_external_force_function</span><span class="p">(</span><span class="s1">&#39;lift_force&#39;</span><span class="p">,</span> <span class="n">lift_force</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">freebody_component</span><span class="o">.</span><span class="n">external_forces</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">{</span><span class="s1">&#39;drag_force&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">drag_force</span> <span class="n">at</span> <span class="mh">0x7f6fb6e561f0</span><span class="o">&gt;</span><span class="p">,</span>
+     <span class="s1">&#39;lift_force&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">function</span> <span class="n">lift_force</span> <span class="n">at</span> <span class="mh">0x7f6f9f7d3310</span><span class="o">&gt;</span><span class="p">}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">freebody_component</span><span class="o">.</span><span class="n">force_and_moment_from_external_forces</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="o">&lt;</span><span class="n">Vector2</span> <span class="p">(</span><span class="o">-</span><span class="mf">4.99999</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span> <span class="mf">160.0</span><span class="p">)</span>
+</code></pre></div>
+
+
+<h2 id="force_and_moment_from_children-method"><em>force_and_moment_from_children</em> method:<a class="headerlink" href="#force_and_moment_from_children-method" title="Permanent link">&para;</a></h2>
+<p>Returns the resultant force and moment from all the child components at its origin.</p>
+<h2 id="force_and_moment_at_component_origin-method"><em>force_and_moment_at_component_origin</em> method:<a class="headerlink" href="#force_and_moment_at_component_origin-method" title="Permanent link">&para;</a></h2>
+<p>Returns the resultant force and moment from itself and all the child components, at its origin.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../../about/" title="About" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                About
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../FreeBody/" title="FreeBody" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                FreeBody
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/vendor.77e55a48.min.js"></script>
+      <script src="../../assets/javascripts/bundle.aa3f9871.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../..",
+          features: [],
+          search: Object.assign({
+            worker: "../../assets/javascripts/worker/search.4ac00218.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
