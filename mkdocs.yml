@@ -9,6 +9,7 @@ nav:
             AttachedComponent: Components/AttachedComponent.md
             Auxiliary:
                 LandingGear: Components/Auxiliary/LandingGear.md
+                Payload: Components/Auxiliary/Payload.md
         World:
             Ambient: World/Ambient.md
             constants: World/constants.md
